@@ -11,5 +11,5 @@ npm install
 ```
 3. Run the application
 ```bash
-npm start
+npx expo start --tunnel
 ```
