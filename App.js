@@ -1,20 +1,30 @@
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { loadFonts } from './util/helpers';
+
+import Nav from './navigation/Nav';
 
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadFontData = async () => {
+      await loadFonts();
+      setFontsLoaded(true);
+    };
+
+    loadFontData();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // or render a loading screen
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Talk To Listen</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style="dark" />
+      <Nav />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

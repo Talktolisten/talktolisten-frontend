@@ -1,28 +1,28 @@
 const slides = [
   {
     id: 1,
-    image: require('../../assets/images/logo.png'),
-    title: `Welcome to AIMEE`,
-    description: `AIMEE is a tool that provides mindfulness exercises to help you develop mental and emotional strength with the help of AI. Swipe to learn more about AIMEE's features!`,
+    image: require('../../assets/images/introduction/intro1.png'),
+    title: `Welcome to Your New Conversation Playground`,
+    description: `Talk To Listen is your gateway to endless conversations with a world of characters. Chat anytime, anywhere, and uncover a universe of stories and personalities at your fingertips.`,
   },
 
   {
     id: 2,
-    image: require('../../assets/images/intro1.png'),
-    title: `Mindfulness Exercises`,
-    description: `Your Home page lists several different guided audio mindfulness exercises depending on various situations. Scroll through to find an exercise that fits your circumstance.`,
+    image: require('../../assets/images/introduction/intro2.png'),
+    title: `Meet a Galaxy of Characters`,
+    description: `Dive into a diverse cast of characters, each with their own unique voice and story. Want more? You can even build your very own character to share with others!`,
   },
   {
     id: 3,
-    image: require('../../assets/images/intro2.png'),
-    title: `Mindfulness Narrator`,
-    description: `Press the Voice icon in the audio player to switch narrators to one that fits your preferences.`,
+    image: require('../../assets/images/introduction/intro3.png'),
+    title: `Craft Your Own Unique Character`,
+    description: `Ever dreamed of chatting with a character of your own creation? Whether it's your alter ego, a beloved family member, or a completely new persona, Talk To Listen lets you bring them to life and share your creation with the world.`,
   },
   {
     id: 4,
-    image: require('../../assets/images/intro3.png'),
-    title: `Chat with AIMEE`,
-    description: `Press the Chat icon and interact with your own AI. You can record your voice and the AI will detect your emotion in the recording. AIMEE will then provide steps towards self-improvement and mindfulness exercises. `,
+    image: require('../../assets/images/introduction/intro4.png'),
+    title: `Talk on Your Terms`,
+    description: `Your characters are always ready to talk, just like a true friend. Whether you're taking a break or back for more, they're here to continue the conversation whenever you're ready.`,
   },
 ];
 

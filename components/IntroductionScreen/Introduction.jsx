@@ -6,13 +6,14 @@ import {
   Animated,
   SafeAreaView,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { COLORS, FONT_NUNITO } from '../../styles';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Paginator from './Paginator';
-import NextButton from './NextButton';
+import Paginator from '../UI/Paginator';
+import TextButton from '../UI/TextButton';
 import slides from './slides';
 import IntroductionItem from './IntroductionItem';
 
@@ -35,14 +36,7 @@ const Introduction = ({ setViewedOnboarding }) => {
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
   //once the user is on the last slide, the button changes to "Let's Go"
-  const [lastSlide, setLastSlide] = useState(false);
-  useEffect(() => {
-    if (currentIndex === 3) {
-      setLastSlide(true);
-    } else {
-      setLastSlide(false);
-    }
-  }, [currentIndex]);
+  const btnLabel = currentIndex === slides.length - 1 ? 'Get Started' : 'Explore';
 
   //Controls how the user navigates from the last slide to home page. AyncStorage is used to save that the onboarding instructions have already been viewed and will only be displayed once.
   //See Note in HomeScreen/Home.jsx for how the onboarding would be reset if the user deletes their account
@@ -54,7 +48,7 @@ const Introduction = ({ setViewedOnboarding }) => {
         await AsyncStorage.setItem('@viewedOnboarding', 'true');
         setViewedOnboarding(true);
       } catch (err) {
-        console.log('Error @setItem: ', err);
+        Alert.alert('Error', 'Please restart the application.');
       }
     }
   };
@@ -79,12 +73,11 @@ const Introduction = ({ setViewedOnboarding }) => {
             )}
             scrollEventThrottle={32}
             onViewableItemsChanged={viewableItemsChanged}
-            viewabilityConfig={viewConfig}
-            ref={slidesRef}
+            viewabilityConfig={viewConfig} ref={slidesRef}
           />
         </View>
         <Paginator data={slides} scrollX={scrollX} />
-        <NextButton scrollTo={scrollTo} lastSlide={lastSlide} />
+        <TextButton onPress={scrollTo} label={btnLabel} /> 
       </View>
     </SafeAreaView>
   );
