@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 import { loadFonts } from './util/helpers';
 
 import Nav from './navigation/Nav';
+
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -28,3 +30,4 @@ export default function App() {
     </>
   );
 }
+
