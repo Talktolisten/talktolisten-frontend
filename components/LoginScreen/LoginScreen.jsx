@@ -3,13 +3,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, TextInput } from "react-native";
 import { Formik } from "formik";
+import { SCREEN_NAMES } from "../../util/constants";
+import styles from "./styles";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity>
-        <AntDesign name="arrowleft" size={24} color="black" />
-      </TouchableOpacity>
       <Text style={styles.heading}>Welcome back</Text>
       <Text style={styles.subheading}>Enter your credential to continue</Text>
       <Formik
@@ -73,90 +72,14 @@ const Login = () => {
           justifyContent: "center",
           textAlign: "center",
         }}
+        onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
       >
-        <Text>Don't have an account? Sign up</Text>
+        <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+          Don't have an account? Sign up
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 export default Login;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    marginTop: 50,
-    marginHorizontal: 20,
-  },
-  moodButton: {
-    alignItems: "center",
-    margin: 15,
-    flex: 1,
-  },
-  exerciseBox: {
-    width: 125,
-    height: 125,
-    backgroundColor: "beige",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  moodButtonPressed: {
-    opacity: 0.9,
-  },
-  image: {
-    width: 75,
-    height: 75,
-  },
-  heading: {
-    textAlign: "center",
-    marginTop: 10,
-    fontSize: 32,
-    color: "black",
-  },
-  subheading: {
-    textAlign: "center",
-    marginTop: 10,
-    fontSize: 15,
-    color: "#807878",
-  },
-  input: {
-    height: 50,
-    paddingHorizontal: 8,
-    borderWidth: 1,
-    borderColor: "#74777F",
-    borderRadius: 4,
-    fontSize: 18,
-    backgroundColor: "#fff",
-    marginBottom: 20,
-    width: 287,
-    marginLeft: 16,
-  },
-  inputContainer: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-  },
-  inputIcon: {
-    marginBottom: 15,
-  },
-  button: {
-    flex: 1,
-    height: 40,
-    borderRadius: 50, // Adjust the value to control the amount of rounding
-    // Add any other styles you need
-  },
-  button: {
-    backgroundColor: "#F9A826",
-    borderRadius: 50,
-    height: 45,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-  },
-});
