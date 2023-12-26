@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
 import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
+import ResetPasswordScreen from "../screens/ResetPassword";
 
 // import AuthScreen from '../screens/AuthScreen';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -64,6 +65,7 @@ const AuthStack = () => {
       /> */}
       <Stack.Screen name={SCREEN_NAMES.LOGIN} component={LoginScreen} />
       <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
+      <Stack.Screen name={SCREEN_NAMES.RESET_PASSWORD} component={ResetPasswordScreen} />
       {/* <Stack.Screen
         name={SCREEN_NAMES.MOOD_CHECK}
         component={MoodCheckScreen}

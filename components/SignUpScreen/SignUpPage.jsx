@@ -20,22 +20,23 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { COLORS } from "../../styles";
 
-const SignUpPage = () => {
+const SignUp = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Create account</Text>
-      <Text style={styles.subheading}>Sign up to get started!</Text>
+      <Text style={styles.heading}>Sign Up</Text>
+      <Text style={styles.subheading}>Create an account to start</Text>
       <Formik
-        initialValues={{ email: "", username: "", password: "" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={(values) => console.log(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={{ marginTop: 29 }}>
             <View style={styles.inputContainer}>
-              <MaterialCommunityIcons
-                name="email-outline"
+              <Ionicons
+                name="person-outline"
                 size={24}
                 color={COLORS.black}
+                style={styles.inputIcon}
               />
               <TextInput
                 onChangeText={handleChange("email")}
@@ -47,35 +48,24 @@ const SignUpPage = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="person-outline" size={24} color={COLORS.black} />
-              <TextInput
-                onChangeText={handleChange("username")}
-                onBlur={handleBlur("username")}
-                value={values.username}
-                placeholder="Username"
-                style={styles.input}
+              <AntDesign
+                name="lock1"
+                size={24}
+                color={COLORS.black}
+                style={styles.inputIcon}
               />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <AntDesign name="lock1" size={24} color={COLORS.black} />
               <TextInput
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
                 placeholder="Password"
                 style={styles.input}
-                secureTextEntry
+                secureTextEntry={true}
               />
             </View>
 
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Up!</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: COLORS.black }]}
-            >
-              <Text style={styles.buttonText}>Sign Up!</Text>
+            <TouchableOpacity onPress={handleSubmit} style={[styles.button, { backgroundColor: COLORS.blue }]}>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -84,4 +74,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp;

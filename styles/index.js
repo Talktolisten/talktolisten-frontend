@@ -1,13 +1,14 @@
 export const COLORS = {
-    white: '#ffffff',
+    white: '#FAFAFF',
     beige: '#FAF0E6',
     yellow_light: '#FFD986',
     yellow_dark: '#FFCD5F',
     green_light: '#ACE1AF',
     green_dark: '#7CAF7F',
-    grey: '#D9D9D9',
-    black: '#2F2D2D',
+    grey: '#EEF0F2',
+    black: '#1C1C1C',
     red: '#cc0000',
+    blue: '#1F93FF',
 };
 
 export const FONT_WEIGHT = {
