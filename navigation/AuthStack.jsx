@@ -63,9 +63,16 @@ const AuthStack = () => {
         component={WelcomeScreen}
         options={{ headerShown: false }}
       /> */}
-      <Stack.Screen name={SCREEN_NAMES.LOGIN} component={LoginScreen} />
+      <Stack.Screen
+        name={SCREEN_NAMES.LOGIN}
+        component={LoginScreen}
+        options={{ headerLeft: () => null }}
+      />
       <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
-      <Stack.Screen name={SCREEN_NAMES.RESET_PASSWORD} component={ResetPasswordScreen} />
+      <Stack.Screen
+        name={SCREEN_NAMES.RESET_PASSWORD}
+        component={ResetPasswordScreen}
+      />
       {/* <Stack.Screen
         name={SCREEN_NAMES.MOOD_CHECK}
         component={MoodCheckScreen}

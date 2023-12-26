@@ -36,10 +36,10 @@ const Nav = () => {
 
   const checkOnboarding = async () => {
     try {
-      // const value = await AsyncStorage.getItem("@viewedOnboarding");
-      // if (value !== null) {
-      //   setViewedOnboarding(true);
-      // }
+      const value = await AsyncStorage.getItem("@viewedOnboarding");
+      if (value !== null) {
+        setViewedOnboarding(true);
+      }
     } catch (err) {
       Alert.alert("Error", "Please restart the application.");
     } finally {
