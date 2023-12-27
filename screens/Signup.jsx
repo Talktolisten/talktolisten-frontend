@@ -1,5 +1,5 @@
 import SignUp from "../components/SignUpScreen/SignUpPage";
 
-const SignUpScreen = () => <SignUp />;
+const SignUpScreen = ({ navigation }) => <SignUp navigation={navigation} />;
 
 export default SignUpScreen;

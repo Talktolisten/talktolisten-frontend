@@ -13,6 +13,8 @@ import ResetPasswordScreen from "../screens/ResetPassword";
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
+import UserInfoScreen from "../screens/UserInfo";
+import HomeStack from "./HomeStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,11 +75,16 @@ const AuthStack = () => {
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
-      {/* <Stack.Screen
-        name={SCREEN_NAMES.MOOD_CHECK}
-        component={MoodCheckScreen}
-        options={{ headerShown: false }}
-      /> */}
+      <Stack.Screen
+        name={SCREEN_NAMES.USER_INFO}
+        component={UserInfoScreen}
+        options={{ headerLeft: () => null }}
+      />
+      <Stack.Screen
+        name={SCREEN_NAMES.HOME_TAB}
+        component={HomeStack}
+        options={{ headerLeft: () => null }}
+      />
     </Stack.Navigator>
   );
 };

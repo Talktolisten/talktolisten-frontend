@@ -20,14 +20,36 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { COLORS } from "../../styles";
 
-const SignUp = () => {
+import auth from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { SCREEN_NAMES } from "../../util/constants";
+
+const signupwithemail = async (email, password, navigation) => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+    })
+    .then(() => navigation.navigate(SCREEN_NAMES.USER_INFO))
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage + " " + errorCode);
+      // ..
+    });
+};
+
+const SignUp = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Sign Up</Text>
       <Text style={styles.subheading}>Create an account to start</Text>
       <Formik
         initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          signupwithemail(values.email, values.password, navigation);
+        }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={{ marginTop: 29 }}>
@@ -64,7 +86,10 @@ const SignUp = () => {
               />
             </View>
 
-            <TouchableOpacity onPress={handleSubmit} style={[styles.button, { backgroundColor: COLORS.blue }]}>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
+            >
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           </View>

@@ -3,6 +3,7 @@ export const SCREEN_NAMES = {
   AUTH: "Authentication",
   LOGIN: "Login",
   SIGNUP: "Signup",
+  USER_INFO: "UserInfo",
   RESET_PASSWORD: "Reset Password",
   PROFILE: "Profile",
   WELCOME: "Welcome",

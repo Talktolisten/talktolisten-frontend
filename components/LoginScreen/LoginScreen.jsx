@@ -7,6 +7,24 @@ import { SCREEN_NAMES } from "../../util/constants";
 import styles from "./styles";
 import { COLORS, FONT_NUNITO, FONT_WEIGHT } from "../../styles";
 
+import auth from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+const loginwithemail = async (email, password, navigation) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+    })
+    .then(() => navigation.navigate(SCREEN_NAMES.HOME_TAB))
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage + " " + errorCode);
+      // ..
+    });
+};
+
 const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -14,7 +32,9 @@ const Login = ({ navigation }) => {
       <Text style={styles.subheading}>Let's talk</Text>
       <Formik
         initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          loginwithemail(values.email, values.password, navigation);
+        }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={{ marginTop: 29 }}>
@@ -60,22 +80,31 @@ const Login = ({ navigation }) => {
               }}
               onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
             >
-              <Text style={{ textAlign: "right", fontWeight: FONT_WEIGHT.regular }}>
+              <Text
+                style={{ textAlign: "right", fontWeight: FONT_WEIGHT.regular }}
+              >
                 Forgot password?
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleSubmit} style={[styles.button, { backgroundColor: COLORS.blue }]}>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
+            >
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </View>
         )}
       </Formik>
-      
-      <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.black }]}>
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: COLORS.black }]}
+      >
         <Text style={styles.buttonText}>Log in using Apple ID</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { backgroundColor: COLORS.white }]}>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: COLORS.white }]}
+      >
         <Text style={[styles.buttonText, { color: COLORS.black }]}>
           Log in using Google
         </Text>
