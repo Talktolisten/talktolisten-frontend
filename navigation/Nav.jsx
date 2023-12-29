@@ -1,7 +1,7 @@
 // import { NavigationContainer } from '@react-navigation/native';
 
-// import AuthStack from './AuthStack';
-// import TabNavigator from './TabNavigator';
+import AuthStack from './AuthStack';
+import TabNavigator from './TabNavigator';
 
 // const Nav = () => {
 //   const isLoggedIn = false;
@@ -20,7 +20,8 @@ import { useState, useEffect } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Introduction from "../components/IntroductionScreen/Introduction";
-import TabNavigator from "./TabNavigator";
+import auth from "../firebase";
+import {onAuthStateChanged } from "firebase/auth";
 
 const Loading = () => {
   return (
@@ -33,6 +34,7 @@ const Loading = () => {
 const Nav = () => {
   const [loading, setLoading] = useState(true);
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   const checkOnboarding = async () => {
     try {
@@ -49,14 +51,25 @@ const Nav = () => {
 
   useEffect(() => {
     checkOnboarding();
+    console.log(isLoggedIn)
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      console.log(isLoggedIn)
+      setIsLoggedIn(!!user);
+      console.log(user)
+    });
+    return unsubscribe; // unsubscribe on unmount
   }, []);
 
   return (
     <NavigationContainer>
       {loading ? (
         <Loading />
-      ) : viewedOnboarding ? (
+      ) : isLoggedIn === null ? (
+        <Loading />
+      ) : isLoggedIn ? (
         <TabNavigator />
+      ) : viewedOnboarding ? (
+        <AuthStack />
       ) : (
         <Introduction setViewedOnboarding={setViewedOnboarding} />
       )}
