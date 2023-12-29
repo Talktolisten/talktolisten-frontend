@@ -1,14 +1,15 @@
 import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// import HomeScreen from '../screens/HomeScreen';
+import ExploreScreen from '../screens/Explore';
+import ChatScreen from '../screens/Chat';
+import ProfileScreen from '../screens/Profile';
 // import VoicesScreen from '../screens/VoicesScreen';
 // import AudioScreen from '../screens/AudioScreen';
 // import IconButton from '../components/UI/IconButton';
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
-import HomeScreen from "../components/HomeScreen/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,16 +44,24 @@ const HomeStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREEN_NAMES.HOME}
+      initialRouteName={SCREEN_NAMES.EXPLORE}
       screenOptions={screenOptions}
     >
       <Stack.Screen
-        name={SCREEN_NAMES.HOME}
-        component={HomeScreen}
+        name={SCREEN_NAMES.EXPLORE}
+        component={ExploreScreen}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen name={SCREEN_NAMES.VOICES} component={VoicesScreen} />
-      <Stack.Screen name={SCREEN_NAMES.AUDIO_PLAYER} component={AudioScreen} /> */}
+      <Stack.Screen
+        name={SCREEN_NAMES.CHAT}
+        component={ChatScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={SCREEN_NAMES.PROFILE}
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

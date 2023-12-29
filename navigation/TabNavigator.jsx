@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-// import ProfileScreen from '../screens/ProfileScreen';
-// import ChatScreen from '../screens/ChatScreen';
-// import HomeStack from './HomeStack';
-// import IconButton from '../components/UI/IconButton';
+import ProfileScreen from '../screens/Profile';
+import ChatScreen from '../screens/Chat';
+import HomeStack from './HomeStack';
+import IconButton from '../components/UI/IconButton';
 
 import { SCREEN_NAMES } from '../util/constants';
 import { getIcon } from '../components/Icons';
@@ -15,8 +15,8 @@ const TabNavigator = () => {
   const screenOptions = ({ navigation }) => {
     return {
       headerShown: false,
-      tabBarActiveTintColor: COLORS.yellow_dark,
-      tabBarInactiveTintColor: COLORS.yellow_dark,
+      tabBarActiveTintColor: COLORS.blue,
+      tabBarInactiveTintColor: COLORS.black,
       tabBarStyle: {
         borderTopWidth: 0,
         borderTopColor: 'transparent',
@@ -46,10 +46,10 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
-        name={SCREEN_NAMES.HOME_TAB}
+        name={SCREEN_NAMES.HOME}
         component={HomeStack}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Explore',
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused
@@ -64,12 +64,7 @@ const TabNavigator = () => {
         name={SCREEN_NAMES.CHAT}
         component={ChatScreen}
         options={{
-          headerShown: true,
-          tabBarVisible: false,
-          tabBarStyle: { display: 'none' },
-          headerTitle: '',
-          headerBackTitle: '',
-          headerTransparent: true,
+          tabBarLabel: 'Chat',
           tabBarIcon: ({ color, size }) =>
             getIcon('material-symbols:voice-chat-outline-rounded', 35, color),
         }}
@@ -86,18 +81,6 @@ const TabNavigator = () => {
             ),
         }}
       />
-
-      {/* <Tab.Screen
-        name={SCREEN_NAMES.AUDIO_PLAYER}
-        component={AudioScreen}
-        options={{
-          tabBarStyle: { display: 'none' },
-          tabBarVisible: false,
-          tabBarIcon: () => null,
-          tabBarButton: () => null,
-          tabBarIconStyle: { display: 'none' },
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };

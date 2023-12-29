@@ -16,7 +16,7 @@ const loginwithemail = async (email, password, navigation) => {
       // Signed in
       const user = userCredential.user;
     })
-    .then(() => navigation.navigate(SCREEN_NAMES.HOME_TAB))
+    .then(() => navigation.navigate(SCREEN_NAMES.HOME))
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;

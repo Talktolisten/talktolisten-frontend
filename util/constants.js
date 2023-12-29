@@ -1,16 +1,13 @@
 export const SCREEN_NAMES = {
   HOME: "Home",
+  EXPLORE: "Explore",
   AUTH: "Authentication",
   LOGIN: "Login",
   SIGNUP: "Signup",
   USER_INFO: "UserInfo",
   RESET_PASSWORD: "Reset Password",
   PROFILE: "Profile",
-  WELCOME: "Welcome",
-  MOOD_CHECK: "Mood Check",
   CHAT: "Chat",
-  VOICES: "Voice Selection",
-  HOME_TAB: "Home Tab",
   AUDIO_PLAYER: "Audio Screen",
 };
 

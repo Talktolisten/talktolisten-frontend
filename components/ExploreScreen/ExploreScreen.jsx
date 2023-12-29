@@ -18,10 +18,20 @@ const dummyCharacters = [
     name: "Character 3",
     image: "https://via.placeholder.com/100",
   },
+  {
+    id: 4,
+    name: "Character 4",
+    image: "https://via.placeholder.com/100",
+  },
+  {
+    id: 6,
+    name: "Character 6",
+    image: "https://via.placeholder.com/100",
+  },
   // Add more dummy characters here
 ];
 
-const CharacterList = () => {
+const Explore = () => {
   const renderCharacterItem = ({ item }) => (
     <ListItem bottomDivider>
       <Avatar rounded source={{ uri: item.image }} />
@@ -49,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CharacterList;
+export default Explore;

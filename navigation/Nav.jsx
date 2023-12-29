@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Introduction from "../components/IntroductionScreen/Introduction";
-import AuthStack from "./AuthStack";
+import TabNavigator from "./TabNavigator";
 
 const Loading = () => {
   return (
@@ -56,7 +56,7 @@ const Nav = () => {
       {loading ? (
         <Loading />
       ) : viewedOnboarding ? (
-        <AuthStack />
+        <TabNavigator />
       ) : (
         <Introduction setViewedOnboarding={setViewedOnboarding} />
       )}

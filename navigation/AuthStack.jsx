@@ -60,17 +60,14 @@ const AuthStack = () => {
       initialRouteName={SCREEN_NAMES.LOGIN}
       screenOptions={screenOptions}
     >
-      {/* <Stack.Screen
-        name={SCREEN_NAMES.WELCOME}
-        component={WelcomeScreen}
-        options={{ headerShown: false }}
-      /> */}
       <Stack.Screen
         name={SCREEN_NAMES.LOGIN}
         component={LoginScreen}
         options={{ headerLeft: () => null }}
       />
-      <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
+      <Stack.Screen 
+        name={SCREEN_NAMES.SIGNUP} 
+        component={SignUpScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
@@ -81,7 +78,7 @@ const AuthStack = () => {
         options={{ headerLeft: () => null }}
       />
       <Stack.Screen
-        name={SCREEN_NAMES.HOME_TAB}
+        name={SCREEN_NAMES.HOME}
         component={HomeStack}
         options={{ headerLeft: () => null }}
       />
