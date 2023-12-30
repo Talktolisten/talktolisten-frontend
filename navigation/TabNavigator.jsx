@@ -15,16 +15,17 @@ const TabNavigator = () => {
   const screenOptions = ({ navigation }) => {
     return {
       headerShown: false,
-      tabBarActiveTintColor: COLORS.blue,
+      tabBarActiveTintColor: COLORS.red,
       tabBarInactiveTintColor: COLORS.black,
       tabBarStyle: {
         borderTopWidth: 0,
         borderTopColor: 'transparent',
         elevation: 0,
-        shadowOpacity: 0,
+        shadowOpacity: .1,
+        paddingTop: 5
       },
       tabBarLabelStyle: {
-        fontSize: 11,
+        fontSize: 12,
         color: COLORS.black,
         fontFamily: FONT_NUNITO.bold,
       },
@@ -53,9 +54,9 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused
-                ? 'material-symbols:home-rounded'
-                : 'material-symbols:home-outline-rounded',
-              35,
+                ? 'ic:round-explore'
+                : 'ic:outline-explore',
+              30,
               color,
             ),
         }}
@@ -65,8 +66,12 @@ const TabNavigator = () => {
         component={ChatScreen}
         options={{
           tabBarLabel: 'Chat',
-          tabBarIcon: ({ color, size }) =>
-            getIcon('material-symbols:voice-chat-outline-rounded', 35, color),
+          tabBarIcon: ({ focused, color, size }) =>
+            getIcon(
+              focused ? 'bi:chat-fill' : 'bi:chat',
+              30,
+              color,
+            ),
         }}
       />
       <Tab.Screen
@@ -76,7 +81,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? 'mdi:user-circle' : 'mdi:user-circle-outline',
-              35,
+              30,
               color,
             ),
         }}

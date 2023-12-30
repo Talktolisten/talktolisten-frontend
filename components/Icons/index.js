@@ -173,9 +173,18 @@ export const getIcon = (name, size, color, style) => {
       />
     ),
 
-    'material-symbols:voice-chat-outline-rounded': (
+    'bi:chat': (
       <Iconify
-        icon="material-symbols:voice-chat-outline-rounded"
+        icon="bi:chat"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'bi:chat-fill': (
+      <Iconify
+        icon="bi:chat-fill"
         size={size}
         color={color}
         style={style}
@@ -260,6 +269,42 @@ export const getIcon = (name, size, color, style) => {
     'carbon:recording-filled': (
       <Iconify
         icon="carbon:recording-filled"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'icon-park:down': (
+      <Iconify
+        icon="icon-park:down"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'mingcute:send-fill': (
+      <Iconify
+        icon="mingcute:send-fill"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'ic:outline-explore': (
+      <Iconify
+        icon="ic:outline-explore"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'ic:round-explore': (
+      <Iconify
+        icon="ic:round-explore"
         size={size}
         color={color}
         style={style}
