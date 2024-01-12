@@ -1,83 +1,13 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  useWindowDimensions,
-  FlatList,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, useWindowDimensions, FlatList} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from '../../styles';
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { photos } from "../constants/data";
 
-const PhotosRoutes = () => (
-  <View style={{ flex: 1 }}>
-    <FlatList
-      data={photos}
-      numColumns={3}
-      renderItem={({ item, index }) => (
-        <View
-          style={{
-            flex: 1,
-            aspectRatio: 1,
-            margin: 3,
-          }}
-        >
-          <Image
-            key={index}
-            source={item}
-            style={{ width: "100%", height: "100%", borderRadius: 12 }}
-          />
-        </View>
-      )}
-    />
-  </View>
-);
 
-const LikesRoutes = () => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: "blue",
-    }}
-  />
-);
+const Profile = () => {
 
-const renderScene = SceneMap({
-  first: PhotosRoutes,
-  second: LikesRoutes,
-});
-
-const ProfileScreen = () => {
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-
-  const [routes] = useState([
-    { key: "first", title: "Photos" },
-    { key: "second", title: "Likes" },
-  ]);
-
-  const renderTabBar = (props) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{
-        backgroundColor: COLORS.primary,
-      }}
-      style={{
-        backgroundColor: COLORS.white,
-        height: 44,
-      }}
-      renderLabel={({ focused, route }) => (
-        <Text style={[{ color: focused ? COLORS.black : COLORS.gray }]}>
-          {route.title}
-        </Text>
-      )}
-    />
-  );
   return (
     <SafeAreaView
       style={{
@@ -88,7 +18,7 @@ const ProfileScreen = () => {
       <StatusBar backgroundColor={COLORS.gray} />
       <View style={{ width: "100%" }}>
         <Image
-          source={images.cover}
+          source={require("../../assets/images/avatar.png")}
           resizeMode="cover"
           style={{
             height: 228,
@@ -99,13 +29,13 @@ const ProfileScreen = () => {
 
       <View style={{ flex: 1, alignItems: "center" }}>
         <Image
-          source={images.profile}
+          source={require("../../assets/images/avatar.png")}
           resizeMode="contain"
           style={{
             height: 155,
             width: 155,
             borderRadius: 999,
-            borderColor: COLORS.primary,
+            borderColor: COLORS.black,
             borderWidth: 2,
             marginTop: -90,
           }}
@@ -113,39 +43,24 @@ const ProfileScreen = () => {
 
         <Text
           style={{
-            ...FONTS.h3,
-            color: COLORS.primary,
+            fontSize: FONTSIZE.xLarge,
+            fontWeight: FONT_WEIGHT.bold,
+            lineHeight: 24,
+            color: COLORS.black,
             marginVertical: 8,
           }}
         >
-          Melissa Peters
+          Leo
         </Text>
         <Text
           style={{
             color: COLORS.black,
-            ...FONTS.body4,
+            fontSize: FONTSIZE.small,
+            marginBottom: SIZES.large
           }}
         >
-          Interior designer
+          @leotech
         </Text>
-
-        <View
-          style={{
-            flexDirection: "row",
-            marginVertical: 6,
-            alignItems: "center",
-          }}
-        >
-          <MaterialIcons name="location-on" size={24} color="black" />
-          <Text
-            style={{
-              ...FONTS.body4,
-              marginLeft: 4,
-            }}
-          >
-            Lagos, Nigeria
-          </Text>
-        </View>
 
         <View
           style={{
@@ -157,21 +72,23 @@ const ProfileScreen = () => {
             style={{
               flexDirection: "column",
               alignItems: "center",
-              marginHorizontal: SIZES.padding,
+              marginHorizontal: SIZES.small,
             }}
           >
             <Text
               style={{
-                ...FONTS.h2,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                fontWeight: FONT_WEIGHT.bold,
+                lineHeight: 22,
+                color: COLORS.black,
               }}
             >
               122
             </Text>
             <Text
               style={{
-                ...FONTS.body4,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                color: COLORS.black,
               }}
             >
               Followers
@@ -182,21 +99,23 @@ const ProfileScreen = () => {
             style={{
               flexDirection: "column",
               alignItems: "center",
-              marginHorizontal: SIZES.padding,
+              marginHorizontal: SIZES.small,
             }}
           >
             <Text
               style={{
-                ...FONTS.h2,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                fontWeight: FONT_WEIGHT.bold,
+                lineHeight: 30,
+                color: COLORS.black,
               }}
             >
               67
             </Text>
             <Text
               style={{
-                ...FONTS.body4,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                color: COLORS.black,
               }}
             >
               Followings
@@ -207,21 +126,23 @@ const ProfileScreen = () => {
             style={{
               flexDirection: "column",
               alignItems: "center",
-              marginHorizontal: SIZES.padding,
+              marginHorizontal: SIZES.small,
             }}
           >
             <Text
               style={{
-                ...FONTS.h2,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                fontWeight: FONT_WEIGHT.bold,
+                lineHeight: 30,
+                color: COLORS.black,
               }}
             >
               77K
             </Text>
             <Text
               style={{
-                ...FONTS.body4,
-                color: COLORS.primary,
+                fontSize: FONTSIZE.medium,
+                color: COLORS.black,
               }}
             >
               Likes
@@ -236,14 +157,14 @@ const ProfileScreen = () => {
               height: 36,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: COLORS.primary,
+              backgroundColor: COLORS.black,
               borderRadius: 10,
-              marginHorizontal: SIZES.padding * 2,
+              marginHorizontal: SIZES.small * 2,
             }}
           >
             <Text
               style={{
-                ...FONTS.body4,
+                fontSize: FONTSIZE.medium,
                 color: COLORS.white,
               }}
             >
@@ -257,14 +178,14 @@ const ProfileScreen = () => {
               height: 36,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: COLORS.primary,
+              backgroundColor: COLORS.black,
               borderRadius: 10,
-              marginHorizontal: SIZES.padding * 2,
+              marginHorizontal: SIZES.small * 2,
             }}
           >
             <Text
               style={{
-                ...FONTS.body4,
+                fontSize: FONTSIZE.medium,
                 color: COLORS.white,
               }}
             >
@@ -274,17 +195,8 @@ const ProfileScreen = () => {
         </View>
       </View>
 
-      <View style={{ flex: 1, marginHorizontal: 22, marginTop: 20 }}>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar}
-        />
-      </View>
     </SafeAreaView>
   );
 };
 
-export default ProfileScreen;
+export default Profile;
