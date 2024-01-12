@@ -15,19 +15,20 @@ const TabNavigator = () => {
   const screenOptions = ({ navigation }) => {
     return {
       headerShown: false,
-      tabBarActiveTintColor: COLORS.red,
+      tabBarActiveTintColor: COLORS.black,
       tabBarInactiveTintColor: COLORS.black,
       tabBarStyle: {
-        borderTopWidth: 0,
+        borderTopWidth: 10,
         borderTopColor: 'transparent',
         elevation: 0,
         shadowOpacity: .1,
-        paddingTop: 5
+        paddingTop: 5,
       },
       tabBarLabelStyle: {
         fontSize: 12,
         color: COLORS.black,
         fontFamily: FONT_NUNITO.bold,
+        marginTop: 10
       },
 
       headerLeft: () => {
@@ -54,9 +55,8 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused
-                ? 'ic:round-explore'
-                : 'ic:outline-explore',
-              30,
+                ? 'ic:round-explore' : 'ic:outline-explore',
+              25,
               color,
             ),
         }}
@@ -69,7 +69,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? 'bi:chat-fill' : 'bi:chat',
-              30,
+              25,
               color,
             ),
         }}
@@ -81,7 +81,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? 'mdi:user-circle' : 'mdi:user-circle-outline',
-              30,
+              25,
               color,
             ),
         }}

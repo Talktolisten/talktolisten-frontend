@@ -1,5 +1,5 @@
-import Chat from "../components/ChatScreen/ChatScreen";
+// import Chat from "../components/ChatScreen/ChatScreen";
 
-const ChatScreen = () => <Chat />;
+// const ChatScreen = () => <Chat />;
 
-export default ChatScreen;
+// export default ChatScreen;

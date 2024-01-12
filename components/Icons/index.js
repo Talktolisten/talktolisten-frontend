@@ -310,6 +310,15 @@ export const getIcon = (name, size, color, style) => {
         style={style}
       />
     ),
+
+    'ic:outline-chat': (
+      <Iconify
+        icon="ic:outline-chat"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
   };
 
   return icons[name];

@@ -3,7 +3,7 @@ import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import { getIcon } from '../Icons';
 
-const ChatScreen = () => {
+const MessageScreen = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const ChatScreen = () => {
   );
 };
 
-export default ChatScreen;
+export default MessageScreen;
 
 const styles = StyleSheet.create({
   container: {

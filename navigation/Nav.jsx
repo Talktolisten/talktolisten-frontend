@@ -51,11 +51,8 @@ const Nav = () => {
 
   useEffect(() => {
     checkOnboarding();
-    console.log(isLoggedIn)
     const unsubscribe = onAuthStateChanged(auth, user => {
-      console.log(isLoggedIn)
       setIsLoggedIn(!!user);
-      console.log(user)
     });
     return unsubscribe; // unsubscribe on unmount
   }, []);
