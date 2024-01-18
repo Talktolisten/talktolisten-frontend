@@ -6,7 +6,7 @@ import ChatScreen from '../screens/Chat';
 import ProfileScreen from '../screens/Profile';
 // import VoicesScreen from '../screens/VoicesScreen';
 // import AudioScreen from '../screens/AudioScreen';
-// import IconButton from '../components/UI/IconButton';
+import IconButton from '../components/UI/IconButton';
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
@@ -29,17 +29,17 @@ const HomeStack = () => {
       },
       shadowRadius: 0,
     },
-    // headerLeft: () => {
-    //   return (
-    //     <IconButton
-    //       containerStyle={{ marginLeft: 10 }}
-    //       iconName={"ion:arrow-back"}
-    //       iconSize={30}
-    //       iconColor={COLORS.black}
-    //       onPress={navigation.canGoBack ? navigation.goBack : null}
-    //     />
-    //   );
-    // },
+    headerLeft: () => {
+      return (
+        <IconButton
+          containerStyle={{ marginLeft: 10 }}
+          iconName={"ion:arrow-back"}
+          iconSize={30}
+          iconColor={COLORS.black}
+          onPress={navigation.canGoBack ? navigation.goBack : null}
+        />
+      );
+    },
   });
 
   return (

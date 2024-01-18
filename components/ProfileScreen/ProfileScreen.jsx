@@ -1,202 +1,153 @@
-import { View, Text, Image, TouchableOpacity, useWindowDimensions, FlatList} from "react-native";
-import React, { useState } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from '../../styles';
+import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "expo-status-bar";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+const SettingItem = ({ type, icon, text, onPress }) => {
+  const ICONCOMPONENTS = {
+    "Feather": Feather,
+    "MaterialIcons": MaterialIcons,
+    "MaterialCommunityIcons": MaterialCommunityIcons,
+  };
+  const IconComponent = ICONCOMPONENTS[type];
+  return (
+    <TouchableOpacity style={styles.settingItem} onPress={onPress}>
+      <IconComponent name={icon} size={24} color={COLORS.black} style={styles.icon} />
+      <Text style={styles.settingText}>{text}</Text>
+      <IconComponent name="chevron-right" size={24} color={COLORS.black} style={styles.icon} /> 
+    </TouchableOpacity>
+  );
+};
 
 const Profile = () => {
-
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.white,
-      }}
-    >
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={COLORS.gray} />
-      <View style={{ width: "100%" }}>
-        <Image
-          source={require("../../assets/images/avatar.png")}
-          resizeMode="cover"
-          style={{
-            height: 228,
-            width: "100%",
-          }}
-        />
+
+      <View style={styles.profileContainer}>
+        <View style={styles.mainProfileContainer}>
+
+          <Image
+            source={require("../../assets/images/avatar.png")}
+            resizeMode="contain"
+            style={styles.avatar}
+          />
+
+          <View style={styles.info}>
+            <Text style={styles.name}>Leo</Text>
+            <Text style={styles.username}>@leotech</Text>
+          </View>
+
+          <TouchableOpacity
+            // onPress={() => {
+            //   /* navigation logic here */
+            // }}
+          >
+            <Feather name="arrow-right" size={30} color= {COLORS.light_black} style={styles.mainProfileicon} />
+          </TouchableOpacity>
+        </View>
+
       </View>
 
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Image
-          source={require("../../assets/images/avatar.png")}
-          resizeMode="contain"
-          style={{
-            height: 155,
-            width: 155,
-            borderRadius: 999,
-            borderColor: COLORS.black,
-            borderWidth: 2,
-            marginTop: -90,
-          }}
-        />
-
-        <Text
-          style={{
-            fontSize: FONTSIZE.xLarge,
-            fontWeight: FONT_WEIGHT.bold,
-            lineHeight: 24,
-            color: COLORS.black,
-            marginVertical: 8,
-          }}
+      <View style={styles.settingList}>
+        <SettingItem type= "Feather" icon="play-circle" text="Subscription" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialIcons" icon="mode-edit" text="Edit Profile" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialIcons" icon="settings" text="Settings" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialCommunityIcons" icon="theme-light-dark" text="Theme" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialIcons" icon="language" text="Language" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialIcons" icon="notifications-on" text="Notifications" onPress={() => {/* navigation logic here */}} />
+        <SettingItem type= "MaterialCommunityIcons" icon="information-outline" text="About us" onPress={() => {/* navigation logic here */}} />
+        <TouchableOpacity
+          style={[styles.button, { borderColor: COLORS.black }]}
         >
-          Leo
-        </Text>
-        <Text
-          style={{
-            color: COLORS.black,
-            fontSize: FONTSIZE.small,
-            marginBottom: SIZES.large
-          }}
-        >
-          @leotech
-        </Text>
-
-        <View
-          style={{
-            paddingVertical: 8,
-            flexDirection: "row",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: SIZES.small,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                fontWeight: FONT_WEIGHT.bold,
-                lineHeight: 22,
-                color: COLORS.black,
-              }}
-            >
-              122
-            </Text>
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                color: COLORS.black,
-              }}
-            >
-              Followers
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: SIZES.small,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                fontWeight: FONT_WEIGHT.bold,
-                lineHeight: 30,
-                color: COLORS.black,
-              }}
-            >
-              67
-            </Text>
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                color: COLORS.black,
-              }}
-            >
-              Followings
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: SIZES.small,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                fontWeight: FONT_WEIGHT.bold,
-                lineHeight: 30,
-                color: COLORS.black,
-              }}
-            >
-              77K
-            </Text>
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                color: COLORS.black,
-              }}
-            >
-              Likes
-            </Text>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            style={{
-              width: 124,
-              height: 36,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: COLORS.black,
-              borderRadius: 10,
-              marginHorizontal: SIZES.small * 2,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                color: COLORS.white,
-              }}
-            >
-              Edit Profile
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              width: 124,
-              height: 36,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: COLORS.black,
-              borderRadius: 10,
-              marginHorizontal: SIZES.small * 2,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: FONTSIZE.medium,
-                color: COLORS.white,
-              }}
-            >
-              Add Friend
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <Text style={styles.buttonText}>Log out</Text>
+        </TouchableOpacity>
       </View>
 
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  profileContainer: {
+    alignItems: "center",
+  },
+  mainProfileContainer: {
+    flexDirection: "row",
+    paddingTop: 20,
+  },
+  avatar: {
+    height: 120,
+    width: 120,
+    borderRadius: 15,
+    borderColor: COLORS.black,
+    borderWidth: 2,
+    marginTop: 20,
+    alignSelf: "flex-start",
+    marginLeft: 20,
+  },
+  name: {
+    fontSize: FONTSIZE.xLarge,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.black,
+    marginBottom: SIZES.xSmall,
+    textAlign: "left",
+  },
+  username: {
+    color: COLORS.black,
+    fontSize: FONTSIZE.medium,
+    marginBottom: SIZES.xLarge,
+    textAlign: "left",
+  },
+  info: {
+    flex: 1,
+    flexDirection: "column",
+    marginLeft: 30,
+    marginVertical: 20,
+    paddingVertical: 20,
+  },
+  mainProfileicon: {
+    marginTop: 60,
+    marginRight: 30,
+  },
+  settingList: {
+    flexDirection: "column",
+    marginTop: 30,
+    marginHorizontal: 20,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20, // Add this
+    marginVertical: 10, 
+  },
+  settingText: {
+    flex: 1, // Add this
+    marginLeft: 10, // Add this
+    fontSize: FONTSIZE.medium,
+    color: COLORS.black,
+  },
+  icon: {
+    marginRight: 10, // Add this
+  },
+  button: {
+    borderWidth: .5,
+    borderRadius: 50,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  buttonText: {
+    color: COLORS.black,
+    fontSize: FONTSIZE.medium,
+  },
+});
 
 export default Profile;
