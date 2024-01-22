@@ -8,6 +8,7 @@ export const SCREEN_NAMES = {
   RESET_PASSWORD: "Reset Password",
   PROFILE: "Profile",
   CHAT: "Chat",
+  MESSAGE: "Message",
   AUDIO_PLAYER: "Audio Screen",
 };
 
