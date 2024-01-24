@@ -3,12 +3,7 @@ import {
   View,
   Text,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  KeyboardAvoidingView,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
@@ -20,10 +15,11 @@ import { Formik } from "formik";
 import { COLORS } from "../../styles";
 import { Feather } from "@expo/vector-icons";
 
-const UserInfo = ({ navigation }) => {
+const UserInfo = ({ navigation, route }) => {
+  const { email } = route.params;
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>More Info</Text>
+      <Text style={styles.heading}>Create Profile</Text>
       <Formik
         initialValues={{ username: "", dob: "", age: "", fname: "", lname: "" }}
         onSubmit={(values) => console.log(values)}
@@ -86,17 +82,32 @@ const UserInfo = ({ navigation }) => {
                 style={styles.inputIcon}
               />
               <TextInput
-                onChangeText={handleChange("dob")}
-                onBlur={handleBlur("dob")}
-                value={values.email}
-                placeholder="Date of Birth"
+                onChangeText={(value) => {
+                  const numericValue = value.replace(/[^0-9]/g, '');
+                  let formattedValue = numericValue;
+                
+                  if (numericValue.length <= 2) {
+                    formattedValue = numericValue;
+                  } else if (numericValue.length <= 4) {
+                    formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2);
+                  } else {
+                    formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2, 4) + ' / ' + numericValue.substring(4);
+                  }
+                
+                  handleChange('dob')(formattedValue);
+                }}
+                onBlur={handleBlur('dob')}
+                value={values.dob}
+                placeholder="MM / DD / YYYY"
                 style={styles.input}
+                keyboardType="numeric"
+                maxLength={14}
               />
             </View>
 
             <TouchableOpacity
               onPress={handleSubmit}
-              style={[styles.button, { backgroundColor: COLORS.blue }]}
+              style={[styles.button, { backgroundColor: COLORS.black }]}
             >
               <Text style={styles.buttonText}>Create</Text>
             </TouchableOpacity>
