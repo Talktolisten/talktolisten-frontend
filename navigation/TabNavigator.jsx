@@ -1,41 +1,43 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import ProfileScreen from "../screens/Profile";
+import ChatStack from "./ChatStack";
+import HomeStack from "./HomeStack";
+import IconButton from "../components/UI/IconButton";
 
-import ProfileScreen from '../screens/Profile';
-import ChatScreen from '../screens/Chat';
-import HomeStack from './HomeStack';
-import IconButton from '../components/UI/IconButton';
-
-import { SCREEN_NAMES } from '../util/constants';
-import { getIcon } from '../components/Icons';
-import { COLORS, FONT_NUNITO } from '../styles';
+import { SCREEN_NAMES } from "../util/constants";
+import { getIcon } from "../components/Icons";
+import { COLORS, FONT_NUNITO } from "../styles";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const screenOptions = ({ navigation }) => {
+  const screenOptions = ({ navigation, route }) => {
+    const routeName = getFocusedRouteNameFromRoute(route) ?? "Chat";
     return {
       headerShown: false,
       tabBarActiveTintColor: COLORS.black,
       tabBarInactiveTintColor: COLORS.black,
       tabBarStyle: {
         borderTopWidth: 10,
-        borderTopColor: 'transparent',
+        borderTopColor: "transparent",
         elevation: 0,
-        shadowOpacity: .1,
+        shadowOpacity: 0.1,
         paddingTop: 5,
+        display: routeName === "Message" ? "none" : "flex", // Hide tab bar in 'Message' screen
       },
       tabBarLabelStyle: {
         fontSize: 12,
         color: COLORS.black,
         fontFamily: FONT_NUNITO.bold,
-        marginTop: 10
+        marginTop: 10,
       },
 
       headerLeft: () => {
         return (
           <IconButton
             containerStyle={{ marginLeft: 26 }}
-            iconName={'ion:arrow-back'}
+            iconName={"ion:arrow-back"}
             iconSize={30}
             iconColor={COLORS.black}
             onPress={navigation.canGoBack ? navigation.goBack : null}
@@ -51,27 +53,22 @@ const TabNavigator = () => {
         name={SCREEN_NAMES.HOME}
         component={HomeStack}
         options={{
-          tabBarLabel: 'Explore',
+          tabBarLabel: "Explore",
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
-              focused
-                ? 'ic:round-explore' : 'ic:outline-explore',
+              focused ? "ic:round-explore" : "ic:outline-explore",
               25,
-              color,
+              color
             ),
         }}
       />
       <Tab.Screen
-        name={SCREEN_NAMES.CHAT}
-        component={ChatScreen}
+        name={"ChatStack"}
+        component={ChatStack}
         options={{
-          tabBarLabel: 'Chat',
+          tabBarLabel: "Chat",
           tabBarIcon: ({ focused, color, size }) =>
-            getIcon(
-              focused ? 'bi:chat-fill' : 'bi:chat',
-              25,
-              color,
-            ),
+            getIcon(focused ? "bi:chat-fill" : "bi:chat", 25, color),
         }}
       />
       <Tab.Screen
@@ -80,9 +77,9 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
-              focused ? 'mdi:user-circle' : 'mdi:user-circle-outline',
+              focused ? "mdi:user-circle" : "mdi:user-circle-outline",
               25,
-              color,
+              color
             ),
         }}
       />

@@ -5,12 +5,6 @@ import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import ResetPasswordScreen from "../screens/ResetPassword";
 
-// import AuthScreen from '../screens/AuthScreen';
-// import WelcomeScreen from '../screens/WelcomeScreen';
-// import MoodCheckScreen from '../screens/MoodCheckScreen';
-
-// import IconButton from '../components/UI/IconButton';
-
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 import UserInfoScreen from "../screens/UserInfo";
@@ -44,13 +38,6 @@ const AuthStack = () => {
           onPress={canGoBack ? navigation.goBack : null}
           containerStyle={{ marginLeft: 10 }}
         />
-        // <IconButton
-        //   containerStyle={{ marginLeft: 10 }}
-        //   iconName={"ion:arrow-back"}
-        //   iconSize={30}
-        //   iconColor={COLORS.black}
-        //   onPress={canGoBack ? navigation.goBack : null}
-        // />
       );
     },
   });
@@ -65,22 +52,17 @@ const AuthStack = () => {
         component={LoginScreen}
         options={{ headerLeft: () => null }}
       />
-      <Stack.Screen 
-        name={SCREEN_NAMES.SIGNUP} 
-        component={SignUpScreen} />
+      <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
-      <Stack.Screen
-        name={SCREEN_NAMES.USER_INFO}
-        component={UserInfoScreen}
-        options={{ headerLeft: () => null }}
-      />
+      <Stack.Screen name={SCREEN_NAMES.USER_INFO} component={UserInfoScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.HOME}
         component={HomeStack}
         options={{ headerLeft: () => null }}
+        initialParams={{ email: "as", password: "s" }}
       />
     </Stack.Navigator>
   );

@@ -1,14 +1,35 @@
 import React, { useState } from "react";
-import { Text, ScrollView, TouchableOpacity, Image, View, FlatList, StyleSheet, SafeAreaView } from "react-native";
+import {
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  View,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { useRouter } from "expo-router";
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather } from "@expo/vector-icons";
 
 import DynamicSearchBar from "./SearchBar";
-import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from '../../styles';
+import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { StatusBar } from "react-native";
 
 import bots from "../../data/bots.json";
 
-const types = ["Featured", "Anime Characters", "Game Characters", "Movie Characters", "TV Characters", "Comic Characters", "Cartoon Characters", "Book Characters", "Language Learner", "Helpers"];
+const types = [
+  "Featured",
+  "Anime Characters",
+  "Game Characters",
+  "Movie Characters",
+  "TV Characters",
+  "Comic Characters",
+  "Cartoon Characters",
+  "Book Characters",
+  "Language Learner",
+  "Helpers",
+];
 
 const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
   const router = useRouter();
@@ -18,63 +39,73 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
     <SafeAreaView style={styles.container}>
       <DynamicSearchBar />
       <View style={styles.tabsContainer}>
-          <FlatList
-            data={types}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.tab(activeType, item)}
-                onPress={() => {
-                  setActiveType(item);
-                  router.push(`/search/${item}`);
-                }}
-              >
-                <Text style={styles.tabText(activeType, item)}>{item}</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item}
-            contentContainerStyle={{ columnGap: SIZES.small }}
-            horizontal
-          />
-        </View>
+        <FlatList
+          data={types}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.tab(activeType, item)}
+              onPress={() => {
+                setActiveType(item);
+                router.push(`/search/${item}`);
+              }}
+            >
+              <Text style={styles.tabText(activeType, item)}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          contentContainerStyle={{ columnGap: SIZES.small }}
+          horizontal
+        />
+      </View>
 
-        <View style={styles.listSection}>
-          <ScrollView style={styles.elementPallet}>
-            {bots.map((bot) => {
-              return (
-                <TouchableOpacity
-                    style={styles.element}
-                    key={bot.bot_id}
-                    activeOpacity={0.8}
-                    onPress={() => navigation.navigate('Info', { id: bot.bot_id }) }
-                >
-                  <View style={styles.infoArea}>
-                    <Text style={styles.infoTitle}>{bot.bot_name}</Text>
-                    <Text style={styles.infoSub}>{bot.short_description}</Text>
-                    <View style={styles.inforMoreContainer}>
-                      <Text style={styles.infoMore}>
-                        <View style={styles.infoChat}>
-                          <Ionicons name="chatbubble-ellipses-outline" size={FONTSIZE.xSmall} color={COLORS.black} style={styles.infoIcon}/> 
-                          <Text>{bot.num_chats}</Text>
-                        </View>
-                        <View style={styles.infoLikes}>
-                          <Ionicons name="heart" size={FONTSIZE.xSmall} color={COLORS.pink} style={styles.infoIcon}/> 
-                          <Text>{bot.likes}</Text>
-                        </View>
-                      </Text>
-                    </View>
+      <View style={styles.listSection}>
+        <ScrollView style={styles.elementPallet}>
+          {bots.map((bot) => {
+            return (
+              <TouchableOpacity
+                style={styles.element}
+                key={bot.bot_id}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("Info", { id: bot.bot_id })}
+              >
+                <View style={styles.infoArea}>
+                  <Text style={styles.infoTitle}>{bot.bot_name}</Text>
+                  <Text style={styles.infoSub}>{bot.short_description}</Text>
+                  <View style={styles.inforMoreContainer}>
+                    <Text style={styles.infoMore}>
+                      <View style={styles.infoChat}>
+                        <Ionicons
+                          name="chatbubble-ellipses-outline"
+                          size={FONTSIZE.xSmall}
+                          color={COLORS.black}
+                          style={styles.infoIcon}
+                        />
+                        <Text>{bot.num_chats}</Text>
+                      </View>
+                      <View style={styles.infoLikes}>
+                        <Ionicons
+                          name="heart"
+                          size={FONTSIZE.xSmall}
+                          color={COLORS.pink}
+                          style={styles.infoIcon}
+                        />
+                        <Text>{bot.likes}</Text>
+                      </View>
+                    </Text>
                   </View>
-                  <View style={styles.imageArea}>
-                    <Image
-                      source={{uri: bot.profile_picture}}
-                      resizeMode="cover"
-                      style={styles.botImage}
-                    />
-                    </View>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
+                </View>
+                <View style={styles.imageArea}>
+                  <Image
+                    source={{ uri: bot.profile_picture }}
+                    resizeMode="cover"
+                    style={styles.botImage}
+                  />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -82,7 +113,7 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: StatusBar.currentHeight + 16,
   },
   searchBar: {
     marginBottom: 12.5,
@@ -118,7 +149,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   element: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
     padding: 10,
     borderRadius: 15,
@@ -127,7 +158,7 @@ const styles = StyleSheet.create({
   },
   infoArea: {
     flex: 3,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   infoTitle: {
     fontSize: FONTSIZE.medium,
@@ -137,21 +168,21 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.small,
   },
   inforMoreContainer: {
-    flex: 1, 
-    justifyContent: 'flex-start',
+    flex: 1,
+    justifyContent: "flex-start",
     marginTop: 10,
   },
   infoMore: {
     fontSize: FONTSIZE.xSmall,
   },
   infoChat: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginRight: 10,
   },
   infoLikes: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   infoIcon: {
     marginRight: 5,
@@ -161,9 +192,9 @@ const styles = StyleSheet.create({
     height: 100,
   },
   botImage: {
-    width: '100%',
-    height: '100%',
-  }
+    width: "100%",
+    height: "100%",
+  },
 });
 
 export default Explore;
