@@ -4,7 +4,6 @@ import {
   Text,
   SafeAreaView,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
@@ -41,7 +40,7 @@ const UserInfo = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>More Info</Text>
+      <Text style={styles.heading}>Create Profile</Text>
       <Formik
         initialValues={{ username: "", dob: "", age: "", fname: "", lname: "" }}
         onSubmit={async (values) => {
@@ -49,7 +48,9 @@ const UserInfo = () => {
           await signupwithemail(email, password);
         }}
       >
+
         {(formikProps) => <UserForm {...formikProps} />}
+
       </Formik>
     </SafeAreaView>
   );

@@ -54,6 +54,7 @@ export default StyleSheet.create({
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
+    marginVertical: 10,
   },
   inputIcon: {
     marginBottom: 15,
