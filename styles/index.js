@@ -1,13 +1,34 @@
 export const COLORS = {
-    white: '#ffffff',
+    black: '#1C1C1C',
+    light_black: "#40474F",
+    white: '#FAFAFF',
     beige: '#FAF0E6',
     yellow_light: '#FFD986',
     yellow_dark: '#FFCD5F',
     green_light: '#ACE1AF',
     green_dark: '#7CAF7F',
-    grey: '#D9D9D9',
-    black: '#2F2D2D',
+    grey: '#EEF0F2',
     red: '#cc0000',
+    blue: '#1F93FF',
+    pink: '#B6244F'
+};
+
+export const SIZES = {
+    xSmall: 10,
+    small: 12,
+    medium: 16,
+    large: 20,
+    xLarge: 24,
+    xxLarge: 32,
+};
+
+export const FONTSIZE = {
+    xSmall: 12,
+    small: 14,
+    medium: 18,
+    large: 20,
+    xLarge: 24,
+    xxLarge: 32,
 };
 
 export const FONT_WEIGHT = {

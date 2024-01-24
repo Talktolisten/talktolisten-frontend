@@ -10,20 +10,30 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@react-native-async-storage/async-storage": "^1.21.0",
+    "@freakycoder/react-native-bounceable": "^1.0.3",
+    "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "expo": "~49.0.15",
     "expo-font": "~11.4.0",
+    "expo-router": "^2.0.14",
     "expo-status-bar": "~1.6.0",
+    "firebase": "^10.7.1",
     "formik": "^2.4.5",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "react-native-iconify": "^0.2.10"
+    "react-native-animated-spinkit": "^1.5.2",
+    "react-native-dotenv": "^3.4.9",
+    "react-native-dynamic-search-bar": "github:WrathChaos/react-native-dynamic-search-bar#expo",
+    "react-native-elements": "^3.4.3",
+    "react-native-gifted-chat": "^2.4.0",
+    "react-native-iconify": "^0.2.10",
+    "react-native-modal-dropdown": "^1.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.6"
   },
   "private": true
 }

@@ -3,12 +3,7 @@ import {
   View,
   Text,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  KeyboardAvoidingView,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
@@ -19,23 +14,35 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { COLORS } from "../../styles";
+import { SCREEN_NAMES } from "../../util/constants";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const SignUpPage = () => {
+const SignUp = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Create account</Text>
-      <Text style={styles.subheading}>Sign up to get started!</Text>
+      <Text style={styles.heading}>Sign Up</Text>
+      <Text style={styles.subheading}>Create an account to start</Text>
       <Formik
-        initialValues={{ email: "", username: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(values) => {
+          console.log(navigation);
+          navigation.navigate(SCREEN_NAMES.USER_INFO, {
+            email: values.email,
+            password: values.password,
+          });
+        }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={{ marginTop: 29 }}>
             <View style={styles.inputContainer}>
-              <MaterialCommunityIcons
-                name="email-outline"
+              <Ionicons
+                name="person-outline"
                 size={24}
                 color={COLORS.black}
+                style={styles.inputIcon}
               />
               <TextInput
                 onChangeText={handleChange("email")}
@@ -47,35 +54,27 @@ const SignUpPage = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="person-outline" size={24} color={COLORS.black} />
-              <TextInput
-                onChangeText={handleChange("username")}
-                onBlur={handleBlur("username")}
-                value={values.username}
-                placeholder="Username"
-                style={styles.input}
+              <AntDesign
+                name="lock1"
+                size={24}
+                color={COLORS.black}
+                style={styles.inputIcon}
               />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <AntDesign name="lock1" size={24} color={COLORS.black} />
               <TextInput
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
                 placeholder="Password"
                 style={styles.input}
-                secureTextEntry
+                secureTextEntry={true}
               />
             </View>
 
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Up!</Text>
-            </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: COLORS.black }]}
+              onPress={handleSubmit}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
             >
-              <Text style={styles.buttonText}>Sign Up!</Text>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -84,4 +83,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp;

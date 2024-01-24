@@ -54,6 +54,7 @@ export default StyleSheet.create({
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
+    marginVertical: 10,
   },
   inputIcon: {
     marginBottom: 15,
@@ -64,7 +65,7 @@ export default StyleSheet.create({
     borderRadius: 50,
   },
   button: {
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderRadius: 50,
     height: 45,
     alignItems: "center",

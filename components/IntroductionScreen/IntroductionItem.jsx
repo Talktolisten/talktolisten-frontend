@@ -14,7 +14,7 @@ const IntroductionItem = ({ item }) => {
     <View style={[styles.container, { width }]}>
       <Image
         source={item.image}
-        style={[styles.image, { width, resizeMode: 'contain' }]}
+        style={[styles.image, { width, resizeMode: 'cover' }]}
       />
       <View style={{ flex: 0.3 }}>
         <Text style={styles.title}>{item.title}</Text>
@@ -42,12 +42,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: COLORS.black,
     textAlign: 'center',
+    paddingTop: 20,
   },
   description: {
     fontFamily: FONT_NUNITO.regular,
-    fontSize: 18,
+    fontSize: 17,
     color: COLORS.black,
     textAlign: 'center',
     paddingHorizontal: 32,
+    paddingTop: 10,
   },
 });

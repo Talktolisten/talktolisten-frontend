@@ -32,12 +32,6 @@ export default StyleSheet.create({
     fontSize: 32,
     color: COLORS.black,
   },
-  subheading: {
-    textAlign: "center",
-    marginTop: 10,
-    fontSize: 15,
-    color: COLORS.black,
-  },
   input: {
     height: 50,
     paddingHorizontal: 8,
@@ -46,7 +40,6 @@ export default StyleSheet.create({
     borderRadius: 4,
     fontSize: 18,
     backgroundColor: COLORS.white,
-    marginBottom: 20,
     width: "85%",
     marginLeft: 16,
   },
@@ -56,7 +49,7 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   inputIcon: {
-    marginBottom: 15,
+    alignSelf: "center",
   },
   button: {
     flex: 1,
@@ -70,6 +63,7 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
+    marginBottom: 30,
   },
   buttonText: {
     color: COLORS.white,

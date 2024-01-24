@@ -1,0 +1,80 @@
+[
+  {
+    "bot_id": 123,
+    "bot_name": "Ayumi Sakura",
+    "short_description": "Dedicated dancer with a graceful spirit",
+    "description": "Ayumi Sakura is a high school student with a passion for traditional Japanese dance. She struggles to balance her rigorous training with her studies and social life, but her determination and grace make her a standout performer",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+a+futuristic+friendly+cute+happy+chatbot+avatar+6733.jpg",
+    "category": "anime_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 1,
+    "num_chats": 12120,
+    "likes": 320,
+    "created_by": "User1"
+  },
+  {
+    "bot_id": 322,
+    "bot_name": "Takashi Hikari",
+    "short_description": "Innovative inventor with a bright vision",
+    "description": "Young inventor with a knack for creating fantastical gadgets, Takashi Hikari dreams of revolutionizing the world with his groundbreaking inventions. His boundless creativity and optimism inspire those around him",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+a+futuristic+friendly+cute+chatbot+avatar+6733.jpg",
+    "category": "anime_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 2,
+    "num_chats": 230,
+    "likes": 5000,
+    "created_by": "User2"
+  },
+  {
+    "bot_id": 93322,
+    "bot_name": "Rook Ironhide",
+    "short_description": "Steadfast paladin upholding justice",
+    "description": "Steadfast paladin sworn to uphold justice, Rook Ironhide wields his mighty shield and righteous fury to protect the innocent and vanquish the forces of darkness. His unwavering dedication to his cause inspires others to stand against evil",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+big+computer+machine+scientific+36971.jpg",
+    "category": "game_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 2,
+    "num_chats": 120,
+    "likes": 3210,
+    "created_by": "User2"
+  },
+  {
+    "bot_id": 2322,
+    "bot_name": "Agent Emily Davies",
+    "short_description": "Counterintelligence agent infiltrating enemy organizations",
+    "description": "Skilled counterintelligence agent with a knack for infiltrating enemy organizations, Emily Davies uses her charm and her ability to adapt to any situation to gather valuable information and protect national security. Her dedication to her country and her unwavering loyalty make her a valuable asset to her team",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+round+robot+avatar+futuristic%2C+intelligent%2C+scientific+42531.jpg",
+    "category": "tv_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 2,
+    "num_chats": 320,
+    "likes": 93220,
+    "created_by": "User2"
+  },
+  {
+    "bot_id": 233222,
+    "bot_name": "Agent Emily Davies",
+    "short_description": "Counterintelligence agent infiltrating enemy organizations",
+    "description": "Skilled counterintelligence agent with a knack for infiltrating enemy organizations, Emily Davies uses her charm and her ability to adapt to any situation to gather valuable information and protect national security. Her dedication to her country and her unwavering loyalty make her a valuable asset to her team",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+round+robot+avatar+futuristic%2C+intelligent%2C+scientific%2C+friendly+chatbot+77672.jpg",
+    "category": "tv_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 2,
+    "num_chats": 210,
+    "likes": 320,
+    "created_by": "User2"
+  },
+  {
+    "bot_id": 26322,
+    "bot_name": "Agent Emily Davies",
+    "short_description": "Counterintelligence agent infiltrating enemy organizations",
+    "description": "Skilled counterintelligence agent with a knack for infiltrating enemy organizations, Emily Davies uses her charm and her ability to adapt to any situation to gather valuable information and protect national security. Her dedication to her country and her unwavering loyalty make her a valuable asset to her team",
+    "profile_picture": "https://bots-ttl.s3.amazonaws.com/Firefly+Learning+background+at+university's+library+39780.jpg",
+    "category": "tv_character",
+    "created_at": "2022-01-01T00:00:00Z",
+    "voice_id": 2,
+    "num_chats": 320,
+    "likes": 93220,
+    "created_by": "User2"
+  }
+]
