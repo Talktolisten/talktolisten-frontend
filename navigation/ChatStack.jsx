@@ -9,7 +9,7 @@ import { COLORS } from "../styles";
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = () => {
+const ChatStack = () => {
   const screenOptions = ({ navigation }) => ({
     headerTitle: "",
     headerBackTitle: "",
@@ -58,4 +58,4 @@ const AuthStack = () => {
   );
 };
 
-export default AuthStack;
+export default ChatStack;

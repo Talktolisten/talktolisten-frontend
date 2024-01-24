@@ -2,13 +2,9 @@ import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import ExploreScreen from "../screens/Explore";
-import ChatStack from "./ChatStack";
-import ProfileScreen from "../screens/Profile";
 import ChatScreen from "../screens/Chat";
-import ProfileScreen from "../screens/Profile";
 
 import IconButton from "../components/UI/IconButton";
-
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
@@ -55,13 +51,8 @@ const HomeStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={"ChatStack"}
-        component={ChatStack}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={SCREEN_NAMES.PROFILE}
-        component={ProfileScreen}
+        name={SCREEN_NAMES.CHAT}
+        component={ChatScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
