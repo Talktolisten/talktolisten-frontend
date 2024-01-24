@@ -1,12 +1,10 @@
 import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import ExploreScreen from '../screens/Explore';
-import ChatScreen from '../screens/Chat';
-import ProfileScreen from '../screens/Profile';
-// import VoicesScreen from '../screens/VoicesScreen';
-// import AudioScreen from '../screens/AudioScreen';
-import IconButton from '../components/UI/IconButton';
+import ExploreScreen from "../screens/Explore";
+import ChatScreen from "../screens/Chat";
+import ProfileScreen from "../screens/Profile";
+import IconButton from "../components/UI/IconButton";
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";

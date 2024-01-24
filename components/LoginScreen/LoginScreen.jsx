@@ -1,19 +1,23 @@
-import { Text, StyleSheet, View, SafeAreaView } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, TextInput } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
+
 import { SCREEN_NAMES } from "../../util/constants";
 import styles from "./styles";
-import { COLORS, FONT_NUNITO, FONT_WEIGHT } from "../../styles";
-
+import { COLORS, FONT_WEIGHT } from "../../styles";
 import auth from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 const loginwithemail = async (email, password, navigation) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in
       const user = userCredential.user;
     })
     .then(() => navigation.navigate(SCREEN_NAMES.HOME))
@@ -21,11 +25,11 @@ const loginwithemail = async (email, password, navigation) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorMessage + " " + errorCode);
-      // ..
     });
 };
 
-const Login = ({ navigation }) => {
+const Login = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Login</Text>

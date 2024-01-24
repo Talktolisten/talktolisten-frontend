@@ -1,5 +1,5 @@
 import Login from "../components/LoginScreen/LoginScreen";
 
-const LoginScreen = ({ navigation }) => <Login navigation={navigation} />;
+const LoginScreen = () => <Login />;
 
 export default LoginScreen;
