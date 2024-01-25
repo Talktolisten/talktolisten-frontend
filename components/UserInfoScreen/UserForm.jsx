@@ -65,11 +65,26 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           style={styles.inputIcon}
         />
         <TextInput
-          onChangeText={handleChange("dob")}
-          onBlur={handleBlur("dob")}
+          onChangeText={(value) => {
+            const numericValue = value.replace(/[^0-9]/g, '');
+            let formattedValue = numericValue;
+
+            if (numericValue.length <= 2) {
+              formattedValue = numericValue;
+            } else if (numericValue.length <= 4) {
+              formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2);
+            } else {
+              formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2, 4) + ' / ' + numericValue.substring(4);
+            }
+
+            handleChange('dob')(formattedValue);
+          }}
+          onBlur={handleBlur('dob')}
           value={values.dob}
-          placeholder="Date of Birth"
+          placeholder="MM / DD / YYYY"
           style={styles.input}
+          keyboardType="numeric"
+          maxLength={14}
         />
       </View>
 
