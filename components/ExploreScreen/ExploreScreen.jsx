@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   ScrollView,
@@ -16,7 +16,7 @@ import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "react-native";
 
-import bots from "../../data/bots.json";
+import { fetchData, transformData } from "../../data/explore_get_bots"; // Import fetchData and transformData
 
 const types = [
   "Featured",
@@ -34,6 +34,22 @@ const types = [
 const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
   const router = useRouter();
   const [activeType, setActiveType] = useState("Featured");
+  const [newBots, setNewBots] = useState([]);
+
+  useEffect(() => {
+    const fetchDataAndTransform = async () => {
+      try {
+        const jsonData = await fetchData(); // Call fetchData function from apiUtils.js
+        const transformedData = transformData(jsonData); // Call transformData function from apiUtils.js
+        setNewBots(transformedData);
+      } catch (error) {
+        console.error("Error fetching or transforming data:", error);
+      }
+    };
+
+    fetchDataAndTransform();
+  }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,7 +76,7 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
 
       <View style={styles.listSection}>
         <ScrollView style={styles.elementPallet}>
-          {bots.map((bot) => {
+          {newBots.map((bot) => {
             return (
               <TouchableOpacity
                 style={styles.element}
@@ -109,6 +125,7 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
