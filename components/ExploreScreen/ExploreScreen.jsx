@@ -16,7 +16,7 @@ import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "react-native";
 
-import { fetchData, transformData } from "../../data/explore_get_bots"; // Import fetchData and transformData
+import { explore_get_bots } from "./ExploreRequest";
 
 const types = [
   "Featured",
@@ -39,9 +39,8 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
   useEffect(() => {
     const fetchDataAndTransform = async () => {
       try {
-        const jsonData = await fetchData(); // Call fetchData function from apiUtils.js
-        const transformedData = transformData(jsonData); // Call transformData function from apiUtils.js
-        setNewBots(transformedData);
+        const jsonData = await explore_get_bots();
+        setNewBots(jsonData);
       } catch (error) {
         console.error("Error fetching or transforming data:", error);
       }
