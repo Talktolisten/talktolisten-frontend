@@ -1,14 +1,17 @@
 import axios from "axios";
+import { getTokens } from "../util/tokenUtils";
 
-export const URL ='https://sore-ruby-kitten-gown.cyclic.app/';
+export const URL = process.env.API_URL;
 
 const Api = async (config) =>{
-    // const token ='vvfvv';
-    // if(token){
-    //     config.headers={
-    //         authorization:token
-    //     };
-    // }
+    const token = await getTokens();
+    const { accessToken } = token;
+
+    if(accessToken){
+        config.headers={
+            Authorization: `Bearer ${accessToken}`,
+        };
+    }
     axios.interceptors.response.use(
         response =>{
             return response;
@@ -16,12 +19,12 @@ const Api = async (config) =>{
         function(error){
             if(!error.response){
                 error.response={
-                    data:'network error',
+                    data:'Connection error',
                     status:500,
                 };
             }
             if(error.response.status === 401){
-                console.log('Un Authorised');
+                console.log('Unauthorized: Your session has expired');
             }
             return Promise.reject(error);
         },
@@ -31,6 +34,3 @@ const Api = async (config) =>{
 };
 
 export default Api;
-
-
-
