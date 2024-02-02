@@ -1,8 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import { storeTokens, getTokens } from "../util/tokenUtils";
 import AuthStack from "./AuthStack";
 import TabNavigator from "./TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,6 +23,7 @@ const Nav = () => {
   const [loading, setLoading] = useState(true);
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [userToken, setUserToken] = useState(null);
 
   const checkOnboarding = async () => {
     try {
@@ -38,11 +40,25 @@ const Nav = () => {
 
   useEffect(() => {
     checkOnboarding();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
+    const auth = getAuth(); 
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const token = await user.getIdToken();
+          const { accessToken, refreshToken } = user.stsTokenManager;
+          await storeTokens(accessToken, refreshToken); 
+          setUserToken(token);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error("Error fetching user token:", error);
+          setIsLoggedIn(false);
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
     });
-    return unsubscribe; // unsubscribe on unmount
-  }, []);
+    return unsubscribe; // Clean up on unmount
+  }, []);  
 
   return (
     <NavigationContainer>

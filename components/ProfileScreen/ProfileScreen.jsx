@@ -10,6 +10,7 @@ import {
 } from "@expo/vector-icons";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase";
+import { removeTokens } from "../../util/tokenUtils";
 
 const SettingItem = ({ type, icon, text, onPress }) => {
   const ICONCOMPONENTS = {
@@ -39,13 +40,12 @@ const SettingItem = ({ type, icon, text, onPress }) => {
 
 const Profile = () => {
   async function logout() {
+    removeTokens();
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         console.log("logged out");
       })
       .catch((error) => {
-        // An error happened.
         console.log(error);
       });
   }
