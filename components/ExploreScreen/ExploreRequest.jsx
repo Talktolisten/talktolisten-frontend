@@ -4,7 +4,7 @@ export const explore_get_bots = async () =>{
 
     return await Api({
         method:'GET',
-        url:'explore',
+        url:'explore/',
     }).then(res => {
         return res.data;
      });
