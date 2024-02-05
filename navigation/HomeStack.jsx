@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import ExploreScreen from "../screens/Explore";
 import ChatScreen from "../screens/Chat";
-
+import MessageScreen from "../screens/Message";
 import IconButton from "../components/UI/IconButton";
 
 import { SCREEN_NAMES } from "../util/constants";
@@ -34,7 +34,7 @@ const HomeStack = () => {
           iconName={"ion:arrow-back"}
           iconSize={30}
           iconColor={COLORS.black}
-          onPress={navigation.canGoBack ? navigation.goBack : null}
+          onPress={navigation.canGoBack() ? navigation.goBack : null}
         />
       );
     },
@@ -54,6 +54,10 @@ const HomeStack = () => {
         name={SCREEN_NAMES.CHAT}
         component={ChatScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen name={SCREEN_NAMES.MESSAGE} 
+        component={MessageScreen}
+        options={{ headerShown: true }} 
       />
     </Stack.Navigator>
   );

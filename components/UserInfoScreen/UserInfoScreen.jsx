@@ -26,7 +26,6 @@ const UserInfo = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const uid = userCredential.user.uid;
-        console.log(uid);
       })
       .then(() => {
         navigation.navigate(SCREEN_NAMES.HOME);

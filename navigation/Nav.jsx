@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { View, ActivityIndicator, Alert } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import { storeTokens, getTokens } from "../util/tokenUtils";
+import { storeTokens, storeUserID } from "../util/tokenUtils";
 import AuthStack from "./AuthStack";
 import TabNavigator from "./TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -47,6 +47,7 @@ const Nav = () => {
           const token = await user.getIdToken();
           const { accessToken, refreshToken } = user.stsTokenManager;
           await storeTokens(accessToken, refreshToken); 
+          await storeUserID(user.uid);
           setUserToken(token);
           setIsLoggedIn(true);
         } catch (error) {

@@ -28,7 +28,6 @@ const SignUp = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          console.log(navigation);
           navigation.navigate(SCREEN_NAMES.USER_INFO, {
             email: values.email,
             password: values.password,

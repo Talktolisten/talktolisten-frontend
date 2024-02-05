@@ -11,12 +11,15 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "react-native";
 
 import { explore_get_bots } from "./ExploreRequest";
+import { handlePressBot } from "./CreateChat";
 
 const types = [
   "Featured",
@@ -33,6 +36,7 @@ const types = [
 
 const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
   const router = useRouter();
+  const navigation = useNavigation();
   const [activeType, setActiveType] = useState("Featured");
   const [newBots, setNewBots] = useState([]);
 
@@ -81,7 +85,9 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
                 style={styles.element}
                 key={bot.bot_id}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("Info", { id: bot.bot_id })}
+                onPress={() => {
+                  handlePressBot(bot.bot_id, navigation);
+                }}
               >
                 <View style={styles.infoArea}>
                   <Text style={styles.infoTitle}>{bot.bot_name}</Text>

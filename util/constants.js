@@ -9,5 +9,4 @@ export const SCREEN_NAMES = {
   PROFILE: "Profile",
   CHAT: "Chat",
   MESSAGE: "Message",
-  AUDIO_PLAYER: "Audio Screen",
 };
