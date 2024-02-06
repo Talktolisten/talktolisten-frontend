@@ -26,9 +26,9 @@ export const getUserID = async () => {
 };
 
 
-export const storeTokens = async (accessToken, refreshToken) => {
+export const storeTokens = async (accessToken) => {
   try {
-    const tokens = JSON.stringify({ accessToken, refreshToken });
+    const tokens = JSON.stringify({ accessToken });
     await SecureStore.setItemAsync('firebaseTokens', tokens);
   } catch (error) {
     console.error('Error storing the tokens:', error);

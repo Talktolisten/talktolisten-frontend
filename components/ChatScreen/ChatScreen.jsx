@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  View,
-  SafeAreaView,
-} from "react-native";
+import { useSelector } from "react-redux";
+import { ScrollView, View, SafeAreaView} from "react-native";
 
 import DynamicSearchBar from "../ExploreScreen/SearchBar";
-
 import "./styles";
 import Chat from "./Chat";
 import { get_all_chats } from "./ChatGet";
-import { getUserID } from "../../util/tokenUtils";
 
 const ChatScreen = () => {
   const [chats, setChats] = useState([]);
-  const userId = getUserID(); // Assuming getUserID returns the current user's ID synchronously
+  const userId = useSelector((state) => state.user.userID);
 
   useEffect(() => {
     const fetchChats = async () => {
-      try {
-        const fetchedChats = await get_all_chats(userId);
-        setChats(fetchedChats);
-      } catch (error) {
-        console.error("Failed to fetch chats:", error);
+      if (userId) {
+        try {
+          const fetchedChats = await get_all_chats(userId);
+          setChats(fetchedChats);
+        } catch (error) {
+          console.error("Failed to fetch chats:", error);
+        }
       }
     };
 

@@ -1,9 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { View, ActivityIndicator, Alert } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { storeTokens, storeUserID } from "../util/tokenUtils";
+import { setUserID } from "../redux/actions/userActions";
 import AuthStack from "./AuthStack";
 import TabNavigator from "./TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -24,6 +26,7 @@ const Nav = () => {
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const dispatch = useDispatch();
 
   const checkOnboarding = async () => {
     try {
@@ -45,9 +48,10 @@ const Nav = () => {
       if (user) {
         try {
           const token = await user.getIdToken();
-          const { accessToken, refreshToken } = user.stsTokenManager;
-          await storeTokens(accessToken, refreshToken); 
+          const { accessToken } = user.stsTokenManager;
+          await storeTokens(accessToken); 
           await storeUserID(user.uid);
+          dispatch(setUserID(user.uid));
           setUserToken(token);
           setIsLoggedIn(true);
         } catch (error) {
