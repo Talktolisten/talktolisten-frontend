@@ -6,7 +6,6 @@ import styles from './styles';
 
 const Chat = ({ chat }) => {
   const navigation = useNavigation();
-  console.log(chat);
   return (
     <TouchableOpacity
       style={styles.element}

@@ -51,29 +51,40 @@ const MessageScreen = () => {
   }, [botInfo]); 
 
   const onSend = useCallback((messages = []) => {
+    if (!botInfo) return; 
+  
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages),
     );
-    const sendMessage = async () => {
-      const response = await sendMessageToBackend(messages[0].text, chat_id);
-      const botMessage = {
-        _id: response.message_id,
-        text: response.message,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: botInfo.bot_name,
-          avatar: botInfo.profile_picture,
-        },
-      };
   
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, [botMessage]),
-      );
+    const sendMessage = async () => {
+      try {
+        const response = await sendMessageToBackend(messages[0].text, chat_id);
+        console.log(response);
+        if (response && response.message_id && botInfo) {
+          const botMessage = {
+            _id: response.message_id,
+            text: response.message,
+            createdAt: new Date(response.created_at),
+            user: {
+              _id: 2, 
+              name: botInfo.bot_name,
+              avatar: botInfo.profile_picture,
+            },
+          };
+  
+          setMessages((previousMessages) =>
+            GiftedChat.append(previousMessages, [botMessage]),
+          );
+        }
+      } catch (error) {
+        console.error("Failed to send message to backend:", error);
+      }
     };
   
     sendMessage();
-  }, []);
+  }, [botInfo, chat_id]); 
+  
 
   const scrollToBottomComponent = () => {
     return(
