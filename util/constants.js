@@ -9,4 +9,5 @@ export const SCREEN_NAMES = {
   PROFILE: "Profile",
   CHAT: "Chat",
   MESSAGE: "Message",
+  VOICE: "Voice",
 };

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreScreen from "../screens/Explore";
 import ChatScreen from "../screens/Chat";
 import MessageScreen from "../screens/Message";
+import VoiceScreen from "../screens/Voice";
 import IconButton from "../components/UI/IconButton";
 
 import { SCREEN_NAMES } from "../util/constants";
@@ -58,6 +59,10 @@ const HomeStack = () => {
       <Stack.Screen name={SCREEN_NAMES.MESSAGE} 
         component={MessageScreen}
         options={{ headerShown: true }} 
+      />
+      <Stack.Screen name={SCREEN_NAMES.VOICE}
+      component={VoiceScreen}
+      options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

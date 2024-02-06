@@ -8,7 +8,7 @@ import { COLORS } from '../../styles';
 
 import { renderInputToolbar, renderActions, renderComposer, renderSend } from './MessageInput';
 import { renderAvatar, renderBubble, renderSystemMessage, renderMessage, renderMessageText, renderCustomView, renderTime} from './MessageBubble';
-import { sendMessageToBackend } from './MessageSendRequest';
+import { sendMessageToBackend, fetchAllMessages } from './MessageSendRequest';
 
 import { get_bot_info } from '../../axios/bots';
 
@@ -49,6 +49,31 @@ const MessageScreen = () => {
           ]);
       }
   }, [botInfo]); 
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        // Assuming you have a function to call your API
+        const fetchedMessages = await fetchAllMessages(chat_id);
+        console.log(fetchedMessages);
+        const formattedMessages = fetchedMessages.map((msg) => ({
+          _id: msg.message_id,
+          text: msg.message,
+          createdAt: new Date(msg.created_at),
+          user: {
+            _id: msg.is_bot ? 2 : 1, // Adjust based on your data structure
+            name: msg.is_bot ? botInfo.bot_name : null, // You might want to adjust this to include actual names
+            avatar: msg.is_bot ? botInfo.profile_picture : null, // Adjust according to your data
+          },
+        }));
+        setMessages(formattedMessages);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessages();
+  }, [chat_id]);
 
   const onSend = useCallback((messages = []) => {
     if (!botInfo) return; 
@@ -113,7 +138,7 @@ const MessageScreen = () => {
         renderSend={renderSend}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
-        renderActions={renderActions}
+        renderActions={(props) => renderActions(props, botInfo, chat_id)}
         renderTime={renderTime}
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}

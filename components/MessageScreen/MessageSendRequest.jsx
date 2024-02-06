@@ -24,3 +24,13 @@ export const sendMessageToBackend = async (messageText, chat_id) => {
     console.error("Failed to send message to backend:", error);
   }
 };
+
+
+export const fetchAllMessages = async (chat_id) => {
+  return await Api({
+    method:'GET',
+    url:`/api/v1/chat/${chat_id}/message`,
+  }).then(res => {
+    return res.data;
+  });
+};

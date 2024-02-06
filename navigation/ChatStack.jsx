@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
 import ChatScreen from "../screens/Chat";
 import MessageScreen from "../components/MessageScreen/MessageScreen";
-
+import VoiceScreen from "../screens/Voice";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
@@ -53,6 +53,10 @@ const ChatStack = () => {
         name={SCREEN_NAMES.MESSAGE}
         component={MessageScreen}
         options={{ headerShown: true }}
+      />
+      <Stack.Screen name={SCREEN_NAMES.VOICE} 
+      component={VoiceScreen}
+      options={{ headerShown: false }} 
       />
     </Stack.Navigator>
   );
