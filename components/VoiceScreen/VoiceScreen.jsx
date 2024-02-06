@@ -1,9 +1,12 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, Button } from "react-native";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
+import { useAnimation } from "./hook";
+import voiceStart from "../../assets/voiceStart.png";
+import voiceEnd from "../../assets/voiceEnd.png";
 
 const Voice = () => {
   const scaleValue1 = useRef(new Animated.Value(0)).current;
@@ -11,39 +14,18 @@ const Voice = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
+  const [buttonRecording, setButtonRecording] = useState("Stop");
   const {botInfo, chat_id} = route.params;
-  console.log(botInfo);
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleValue1, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleValue1, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
-    ).start();
 
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleValue2, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleValue2, {
-          toValue: 0,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
-      ]),
-    ).start();
-  }, []);
+  const handleButtonPress = () => {
+    if (buttonRecording === "Start") {
+      setButtonRecording("Stop");
+    } else {
+      setButtonRecording("Start");
+    }
+  };
+
+  useAnimation(buttonRecording, scaleValue1, scaleValue2);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,6 +55,14 @@ const Voice = () => {
         />
         <Image source={{uri: botInfo.profile_picture }} style={styles.imageItem} />
       </View>
+      <TouchableOpacity style={styles.buttonRecordingContainer} onPress={handleButtonPress}>
+        {buttonRecording === 'Start' ? (
+          <Image source={voiceStart} style={styles.image} />
+        ) : (
+          <Image source={voiceEnd} style={styles.image} />
+        )}
+        <Text style={styles.buttonRecording}>{buttonRecording}</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}>
         <Text style={styles.buttonText}>Exit</Text>
       </TouchableOpacity>
@@ -103,6 +93,22 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     borderWidth: 5,
     position: 'absolute',
+  },
+  buttonRecordingContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  buttonRecording: {
+    color: COLORS.black,
+    fontSize: FONTSIZE.medium,
+    fontWeight: FONT_WEIGHT.bold,
+    marginTop: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
   },
   button: {
     width: 100,
