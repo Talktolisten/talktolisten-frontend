@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, Button } fro
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
 import { useAnimation } from "./hook";
@@ -17,15 +18,54 @@ const Voice = () => {
   const [buttonRecording, setButtonRecording] = useState("Stop");
   const {botInfo, chat_id} = route.params;
 
+  const [recording, setRecording] = useState(null);
+  const [permissionResponse, requestPermission] = Audio.usePermissions();
+
+  useAnimation(buttonRecording, scaleValue1, scaleValue2);
+
+  async function startRecording() {
+    try {
+      if (permissionResponse.status !== 'granted') {
+        console.log('Requesting permission..');
+        await requestPermission();
+      }
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      console.log('Starting recording..');
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+      setRecording(recording);
+      console.log('Recording started');
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
+
+  async function stopRecording() {
+    console.log('Stopping recording..');
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync(
+      {
+        allowsRecordingIOS: false,
+      }
+    );
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+  }
+
   const handleButtonPress = () => {
     if (buttonRecording === "Start") {
       setButtonRecording("Stop");
+      startRecording();
     } else {
       setButtonRecording("Start");
+      stopRecording();
     }
   };
-
-  useAnimation(buttonRecording, scaleValue1, scaleValue2);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -57,12 +97,12 @@ const Voice = () => {
       </View>
       <TouchableOpacity style={styles.buttonRecordingContainer} onPress={handleButtonPress}>
         {buttonRecording === 'Start' ? (
-          <Image source={voiceStart} style={styles.image} />
-        ) : (
           <Image source={voiceEnd} style={styles.image} />
+        ) : (
+          <Image source={voiceStart} style={styles.image} />
         )}
         <Text style={styles.buttonRecording}>
-          {buttonRecording === 'Start' ? 'Listening...' : 'Start'}
+          {buttonRecording === 'Start' ? 'Stopped' : 'Listening...'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}>

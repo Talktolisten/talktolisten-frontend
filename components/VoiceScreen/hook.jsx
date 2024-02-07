@@ -3,7 +3,7 @@ import { Animated } from 'react-native';
 
 export const useAnimation = (buttonRecording, scaleValue1, scaleValue2) => {
     useEffect(() => {
-        if (buttonRecording === 'Start') {
+        if (buttonRecording !== 'Start') {
             Animated.loop(
                 Animated.sequence([
                     Animated.timing(scaleValue1, {
