@@ -15,11 +15,12 @@ const Voice = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [buttonRecording, setButtonRecording] = useState("Stop");
+  const [buttonRecording, setButtonRecording] = useState("Start");
   const {botInfo, chat_id} = route.params;
 
-  const [recording, setRecording] = useState(null);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
+  const [recording, setRecording] = useState(null);
+  const [sendAudioInterval, setSendAudioInterval] = useState(null);
 
   useAnimation(buttonRecording, scaleValue1, scaleValue2);
 
@@ -35,10 +36,18 @@ const Voice = () => {
       });
 
       console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY );
       setRecording(recording);
       console.log('Recording started');
+      const intervalId = setInterval(async () => {
+        // Assume sendAudioData is a function that handles sending your audio data
+        // You need to define how you access the current chunk of audio data
+        const uri = recording.getURI(); // Example, adjust based on actual logic to access audio data
+        console.log('Sending audio data from', uri);
+        // sendAudioData(uri); // Implement this function according to your backend API
+      }, 2000);
+
+      setSendAudioInterval(intervalId);
     } catch (err) {
       console.error('Failed to start recording', err);
     }
@@ -47,14 +56,17 @@ const Voice = () => {
   async function stopRecording() {
     console.log('Stopping recording..');
     setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-    await Audio.setAudioModeAsync(
-      {
-        allowsRecordingIOS: false,
-      }
-    );
-    const uri = recording.getURI();
-    console.log('Recording stopped and stored at', uri);
+    if (recording) {
+      await recording.stopAndUnloadAsync();
+      const uri = recording.getURI();
+      console.log('Recording stopped and stored at', uri);
+      setRecording(null);
+    }
+    // Clear the interval for sending audio data
+    if (sendAudioInterval) {
+      clearInterval(sendAudioInterval);
+      setSendAudioInterval(null);
+    }
   }
 
   const handleButtonPress = () => {
@@ -70,6 +82,9 @@ const Voice = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 40}}>{botInfo.bot_name}</Text>
+      <Text style={{fontSize: 12, fontWeight: "bold", paddingHorizontal: 20, marginTop: 15}}>
+        {botInfo.description}
+      </Text>
       <View style={styles.imageArea}>
         <Animated.View
           style={[
@@ -123,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -80,
+    marginTop: -20,
   },
   imageItem: {
     width: 300,
@@ -149,8 +164,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
   },
   button: {
     width: 100,
@@ -159,7 +174,6 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
   },
   buttonText: {
     color: "white",
