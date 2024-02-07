@@ -61,7 +61,9 @@ const Voice = () => {
         ) : (
           <Image source={voiceEnd} style={styles.image} />
         )}
-        <Text style={styles.buttonRecording}>{buttonRecording}</Text>
+        <Text style={styles.buttonRecording}>
+          {buttonRecording === 'Start' ? 'Listening...' : 'Start'}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}>
         <Text style={styles.buttonText}>Exit</Text>
