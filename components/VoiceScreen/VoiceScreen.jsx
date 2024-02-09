@@ -6,9 +6,10 @@ import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
 import { useAnimation } from "./hook";
+import { voice_talk } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
-
+import * as FileSystem from "expo-file-system";
 const Voice = () => {
   const scaleValue1 = useRef(new Animated.Value(0)).current;
   const scaleValue2 = useRef(new Animated.Value(0)).current;
@@ -43,8 +44,16 @@ const Voice = () => {
         // Assume sendAudioData is a function that handles sending your audio data
         // You need to define how you access the current chunk of audio data
         const uri = recording.getURI(); // Example, adjust based on actual logic to access audio data
-        console.log('Sending audio data from', uri);
-        // sendAudioData(uri); // Implement this function according to your backend API
+        const info = await FileSystem.getInfoAsync(uri);
+        console.log(info);
+        let base64Audio = null;
+        if (uri) {
+              base64Audio = await FileSystem.readAsStringAsync(uri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+        }
+        const res = await voice_talk(chat_id, botInfo.bot_id, base64Audio);
+        console.log(res);
       }, 2000);
 
       setSendAudioInterval(intervalId);
@@ -82,7 +91,7 @@ const Voice = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 40}}>{botInfo.bot_name}</Text>
-      <Text style={{fontSize: 12, fontWeight: "bold", paddingHorizontal: 20, marginTop: 15}}>
+      <Text style={{fontSize: 14, paddingHorizontal: 20, marginTop: 15}}>
         {botInfo.description}
       </Text>
       <View style={styles.imageArea}>

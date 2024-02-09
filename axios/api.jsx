@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getTokens } from "../util/tokenUtils";
 
-export const URL = process.env.API_URL;
+export const URL = 'http://ec2-3-14-66-196.us-east-2.compute.amazonaws.com:8000/';
 
 axios.interceptors.response.use(
     response => {
