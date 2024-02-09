@@ -21,9 +21,12 @@ const Voice = () => {
 
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [recording, setRecording] = useState(null);
-  const [sendAudioInterval, setSendAudioInterval] = useState(null);
 
-  useAnimation(buttonRecording, scaleValue1, scaleValue2);
+  const [isUserTalking, setIsUserTalking] = useState(false);
+  const [isBotTalking, setIsBotTalking] = useState(false);
+
+  useAnimation(isUserTalking || isBotTalking, scaleValue1, scaleValue2);
+
 
   async function startRecording() {
     try {
@@ -37,44 +40,59 @@ const Voice = () => {
       });
 
       console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY );
+      // setIsUserTalking(true);
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
       setRecording(recording);
       console.log('Recording started');
-      const intervalId = setInterval(async () => {
-        // Assume sendAudioData is a function that handles sending your audio data
-        // You need to define how you access the current chunk of audio data
-        const uri = recording.getURI(); // Example, adjust based on actual logic to access audio data
-        const info = await FileSystem.getInfoAsync(uri);
-        console.log(info);
-        let base64Audio = null;
-        if (uri) {
-              base64Audio = await FileSystem.readAsStringAsync(uri, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-        }
-        const res = await voice_talk(chat_id, botInfo.bot_id, base64Audio);
-        console.log(res);
-      }, 2000);
-
-      setSendAudioInterval(intervalId);
     } catch (err) {
       console.error('Failed to start recording', err);
     }
   }
 
+
+  const playBase64Audio = async (base64String) => {
+    // Define the file URI where the audio will be written
+    const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
+  
+    try {
+      // Write the Base64 string to a file
+      await FileSystem.writeAsStringAsync(fileUri, base64String, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+  
+      // Load the audio file into the player
+      const { sound } = await Audio.Sound.createAsync({ uri: fileUri });
+  
+      // Play the audio file
+      await sound.playAsync();
+    } catch (error) {
+      console.error('Error playing Base64 audio:', error);
+    }
+  };
+
+
   async function stopRecording() {
     console.log('Stopping recording..');
     setRecording(undefined);
-    if (recording) {
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-      console.log('Recording stopped and stored at', uri);
-      setRecording(null);
-    }
-    // Clear the interval for sending audio data
-    if (sendAudioInterval) {
-      clearInterval(sendAudioInterval);
-      setSendAudioInterval(null);
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync(
+      {
+        allowsRecordingIOS: false,
+      }
+    );
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+    // setIsUserTalking(false);
+    setIsBotTalking(true);
+    const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: "base64" });
+    try {
+      const response = await voice_talk(chat_id, botInfo.bot_id, base64Audio);
+      await playBase64Audio(response.response);
+      setIsBotTalking(false);
+    } catch (error) {
+      console.error('Error uploading audio:', error);
+      throw error;
     }
   }
 

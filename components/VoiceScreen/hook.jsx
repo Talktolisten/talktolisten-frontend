@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Animated } from 'react-native';
 
-export const useAnimation = (buttonRecording, scaleValue1, scaleValue2) => {
+export const useAnimation = (isTalking, scaleValue1, scaleValue2) => {
     useEffect(() => {
-        if (buttonRecording !== 'Start') {
+        if (isTalking) {
             Animated.loop(
                 Animated.sequence([
                     Animated.timing(scaleValue1, {
@@ -37,5 +37,5 @@ export const useAnimation = (buttonRecording, scaleValue1, scaleValue2) => {
             scaleValue1.setValue(0);
             scaleValue2.setValue(0);
         }
-    }, [buttonRecording, scaleValue1, scaleValue2]);
+    }, [isTalking, scaleValue1, scaleValue2]);
 };

@@ -1,6 +1,6 @@
 import Api from "../../axios/api";
 import * as FileSystem from "expo-file-system";
-import mime from 'mime';
+
 
 export const voice_talk = async (chat_id, bot_id, base64Audio) => {
     const payload = {
