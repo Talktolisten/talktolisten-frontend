@@ -27,7 +27,7 @@
     "firebase": "^10.7.1",
     "formik": "^2.4.5",
     "react": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-animated-spinkit": "^1.5.2",
     "react-native-dotenv": "^3.4.9",
     "react-native-dynamic-search-bar": "github:WrathChaos/react-native-dynamic-search-bar#expo",
