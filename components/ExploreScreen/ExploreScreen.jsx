@@ -9,14 +9,20 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "react-native";
 
-import { explore_get_bots } from "./ExploreRequest";
+import {
+  explore_get_bots,
+  explore_get_bots_categories,
+  explore_get_bots_search,
+} from "./ExploreRequest";
+import { handlePressBot } from "./CreateChat";
 
 const types = [
   "Featured",
@@ -31,24 +37,35 @@ const types = [
   "Helpers",
 ];
 
-const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
-  const router = useRouter();
+const Explore = () => {
+  const navigation = useNavigation();
+  const [searchTerm, setSearchTerm] = useState("");
   const [activeType, setActiveType] = useState("Featured");
   const [newBots, setNewBots] = useState([]);
 
   useEffect(() => {
-    const fetchDataAndTransform = async () => {
+    const fetchData = async () => {
+      let apiURL = "";
+      let jsonData = [];
+
+      // Check if there's a search term, indicating a search operation.
+      if (searchTerm) {
+        apiURL = explore_get_bots_search(searchTerm);
+      } else {
+        // If no search term, use the category to fetch data.
+        apiURL = explore_get_bots_categories(activeType);
+      }
+
       try {
-        const jsonData = await explore_get_bots();
+        jsonData = await apiURL; // Assuming your API calls return the data directly.
         setNewBots(jsonData);
       } catch (error) {
-        console.error("Error fetching or transforming data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchDataAndTransform();
-  }, []);
-
+    fetchData();
+  }, [searchTerm, activeType]); // Dependencies: re-run the effect when these values change.
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,7 +78,6 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
               style={styles.tab(activeType, item)}
               onPress={() => {
                 setActiveType(item);
-                router.push(`/search/${item}`);
               }}
             >
               <Text style={styles.tabText(activeType, item)}>{item}</Text>
@@ -81,7 +97,9 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
                 style={styles.element}
                 key={bot.bot_id}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("Info", { id: bot.bot_id })}
+                onPress={() => {
+                  handlePressBot(bot.bot_id, navigation);
+                }}
               >
                 <View style={styles.infoArea}>
                   <Text style={styles.infoTitle}>{bot.bot_name}</Text>
@@ -124,7 +142,6 @@ const Explore = ({ searchTerm, setSearchTerm, handleClick }) => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -210,6 +227,7 @@ const styles = StyleSheet.create({
   botImage: {
     width: "100%",
     height: "100%",
+    borderRadius: 10,
   },
 });
 

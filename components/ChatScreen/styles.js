@@ -55,6 +55,7 @@ export default styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.bold,
   },
   infoSub: {
+    marginTop: 5,
     fontSize: FONTSIZE.small,
   },
   inforMoreContainer: {
@@ -79,13 +80,11 @@ export default styles = StyleSheet.create({
   },
   imageArea: {
     flex: 1,
-    // height: 100,
+    height: 90,
   },
   botImage: {
     width: "100%",
     height: "100%",
     borderRadius: 50,
-    width: 80, // or whatever width you want
-    height: 80,
   },
 });

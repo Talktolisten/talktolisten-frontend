@@ -284,9 +284,9 @@ export const getIcon = (name, size, color, style) => {
       />
     ),
 
-    'mingcute:send-fill': (
+    'ic:round-headset-mic': (
       <Iconify
-        icon="mingcute:send-fill"
+        icon="ic:round-headset-mic"
         size={size}
         color={color}
         style={style}

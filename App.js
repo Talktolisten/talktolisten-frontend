@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import { loadFonts } from './util/helpers';
-
 import Nav from './navigation/Nav';
 
 
@@ -24,10 +24,12 @@ export default function App() {
   }
 
   return (
-    <>
-      <StatusBar style="dark" />
-      <Nav />
-    </>
+    <Provider store={store}>
+      <>
+        <StatusBar style="dark" />
+        <Nav />
+      </>
+    </Provider>
   );
 }
 
