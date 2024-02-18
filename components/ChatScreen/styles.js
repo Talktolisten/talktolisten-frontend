@@ -55,6 +55,7 @@ export default styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.bold,
   },
   infoSub: {
+    marginTop: 5,
     fontSize: FONTSIZE.small,
   },
   inforMoreContainer: {

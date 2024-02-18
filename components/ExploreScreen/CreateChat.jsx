@@ -8,4 +8,4 @@ export const handlePressBot = async (botId, navigation) => {
     } catch (error) {
         console.error('Failed to create or get chat session:', error);
     }
-  };
+};

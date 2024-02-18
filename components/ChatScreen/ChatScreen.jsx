@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { ScrollView, View, SafeAreaView} from "react-native";
+import { ScrollView, View, SafeAreaView } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import DynamicSearchBar from "../ExploreScreen/SearchBar";
 import "./styles";
@@ -11,20 +12,22 @@ const ChatScreen = () => {
   const [chats, setChats] = useState([]);
   const userId = useSelector((state) => state.user.userID);
 
-  useEffect(() => {
-    const fetchChats = async () => {
-      if (userId) {
-        try {
-          const fetchedChats = await get_all_chats(userId);
-          setChats(fetchedChats);
-        } catch (error) {
-          console.error("Failed to fetch chats:", error);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchChats = async () => {
+        if (userId) {
+          try {
+            const fetchedChats = await get_all_chats(userId);
+            setChats(fetchedChats);
+          } catch (error) {
+            console.error("Failed to fetch chats:", error);
+          }
         }
-      }
-    };
+      };
 
-    fetchChats();
-  }, [userId]);
+      fetchChats();
+    }, [userId])
+  );
 
   return (
     <SafeAreaView style={styles.container}>

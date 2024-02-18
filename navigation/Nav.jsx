@@ -43,13 +43,13 @@ const Nav = () => {
 
   useEffect(() => {
     checkOnboarding();
-    const auth = getAuth(); 
+    const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
           const token = await user.getIdToken();
           const { accessToken } = user.stsTokenManager;
-          await storeTokens(accessToken); 
+          await storeTokens(accessToken);
           await storeUserID(user.uid);
           dispatch(setUserID(user.uid));
           setUserToken(token);
@@ -63,7 +63,7 @@ const Nav = () => {
       }
     });
     return unsubscribe; // Clean up on unmount
-  }, []);  
+  }, []);
 
   return (
     <NavigationContainer>

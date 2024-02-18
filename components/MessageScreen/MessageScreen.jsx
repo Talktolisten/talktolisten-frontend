@@ -1,16 +1,29 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
-import {GiftedChat, Send, MessageText} from 'react-native-gifted-chat';
+import React, { useState, useEffect, useCallback } from "react";
+import { View, SafeAreaView, StyleSheet } from "react-native";
+import { GiftedChat, Send, MessageText } from "react-native-gifted-chat";
 import { useRoute } from "@react-navigation/native";
 
-import { getIcon } from '../Icons';
-import { COLORS } from '../../styles';
+import { getIcon } from "../Icons";
+import { COLORS } from "../../styles";
 
-import { renderInputToolbar, renderActions, renderComposer, renderSend } from './MessageInput';
-import { renderAvatar, renderBubble, renderSystemMessage, renderMessage, renderMessageText, renderCustomView, renderTime} from './MessageBubble';
-import { sendMessageToBackend, fetchAllMessages } from './MessageSendRequest';
+import {
+  renderInputToolbar,
+  renderActions,
+  renderComposer,
+  renderSend,
+} from "./MessageInput";
+import {
+  renderAvatar,
+  renderBubble,
+  renderSystemMessage,
+  renderMessage,
+  renderMessageText,
+  renderCustomView,
+  renderTime,
+} from "./MessageBubble";
+import { sendMessageToBackend, fetchAllMessages } from "./MessageSendRequest";
 
-import { get_bot_info } from '../../axios/bots';
+import { get_bot_info } from "../../axios/bots";
 
 const MessageScreen = () => {
   const route = useRoute();
@@ -20,50 +33,33 @@ const MessageScreen = () => {
 
   useEffect(() => {
     const fetchBotInfo = async () => {
-        try {
-            const jsonData = await get_bot_info(bot_id);
-            setBotInfo(jsonData);
-        } catch (error) {
-            console.error("Error fetching bot info:", error);
-        }
+      try {
+        const jsonData = await get_bot_info(bot_id);
+        setBotInfo(jsonData);
+      } catch (error) {
+        console.error("Error fetching bot info:", error);
+      }
     };
 
     if (bot_id) {
-        fetchBotInfo();
+      fetchBotInfo();
     }
-  }, [bot_id]); 
-
-  useEffect(() => {
-      if (botInfo) {
-          setMessages([
-              {
-                  _id: 1,
-                  text: 'Hello developer',
-                  createdAt: new Date(),
-                  user: {
-                      _id: 2,
-                      name: botInfo.bot_name,
-                      avatar: botInfo.profile_picture,
-                  },
-              },
-          ]);
-      }
-  }, [botInfo]); 
+  }, [bot_id]);
 
   useEffect(() => {
     const fetchMessages = async () => {
+      if (!botInfo) return;
+
       try {
-        // Assuming you have a function to call your API
         const fetchedMessages = await fetchAllMessages(chat_id);
-        console.log(fetchedMessages);
         const formattedMessages = fetchedMessages.map((msg) => ({
           _id: msg.message_id,
           text: msg.message,
           createdAt: new Date(msg.created_at),
           user: {
-            _id: msg.is_bot ? 2 : 1, // Adjust based on your data structure
-            name: msg.is_bot ? botInfo.bot_name : null, // You might want to adjust this to include actual names
-            avatar: msg.is_bot ? botInfo.profile_picture : null, // Adjust according to your data
+            _id: msg.is_bot ? 2 : 1,
+            name: msg.is_bot ? botInfo.bot_name : "User",
+            avatar: msg.is_bot ? botInfo.profile_picture : null,
           },
         }));
         setMessages(formattedMessages);
@@ -72,50 +68,54 @@ const MessageScreen = () => {
       }
     };
 
-    fetchMessages();
-  }, [chat_id]);
+    if (botInfo) {
+      fetchMessages();
+    }
+  }, [chat_id, botInfo]);
 
-  const onSend = useCallback((messages = []) => {
-    if (!botInfo) return; 
-  
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
-    );
-  
-    const sendMessage = async () => {
-      try {
-        const response = await sendMessageToBackend(messages[0].text, chat_id);
-        console.log(response);
-        if (response && response.message_id && botInfo) {
-          const botMessage = {
-            _id: response.message_id,
-            text: response.message,
-            createdAt: new Date(response.created_at),
-            user: {
-              _id: 2, 
-              name: botInfo.bot_name,
-              avatar: botInfo.profile_picture,
-            },
-          };
-  
-          setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, [botMessage]),
+  const onSend = useCallback(
+    (messages = []) => {
+      if (!botInfo) return;
+
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
+
+      const sendMessage = async () => {
+        try {
+          const response = await sendMessageToBackend(
+            messages[0].text,
+            chat_id
           );
+          if (response && response.message_id && botInfo) {
+            const botMessage = {
+              _id: response.message_id,
+              text: response.message,
+              createdAt: new Date(response.created_at),
+              user: {
+                _id: 2,
+                name: botInfo.bot_name,
+                avatar: botInfo.profile_picture,
+              },
+            };
+
+            setMessages((previousMessages) =>
+              GiftedChat.append(previousMessages, [botMessage])
+            );
+          }
+        } catch (error) {
+          console.error("Failed to send message to backend:", error);
         }
-      } catch (error) {
-        console.error("Failed to send message to backend:", error);
-      }
-    };
-  
-    sendMessage();
-  }, [botInfo, chat_id]); 
-  
+      };
+
+      sendMessage();
+    },
+    [botInfo, chat_id]
+  );
 
   const scrollToBottomComponent = () => {
-    return(
-      getIcon('icon-park:down', 35, '#2e64e5')
-    );
-  }
+    return getIcon("icon-park:down", 35, "#2e64e5");
+  };
 
   return (
     <SafeAreaView style={styles.container}>

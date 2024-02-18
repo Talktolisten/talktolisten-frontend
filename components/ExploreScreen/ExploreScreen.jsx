@@ -10,14 +10,18 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "react-native";
 
-import { explore_get_bots, explore_get_bots_categories, explore_get_bots_search } from "./ExploreRequest";
+import {
+  explore_get_bots,
+  explore_get_bots_categories,
+  explore_get_bots_search,
+} from "./ExploreRequest";
 import { handlePressBot } from "./CreateChat";
 
 const types = [
@@ -41,9 +45,9 @@ const Explore = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let apiURL = '';
+      let apiURL = "";
       let jsonData = [];
-  
+
       // Check if there's a search term, indicating a search operation.
       if (searchTerm) {
         apiURL = explore_get_bots_search(searchTerm);
@@ -51,7 +55,7 @@ const Explore = () => {
         // If no search term, use the category to fetch data.
         apiURL = explore_get_bots_categories(activeType);
       }
-  
+
       try {
         jsonData = await apiURL; // Assuming your API calls return the data directly.
         setNewBots(jsonData);
@@ -59,11 +63,9 @@ const Explore = () => {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [searchTerm, activeType]); // Dependencies: re-run the effect when these values change.
-  
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -140,7 +142,6 @@ const Explore = () => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
