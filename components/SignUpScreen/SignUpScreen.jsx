@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   View,
   Text,
@@ -11,15 +12,52 @@ import styles from "./styles";
 
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
+import auth from "../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getIdToken, getAuth } from "firebase/auth";
+import { errorHandle } from "../LoginScreen/errorHandle";
 import { COLORS } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const SignUp = () => {
   const navigation = useNavigation();
+  const [error, setError] = useState(null);
   const route = useRoute();
+
+  async function fetchToken() {
+    const auth = getAuth();
+    const token = await getIdToken(auth.currentUser);
+    return token;
+  }
+
+  const handleSignUp = async (email, password) => {
+
+    await AsyncStorage.setItem('@SignUpProcess', 'INCOMPLETE');
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const uid = userCredential.user.uid;
+        const token = await fetchToken();
+
+        return { uid, token };
+      })
+      .then(({ uid, token }) => {
+        navigation.navigate(SCREEN_NAMES.USER_INFO, {
+          email,
+          userId: uid,
+          userToken: token,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage + " " + errorCode);
+        setError(errorCode);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,10 +66,7 @@ const SignUp = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          navigation.navigate(SCREEN_NAMES.USER_INFO, {
-            email: values.email,
-            password: values.password,
-          });
+          handleSignUp(values.email, values.password);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -68,6 +103,12 @@ const SignUp = () => {
                 secureTextEntry={true}
               />
             </View>
+
+            {error && (
+              <View style={{ marginTop: 20 }}>
+                <Text style={styles.error}>{errorHandle(error)}</Text>
+              </View>
+            )}
 
             <TouchableOpacity
               onPress={handleSubmit}

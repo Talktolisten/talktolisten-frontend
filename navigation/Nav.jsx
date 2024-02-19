@@ -11,7 +11,6 @@ import TabNavigator from "./TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Introduction from "../components/IntroductionScreen/Introduction";
 import auth from "../firebase";
-import UserInfo from "../components/UserInfoScreen/UserInfoScreen";
 
 const Loading = () => {
   return (
@@ -43,10 +42,18 @@ const Nav = () => {
 
   useEffect(() => {
     checkOnboarding();
+    const checkSignUpCompletion = async () => {
+      const signUpProcess = await AsyncStorage.getItem('@SignUpProcess');
+      return signUpProcess === 'COMPLETE';
+    };
+
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        try {
+        const hasCompletedSignUp = await checkSignUpCompletion();
+        if (!hasCompletedSignUp) {
+          setIsLoggedIn(false);
+        } else {
           const token = await user.getIdToken();
           const { accessToken } = user.stsTokenManager;
           await storeTokens(accessToken);
@@ -54,16 +61,14 @@ const Nav = () => {
           dispatch(setUserID(user.uid));
           setUserToken(token);
           setIsLoggedIn(true);
-        } catch (error) {
-          console.error("Error fetching user token:", error);
-          setIsLoggedIn(false);
         }
       } else {
         setIsLoggedIn(false);
       }
     });
-    return unsubscribe; // Clean up on unmount
+    return () => unsubscribe();
   }, []);
+
 
   return (
     <NavigationContainer>

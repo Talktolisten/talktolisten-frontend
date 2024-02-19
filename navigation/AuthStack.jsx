@@ -4,11 +4,12 @@ import { AntDesign } from "@expo/vector-icons";
 import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import ResetPasswordScreen from "../screens/ResetPassword";
+import UserInfoScreen from "../screens/UserInfo";
+import TabNavigator from "./TabNavigator";
 
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
-import UserInfoScreen from "../screens/UserInfo";
-import HomeStack from "./HomeStack";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -52,19 +53,20 @@ const AuthStack = () => {
         component={LoginScreen}
         options={{ headerLeft: () => null }}
       />
-      <Stack.Screen name={SCREEN_NAMES.SIGNUP}
+      <Stack.Screen
+        name={SCREEN_NAMES.SIGNUP}
         component={SignUpScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
-      <Stack.Screen name={SCREEN_NAMES.USER_INFO}
+      <Stack.Screen
+        name={SCREEN_NAMES.USER_INFO}
         component={UserInfoScreen} />
       <Stack.Screen
-        name={SCREEN_NAMES.HOME}
-        component={HomeStack}
-        options={{ headerLeft: () => null }}
-        initialParams={{ email: "as", password: "s" }}
+        name={SCREEN_NAMES.NAV_TAB}
+        component={TabNavigator}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

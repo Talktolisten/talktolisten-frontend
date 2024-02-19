@@ -1,4 +1,5 @@
 export const SCREEN_NAMES = {
+  NAV_TAB: "Tab Navigator",
   HOME: "Home",
   CHAT_TAB: "Chat Tab",
   PROFILE_TAB: "Profile Tab",
@@ -46,4 +47,5 @@ export const errorCode = {
   wrongPassword: "auth/invalid-credential",
   weakPassword: "auth/weak-password",
   emailExists: "auth/email-already-in-use",
+  missingPassword: "auth/missing-password",
 }

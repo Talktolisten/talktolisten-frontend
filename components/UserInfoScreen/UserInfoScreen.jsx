@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Text, SafeAreaView} from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import styles from "./styles";
 import { Formik } from "formik";
 import auth from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import * as Updates from 'expo-updates';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserForm from "./UserForm";
 import { SCREEN_NAMES } from "../../util/constants";
 import { create_user } from "../../axios/user";
@@ -18,34 +19,29 @@ const UserInfo = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
-  const { email, password } = route.params || {};
+  const [error, setError] = useState(null);
+  const { email, userId, userToken } = route.params || {};
+  console.log(email, userId, userToken);
 
-  async function fetchToken() {
-    const auth = getAuth();
-    const token = await getIdToken(auth.currentUser);
-    return token;
-  }
-  
-  const signupwithemail = async (email, password, values) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const uid = userCredential.user.uid;
-        const token = await fetchToken();
-        await storeTokens(token); 
-        await storeUserID(uid);
-        
-        dispatch(setUserID(uid));
-        const { username, fname: first_name, lname: last_name, dob } = values;
-        return create_user(uid, username, email, first_name, last_name, dob);
-      })
-      .then(() => {
-        navigation.navigate(SCREEN_NAMES.HOME);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage + " " + errorCode);
-      });
+  const signupwithemail = async (values) => {
+    try {
+      await storeTokens(userToken);
+      await storeUserID(userId);
+
+      dispatch(setUserID(userId));
+      const { username, fname: first_name, lname: last_name, dob } = values;
+      await create_user(userId, username, email, first_name, last_name, dob);
+
+      await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
+
+      navigation.navigate(SCREEN_NAMES.NAV_TAB);
+    } catch (error) {
+      console.log(error);
+      const errorCode = error.response.data.error.code;
+      const errorMessage = error.response.data.error.message;
+      console.log(errorMessage + " " + errorCode);
+      setError(errorCode);
+    }
   };
 
   return (
@@ -54,7 +50,7 @@ const UserInfo = () => {
       <Formik
         initialValues={{ username: "", dob: "", fname: "", lname: "" }}
         onSubmit={async (values) => {
-          await signupwithemail(email, password, values);
+          await signupwithemail(values);
         }}
       >
 
