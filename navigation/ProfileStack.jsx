@@ -53,7 +53,7 @@ const ProfileStack = () => {
             <Stack.Screen
                 name={SCREEN_NAMES.USER_PROFILE}
                 component={UserProfileScreen}
-                options={{ headerShown: false }}
+                options={{ headerShown: true }}
             />
             {/* <Stack.Screen
                 name={SCREEN_NAMES.EDIT_PROFILE}

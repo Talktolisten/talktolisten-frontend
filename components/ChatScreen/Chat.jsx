@@ -11,7 +11,7 @@ const Chat = ({ chat }) => {
       style={styles.element}
       activeOpacity={0.8}
       onPress={() =>
-        navigation.navigate("ChatStack", {
+        navigation.navigate(SCREEN_NAMES.CHAT_TAB, {
           screen: SCREEN_NAMES.MESSAGE,
           params: { bot_id: chat.bot_id1, chat_id: chat.chat_id },
         })

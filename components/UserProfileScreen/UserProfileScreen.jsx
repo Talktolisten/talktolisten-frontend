@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: "center",
+    marginTop: 10,
   },
   mainProfileContainer: {
     width: "100%",
