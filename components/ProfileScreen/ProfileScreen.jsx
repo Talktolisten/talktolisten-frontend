@@ -1,7 +1,10 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "expo-status-bar";
 import {
   Feather,
@@ -11,6 +14,8 @@ import {
 import { signOut } from "firebase/auth";
 import auth from "../../firebase";
 import { removeTokens } from "../../util/tokenUtils";
+import { defaultAvatarURL } from "../../util/constants";
+import { get_user_info } from "../../axios/user";
 
 const SettingItem = ({ type, icon, text, onPress }) => {
   const ICONCOMPONENTS = {
@@ -39,6 +44,8 @@ const SettingItem = ({ type, icon, text, onPress }) => {
 };
 
 const Profile = () => {
+  const navigation = useNavigation();
+
   async function logout() {
     removeTokens();
     signOut(auth)
@@ -50,6 +57,22 @@ const Profile = () => {
       });
   }
 
+  const userId = useSelector((state) => state.user.userID);
+
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const fetchedUserInfo = await get_user_info(userId);
+        setUserInfo(fetchedUserInfo);
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    };
+    fetchUserInfo();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={COLORS.gray} />
@@ -57,20 +80,23 @@ const Profile = () => {
       <View style={styles.profileContainer}>
         <View style={styles.mainProfileContainer}>
           <Image
-            source={require("../../assets/images/avatar.png")}
+            source={{ uri: defaultAvatarURL[0] }}
             resizeMode="contain"
             style={styles.avatar}
           />
 
-          <View style={styles.info}>
-            <Text style={styles.name}>Leo</Text>
-            <Text style={styles.username}>@leotech</Text>
-          </View>
-
+          <TouchableOpacity style={styles.info}
+            onPress={() => {
+              navigation.navigate(SCREEN_NAMES.USER_PROFILE);
+            }}
+          >
+            <Text style={styles.name}>{userInfo.first_name} {userInfo.last_name}</Text>
+            <Text style={styles.username}>@{userInfo.username}</Text>
+          </TouchableOpacity>
           <TouchableOpacity
-          // onPress={() => {
-          //   /* navigation logic here */
-          // }}
+            onPress={() => {
+              navigation.navigate(SCREEN_NAMES.USER_PROFILE);
+            }}
           >
             <Feather
               name="arrow-right"

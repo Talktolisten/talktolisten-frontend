@@ -52,12 +52,14 @@ const AuthStack = () => {
         component={LoginScreen}
         options={{ headerLeft: () => null }}
       />
-      <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
+      <Stack.Screen name={SCREEN_NAMES.SIGNUP}
+        component={SignUpScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
-      <Stack.Screen name={SCREEN_NAMES.USER_INFO} component={UserInfoScreen} />
+      <Stack.Screen name={SCREEN_NAMES.USER_INFO}
+        component={UserInfoScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.HOME}
         component={HomeStack}

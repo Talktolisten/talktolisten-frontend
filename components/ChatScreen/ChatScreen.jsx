@@ -35,7 +35,7 @@ const ChatScreen = () => {
       <View style={styles.listSection}>
         <ScrollView style={styles.elementPallet}>
           {chats.map((chat) => (
-            <Chat key={chat.id} chat={chat} />
+            <Chat key={chat.chat_id} chat={chat} />
           ))}
         </ScrollView>
       </View>

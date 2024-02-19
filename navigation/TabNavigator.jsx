@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import ProfileScreen from "../screens/Profile";
+import ProfileStack from "./ProfileStack";
 import ChatStack from "./ChatStack";
 import HomeStack from "./HomeStack";
 import IconButton from "../components/UI/IconButton";
@@ -63,7 +63,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name={"ChatStack"}
+        name={SCREEN_NAMES.CHAT_TAB}
         component={ChatStack}
         options={{
           tabBarLabel: "Chat",
@@ -72,9 +72,10 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name={SCREEN_NAMES.PROFILE}
-        component={ProfileScreen}
+        name={SCREEN_NAMES.PROFILE_TAB}
+        component={ProfileStack}
         options={{
+          tabBarLabel: "Profile",
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? "mdi:user-circle" : "mdi:user-circle-outline",

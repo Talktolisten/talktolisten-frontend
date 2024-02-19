@@ -48,16 +48,14 @@ const Explore = () => {
       let apiURL = "";
       let jsonData = [];
 
-      // Check if there's a search term, indicating a search operation.
       if (searchTerm) {
         apiURL = explore_get_bots_search(searchTerm);
       } else {
-        // If no search term, use the category to fetch data.
         apiURL = explore_get_bots_categories(activeType);
       }
 
       try {
-        jsonData = await apiURL; // Assuming your API calls return the data directly.
+        jsonData = await apiURL;
         setNewBots(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -65,7 +63,7 @@ const Explore = () => {
     };
 
     fetchData();
-  }, [searchTerm, activeType]); // Dependencies: re-run the effect when these values change.
+  }, [searchTerm, activeType]);
 
   return (
     <SafeAreaView style={styles.container}>
