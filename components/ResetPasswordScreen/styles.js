@@ -44,6 +44,7 @@ export default StyleSheet.create({
     marginLeft: 16,
   },
   inputContainer: {
+    marginVertical: 10,
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
@@ -59,7 +60,9 @@ export default StyleSheet.create({
   button: {
     borderWidth: .5,
     borderRadius: 50,
+    width: "80%",
     height: 45,
+    alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,

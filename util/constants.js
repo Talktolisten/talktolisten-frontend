@@ -40,3 +40,10 @@ export const defaultBio = [
   "Foodie exploring flavors from around the globe. 🍜",
   "Animal lover with a heart full of compassion. 🐾",
 ]
+
+export const errorCode = {
+  invalidEmail: "auth/invalid-email",
+  wrongPassword: "auth/invalid-credential",
+  weakPassword: "auth/weak-password",
+  emailExists: "auth/email-already-in-use",
+}

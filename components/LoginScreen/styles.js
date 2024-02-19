@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../styles";
+import { COLORS, FONTSIZE } from "../../styles";
 
 export default StyleSheet.create({
   container: {
@@ -29,14 +29,20 @@ export default StyleSheet.create({
   heading: {
     textAlign: "center",
     marginTop: 10,
-    fontSize: 32,
+    fontSize: FONTSIZE.xxLarge,
     color: COLORS.black,
   },
   subheading: {
     textAlign: "center",
     marginTop: 10,
-    fontSize: 15,
+    fontSize: FONTSIZE.medium,
     color: COLORS.black,
+  },
+  error: {
+    color: COLORS.red,
+    fontSize: FONTSIZE.small,
+    marginBottom: 10,
+    textAlign: "center",
   },
   input: {
     height: 50,

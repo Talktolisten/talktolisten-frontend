@@ -5,17 +5,19 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 
 import { SCREEN_NAMES } from "../../util/constants";
 import styles from "./styles";
-import { COLORS, FONT_WEIGHT } from "../../styles";
+import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import auth from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { errorHandle } from "./errorHandle";
 
-const loginwithemail = async (email, password, navigation) => {
+const loginwithemail = async (email, password, navigation, setError) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
@@ -25,11 +27,13 @@ const loginwithemail = async (email, password, navigation) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorMessage + " " + errorCode);
+      setError(errorCode);
     });
 };
 
 const Login = () => {
   const navigation = useNavigation();
+  const [error, setError] = useState(null);
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Login</Text>
@@ -37,7 +41,7 @@ const Login = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          loginwithemail(values.email, values.password, navigation);
+          loginwithemail(values.email, values.password, navigation, setError);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -85,11 +89,21 @@ const Login = () => {
               onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
             >
               <Text
-                style={{ textAlign: "right", fontWeight: FONT_WEIGHT.regular }}
+                style={{
+                  textAlign: "right",
+                  fontSize: FONTSIZE.xSmall,
+                  fontWeight: FONT_WEIGHT.regular
+                }}
               >
                 Forgot password?
               </Text>
             </TouchableOpacity>
+
+            {error && (
+              <View style={{ marginTop: 20 }}>
+                <Text style={styles.error}>{errorHandle(error)}</Text>
+              </View>
+            )}
 
             <TouchableOpacity
               onPress={handleSubmit}
@@ -123,7 +137,11 @@ const Login = () => {
         }}
         onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
       >
-        <Text style={{ textAlign: "center", fontWeight: FONT_WEIGHT.bold }}>
+        <Text style={{
+          textAlign: "center",
+          fontWeight: FONT_WEIGHT.bold,
+          fontSize: FONTSIZE.small
+        }}>
           Don't have an account? Sign up
         </Text>
       </TouchableOpacity>
