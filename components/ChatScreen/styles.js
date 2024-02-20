@@ -45,6 +45,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.white,
     shadowColor: COLORS.black,
+    marginHorizontal: 10,
   },
   infoArea: {
     flex: 3,

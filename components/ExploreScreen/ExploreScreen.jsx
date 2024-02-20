@@ -170,8 +170,9 @@ const styles = StyleSheet.create({
   },
   elementPallet: {
     marginTop: 10,
-    shadowColor: COLORS.black,
-    shadowOpacity: 0.1,
+    paddingTop: SIZES.small,
+    shadowColor: COLORS.light_black,
+    shadowOpacity: 0.9,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: COLORS.white,
     shadowColor: COLORS.black,
+    marginHorizontal: 10,
   },
   infoArea: {
     flex: 3,

@@ -5,13 +5,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 import styles from "./styles";
 import { Formik } from "formik";
-import auth from "../../firebase";
-import * as Updates from 'expo-updates';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserForm from "./UserForm";
 import { SCREEN_NAMES } from "../../util/constants";
 import { create_user } from "../../axios/user";
-import { getIdToken, getAuth } from "firebase/auth";
 import { storeTokens, storeUserID } from "../../util/tokenUtils";
 import { setUserID } from "../../redux/actions/userActions";
 

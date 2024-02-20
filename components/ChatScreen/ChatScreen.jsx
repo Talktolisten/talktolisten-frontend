@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { ScrollView, View, SafeAreaView } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
-import DynamicSearchBar from "../ExploreScreen/SearchBar";
+import DynamicSearchBar from "./SearchBar";
 import "./styles";
 import Chat from "./Chat";
 import { get_all_chats } from "./ChatGet";
