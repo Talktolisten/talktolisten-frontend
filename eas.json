@@ -1,0 +1,22 @@
+{
+  "cli": {
+    "version": ">= 7.3.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://ec2-3-14-66-196.us-east-2.compute.amazonaws.com:8000/"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
