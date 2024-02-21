@@ -26,6 +26,7 @@ import { handlePressBot } from "./CreateChat";
 
 const types = [
   "Featured",
+  "Realistic",
   "Anime Characters",
   "Game Characters",
   "Movie Characters",

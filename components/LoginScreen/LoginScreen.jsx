@@ -14,15 +14,17 @@ import { SCREEN_NAMES } from "../../util/constants";
 import styles from "./styles";
 import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import auth from "../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { errorHandle } from "./errorHandle";
 
 const loginwithemail = async (email, password, navigation, setError) => {
   signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
+      await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
     })
-    .then(() => navigation.navigate(SCREEN_NAMES.HOME))
+    .then(() => navigation.navigate(SCREEN_NAMES.NAV_TAB))
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;

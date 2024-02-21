@@ -66,7 +66,7 @@ const AuthStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.NAV_TAB}
         component={TabNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, headerLeft: () => null }}
       />
     </Stack.Navigator>
   );
