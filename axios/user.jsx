@@ -5,7 +5,6 @@ export const get_user_info = async (user_id) => {
     method: "GET",
     url: `api/v1/user/${user_id}`,
   }).then((res) => {
-    console.log("get_user_info", res.data);
     return res.data;
   });
 };

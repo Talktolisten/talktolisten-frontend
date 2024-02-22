@@ -55,6 +55,7 @@ const Nav = () => {
           setIsLoggedIn(false);
         } else {
           const token = await user.getIdToken();
+          console.log("Token: ", token);
           const { accessToken } = user.stsTokenManager;
           await storeTokens(accessToken);
           await storeUserID(user.uid);

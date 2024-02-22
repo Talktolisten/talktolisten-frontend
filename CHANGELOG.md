@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2024-02-23
+Release again on App Store and First Release on Android
+
+### Fixed
+
+- Fixed cannot find user token when log in
+
 ## [1.0.0] - 2024-02-22
 
 First release of the app.

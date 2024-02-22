@@ -6,9 +6,12 @@ import {
   TextInput,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
+import { storeTokens, storeUserID } from "../../util/tokenUtils.js"
+import { setUserID } from "../../redux/actions/userActions";
 
 import { SCREEN_NAMES } from "../../util/constants";
 import styles from "./styles";
@@ -18,10 +21,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { errorHandle } from "./errorHandle";
 
-const loginwithemail = async (email, password, navigation, setError) => {
+const loginwithemail = async (email, password, navigation, setError, dispatch) => {
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
+
+      const { accessToken } = user.stsTokenManager;
+      await storeTokens(accessToken);
+      await storeUserID(user.uid);
+      dispatch(setUserID(user.uid));
       await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
     })
     .then(() => navigation.navigate(SCREEN_NAMES.NAV_TAB))
@@ -35,6 +43,7 @@ const loginwithemail = async (email, password, navigation, setError) => {
 
 const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +52,7 @@ const Login = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          loginwithemail(values.email, values.password, navigation, setError);
+          loginwithemail(values.email, values.password, navigation, setError, dispatch);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (

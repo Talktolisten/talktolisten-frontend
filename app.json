@@ -2,7 +2,7 @@
   "expo": {
     "name": "Talk To Listen",
     "slug": "talk-to-listen",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
@@ -16,13 +16,15 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "developmentTarget": "17.0",
       "bundleIdentifier": "com.hieu65.talktolisten"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hieu65.talktolisten"
     },
     "web": {
       "favicon": "./assets/favicon.png"
