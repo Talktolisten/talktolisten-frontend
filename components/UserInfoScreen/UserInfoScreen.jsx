@@ -18,7 +18,6 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const { email, userId, userToken } = route.params || {};
-  console.log(email, userId, userToken);
 
   const signupwithemail = async (values) => {
     try {

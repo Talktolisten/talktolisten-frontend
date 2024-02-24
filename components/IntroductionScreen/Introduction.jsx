@@ -43,7 +43,7 @@ const Introduction = ({ setViewedOnboarding }) => {
         await AsyncStorage.setItem("@viewedOnboarding", "true");
         setViewedOnboarding(true);
       } catch (err) {
-        Alert.alert("Error", "Please restart the application.");
+        Alert.alert("Error", "Please restart the application. Cannot onboard", err);
       }
     }
   };

@@ -1,8 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2024-02-24
+
+## Added
+- Add debug error to fix the onboarding process of iPad
+
 ## [1.0.1] - 2024-02-23
 Release again on App Store and First Release on Android
+
+### Info
+- Commit: 636415d
+- Build ID: dd369fa5-28c1-4c1f-aeba-ef8303fd4d0a
 
 ### Fixed
 
