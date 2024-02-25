@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2024-02-24
+
+## Fixed
+- Fix error by installing react-native-svg and react-native-screen, react-native-saft-area-view
+
 ## [1.0.2] - 2024-02-24
 
 ## Added
