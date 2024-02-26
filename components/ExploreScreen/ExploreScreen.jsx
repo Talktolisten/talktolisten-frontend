@@ -18,7 +18,6 @@ import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "react-native";
 
 import {
-  explore_get_bots,
   explore_get_bots_categories,
   explore_get_bots_search,
 } from "./ExploreRequest";
@@ -46,18 +45,16 @@ const Explore = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let apiURL = "";
-      let jsonData = [];
+      let botInfo = "";
 
       if (searchTerm) {
-        apiURL = explore_get_bots_search(searchTerm);
+        botInfo = await explore_get_bots_search(searchTerm);
       } else {
-        apiURL = explore_get_bots_categories(activeType);
+        botInfo = await explore_get_bots_categories(activeType);
       }
 
       try {
-        jsonData = await apiURL;
-        setNewBots(jsonData);
+        setNewBots(botInfo);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,10 +63,19 @@ const Explore = () => {
     fetchData();
   }, [searchTerm, activeType]);
 
+  const handleChangeText = (text) => {
+    setSearchTerm(text);
+  };
+
+  const handleClearPress = () => {
+    setSearchTerm("");
+    setActiveType("Featured");
+  }
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
       <SafeAreaView style={styles.container}>
-        <DynamicSearchBar />
+        <DynamicSearchBar onChangeText={handleChangeText} onClearPress={handleClearPress} />
         <View style={styles.tabsContainer}>
           <FlatList
             data={types}

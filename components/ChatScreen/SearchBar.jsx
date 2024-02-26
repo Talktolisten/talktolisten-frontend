@@ -10,10 +10,7 @@ const DynamicSearchBar = () => {
       cancelIconColor={COLORS.black}
       backgroundColor={COLORS.white}
       placeholder="Search Character ..."
-      onChangeText={(text) => this.filterList(text)}
-      onSearchPress={() => console.log("Search Character ...")}
-      onClearPress={() => this.filterList("")}
-      onPress={() => alert("onPress")}
+    // onChangeText={console.log("SearchBar onChangeText")}
     />
   );
 };

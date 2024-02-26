@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import SearchBar from "react-native-dynamic-search-bar";
 import { COLORS } from "../../styles";
 
-const DynamicSearchBar = () => {
+const DynamicSearchBar = ({ onChangeText, onClearPress }) => {
   return (
     <SearchBar
       fontColor={COLORS.black}
@@ -10,10 +11,8 @@ const DynamicSearchBar = () => {
       cancelIconColor={COLORS.black}
       backgroundColor={COLORS.white}
       placeholder="Search Character, User, ..."
-      onChangeText={(text) => this.filterList(text)}
-      onSearchPress={() => console.log("Search Character, User, ...")}
-      onClearPress={() => this.filterList("")}
-      onPress={() => alert("onPress")}
+      onChangeText={onChangeText}
+      onClearPress={onClearPress}
     />
   );
 };

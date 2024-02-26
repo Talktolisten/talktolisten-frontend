@@ -1,15 +1,6 @@
 import Api from '../../axios/api';
 import { getUserID } from '../../util/tokenUtils';
 
-export const explore_get_bots = async () => {
-    return await Api({
-        method: 'GET',
-        url: 'api/v1/explore/',
-    }).then(res => {
-        return res.data;
-    });
-};
-
 export const explore_get_bots_categories = async (category) => {
     return await Api({
         method: 'GET',
