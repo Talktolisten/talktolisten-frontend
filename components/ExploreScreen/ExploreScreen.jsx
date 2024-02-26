@@ -67,44 +67,44 @@ const Explore = () => {
   }, [searchTerm, activeType]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <DynamicSearchBar />
-      <View style={styles.tabsContainer}>
-        <FlatList
-          data={types}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeType, item)}
-              onPress={() => {
-                setActiveType(item);
-              }}
-            >
-              <Text style={styles.tabText(activeType, item)}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ columnGap: SIZES.small }}
-          horizontal
-        />
-      </View>
-
-      <View style={styles.listSection}>
-        <ScrollView style={styles.elementPallet}>
-          {newBots.map((bot) => {
-            return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+      <SafeAreaView style={styles.container}>
+        <DynamicSearchBar />
+        <View style={styles.tabsContainer}>
+          <FlatList
+            data={types}
+            renderItem={({ item }) => (
               <TouchableOpacity
-                style={styles.element}
-                key={bot.bot_id}
-                activeOpacity={0.8}
+                style={styles.tab(activeType, item)}
                 onPress={() => {
-                  handlePressBot(bot.bot_id, navigation);
+                  setActiveType(item);
                 }}
               >
-                <View style={styles.infoArea}>
-                  <Text style={styles.infoTitle}>{bot.bot_name}</Text>
-                  <Text style={styles.infoSub}>{bot.short_description}</Text>
-                  <View style={styles.inforMoreContainer}>
-                    <Text style={styles.infoMore}>
+                <Text style={styles.tabText(activeType, item)}>{item}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item}
+            contentContainerStyle={{ columnGap: SIZES.small }}
+            horizontal
+          />
+        </View>
+
+        <View style={styles.listSection}>
+          <ScrollView style={styles.elementPallet}>
+            {newBots.map((bot) => {
+              return (
+                <TouchableOpacity
+                  style={styles.element}
+                  key={bot.bot_id}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    handlePressBot(bot.bot_id, navigation);
+                  }}
+                >
+                  <View style={styles.infoArea}>
+                    <Text style={styles.infoTitle}>{bot.bot_name}</Text>
+                    <Text style={styles.infoSub}>{bot.short_description}</Text>
+                    <View style={styles.inforMoreContainer}>
                       <View style={styles.infoChat}>
                         <Ionicons
                           name="chatbubble-ellipses-outline"
@@ -123,22 +123,22 @@ const Explore = () => {
                         />
                         <Text>{bot.likes}</Text>
                       </View>
-                    </Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.imageArea}>
-                  <Image
-                    source={{ uri: bot.profile_picture }}
-                    resizeMode="cover"
-                    style={styles.botImage}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+                  <View style={styles.imageArea}>
+                    <Image
+                      source={{ uri: bot.profile_picture }}
+                      resizeMode="cover"
+                      style={styles.botImage}
+                    />
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight + 16,
+    backgroundColor: COLORS.grey,
   },
   searchBar: {
     marginBottom: 12.5,
@@ -172,12 +173,6 @@ const styles = StyleSheet.create({
   elementPallet: {
     marginTop: 10,
     paddingTop: SIZES.small,
-    shadowColor: COLORS.light_black,
-    shadowOpacity: 0.9,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
     marginLeft: 10,
     marginRight: 10,
   },
@@ -187,26 +182,26 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     backgroundColor: COLORS.white,
-    shadowColor: COLORS.black,
     marginHorizontal: 10,
   },
   infoArea: {
     flex: 3,
     justifyContent: "space-between",
+    marginRight: 10,
   },
   infoTitle: {
     fontSize: FONTSIZE.medium,
     fontWeight: FONT_WEIGHT.bold,
+    marginBottom: 5
   },
   infoSub: {
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
   },
   inforMoreContainer: {
     flex: 1,
     justifyContent: "flex-start",
+    flexDirection: "row",
     marginTop: 10,
-  },
-  infoMore: {
     fontSize: FONTSIZE.xSmall,
   },
   infoChat: {

@@ -46,117 +46,119 @@ const Login = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Login</Text>
-      <Text style={styles.subheading}>Let's talk</Text>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => {
-          loginwithemail(values.email, values.password, navigation, setError, dispatch);
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={{ marginTop: 29 }}>
-            <View style={styles.inputContainer}>
-              <Ionicons
-                name="person-outline"
-                size={24}
-                color={COLORS.black}
-                style={styles.inputIcon}
-              />
-              <TextInput
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                placeholder="Email"
-                style={styles.input}
-              />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <AntDesign
-                name="lock1"
-                size={24}
-                color={COLORS.black}
-                style={styles.inputIcon}
-              />
-              <TextInput
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                placeholder="Password"
-                style={styles.input}
-                secureTextEntry={true}
-              />
-            </View>
-
-            <TouchableOpacity
-              style={{
-                width: "95%",
-                fontWeight: FONT_WEIGHT.bold,
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-              onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
-            >
-              <Text
-                style={{
-                  textAlign: "right",
-                  fontSize: FONTSIZE.xSmall,
-                  fontWeight: FONT_WEIGHT.regular
-                }}
-              >
-                Forgot password?
-              </Text>
-            </TouchableOpacity>
-
-            {error && (
-              <View style={{ marginTop: 20 }}>
-                <Text style={styles.error}>{errorHandle(error)}</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.heading}>Login</Text>
+        <Text style={styles.subheading}>Let's talk</Text>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={(values) => {
+            loginwithemail(values.email, values.password, navigation, setError, dispatch);
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View style={{ marginTop: 29 }}>
+              <View style={styles.inputContainer}>
+                <Ionicons
+                  name="person-outline"
+                  size={24}
+                  color={COLORS.black}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                  placeholder="Email"
+                  style={styles.input}
+                />
               </View>
-            )}
 
-            <TouchableOpacity
-              onPress={handleSubmit}
-              style={[styles.button, { backgroundColor: COLORS.blue }]}
-            >
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+              <View style={styles.inputContainer}>
+                <AntDesign
+                  name="lock1"
+                  size={24}
+                  color={COLORS.black}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                  placeholder="Password"
+                  style={styles.input}
+                  secureTextEntry={true}
+                />
+              </View>
 
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: COLORS.black }]}
-      >
-        <Text style={styles.buttonText}>Log in using Apple ID</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: COLORS.white }]}
-      >
-        <Text style={[styles.buttonText, { color: COLORS.black }]}>
-          Log in using Google
-        </Text>
-      </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: "95%",
+                  fontWeight: FONT_WEIGHT.bold,
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+                onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
+              >
+                <Text
+                  style={{
+                    textAlign: "right",
+                    fontSize: FONTSIZE.xSmall,
+                    fontWeight: FONT_WEIGHT.regular
+                  }}
+                >
+                  Forgot password?
+                </Text>
+              </TouchableOpacity>
 
-      <TouchableOpacity
-        style={{
-          marginTop: 30,
-          fontWeight: FONT_WEIGHT.bold,
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-        onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
-      >
-        <Text style={{
-          textAlign: "center",
-          fontWeight: FONT_WEIGHT.bold,
-          fontSize: FONTSIZE.small
-        }}>
-          Don't have an account? Sign up
-        </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+              {error && (
+                <View style={{ marginTop: 20 }}>
+                  <Text style={styles.error}>{errorHandle(error)}</Text>
+                </View>
+              )}
+
+              <TouchableOpacity
+                onPress={handleSubmit}
+                style={[styles.button, { backgroundColor: COLORS.blue }]}
+              >
+                <Text style={styles.buttonText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: COLORS.black }]}
+        >
+          <Text style={styles.buttonText}>Log in using Apple ID</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: COLORS.white }]}
+        >
+          <Text style={[styles.buttonText, { color: COLORS.black }]}>
+            Log in using Google
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            marginTop: 30,
+            fontWeight: FONT_WEIGHT.bold,
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+          onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
+        >
+          <Text style={{
+            textAlign: "center",
+            fontWeight: FONT_WEIGHT.bold,
+            fontSize: FONTSIZE.small
+          }}>
+            Don't have an account? Sign up
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </View>
   );
 };
 

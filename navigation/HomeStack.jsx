@@ -58,11 +58,11 @@ const HomeStack = () => {
       />
       <Stack.Screen name={SCREEN_NAMES.MESSAGE}
         component={MessageScreen}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, headerTitle: "Message" }}
       />
       <Stack.Screen name={SCREEN_NAMES.VOICE}
         component={VoiceScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { GiftedChat, Send, MessageText } from "react-native-gifted-chat";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { getIcon } from "../Icons";
 import { COLORS } from "../../styles";
@@ -30,6 +30,15 @@ const MessageScreen = () => {
   const { bot_id, chat_id } = route.params;
   const [botInfo, setBotInfo] = useState(null);
   const [messages, setMessages] = useState([]);
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    if (botInfo && botInfo.bot_name) {
+      navigation.setOptions({
+        headerTitle: botInfo.bot_name
+      });
+    }
+  }, [botInfo, navigation]);
 
   useEffect(() => {
     const fetchBotInfo = async () => {
@@ -125,7 +134,7 @@ const MessageScreen = () => {
         user={{
           _id: 1,
         }}
-        minInputToolbarHeight={50}
+        minInputToolbarHeight={60}
         renderBubble={renderBubble}
         renderSystemMessage={renderSystemMessage}
         renderMessage={renderMessage}
@@ -142,6 +151,7 @@ const MessageScreen = () => {
         renderTime={renderTime}
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
+        messagesContainerStyle={styles.messageContainer}
       />
     </SafeAreaView>
   );
@@ -152,5 +162,10 @@ export default MessageScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
+  messageContainer: {
+    backgroundColor: COLORS.white,
+    marginLeft: 10,
+  }
 });

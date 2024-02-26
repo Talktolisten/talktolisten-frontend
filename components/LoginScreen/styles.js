@@ -14,7 +14,7 @@ export default StyleSheet.create({
   exerciseBox: {
     width: 125,
     height: 125,
-    backgroundColor: COLORS.beige,
+    backgroundColor: COLORS.white,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",

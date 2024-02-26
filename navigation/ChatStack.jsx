@@ -52,11 +52,11 @@ const ChatStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.MESSAGE}
         component={MessageScreen}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, headerTitle: "Message" }}
       />
-      <Stack.Screen name={SCREEN_NAMES.VOICE} 
-      component={VoiceScreen}
-      options={{ headerShown: false }} 
+      <Stack.Screen name={SCREEN_NAMES.VOICE}
+        component={VoiceScreen}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );

@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, Button } from "react-native";
-import React, { useRef, useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar } from "react-native";
+import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio } from "expo-av";
@@ -26,6 +26,14 @@ const Voice = () => {
   const [isBotTalking, setIsBotTalking] = useState(false);
 
   useAnimation(isUserTalking || isBotTalking, scaleValue1, scaleValue2);
+
+  useLayoutEffect(() => {
+    if (botInfo && botInfo.bot_name) {
+      navigation.setOptions({
+        headerTitle: botInfo.bot_name
+      });
+    }
+  }, [botInfo, navigation]);
 
   const playBase64Audio = async (base64String) => {
     const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
@@ -107,7 +115,6 @@ const Voice = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 40 }}>{botInfo.bot_name}</Text>
       <Text style={{ fontSize: 14, paddingHorizontal: 20, marginTop: 15 }}>
         {botInfo.description}
       </Text>
@@ -146,9 +153,6 @@ const Voice = () => {
           {buttonRecording === 'Start' ? 'Listening...' : ''}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}>
-        <Text style={styles.buttonText}>Exit</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -156,21 +160,22 @@ const Voice = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight + SIZES.xLarge + 20,
     backgroundColor: COLORS.white,
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
   imageArea: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -20,
   },
   imageItem: {
     width: 300,
     height: 300,
     borderRadius: 150,
-    position: 'absolute',
   },
   circle: {
     borderColor: 'blue',
@@ -181,30 +186,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 120,
   },
   buttonRecording: {
     color: COLORS.black,
     fontSize: FONTSIZE.medium,
     fontWeight: FONT_WEIGHT.bold,
-    marginTop: 10,
+    marginTop: 10
   },
   image: {
     width: 70,
     height: 70,
-  },
-  button: {
-    width: 100,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: "red",
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: "white",
-    fontSize: FONTSIZE.medium,
-    fontWeight: FONT_WEIGHT.bold,
   }
 });
 

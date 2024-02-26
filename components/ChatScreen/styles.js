@@ -4,6 +4,7 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight + 16,
+    backgroundColor: COLORS.white,
   },
   searchBar: {
     marginBottom: 12.5,
@@ -25,39 +26,33 @@ export default styles = StyleSheet.create({
     color: activeType === item ? COLORS.white : COLORS.black,
   }),
   listSection: {
+    marginTop: SIZES.medium,
     flex: 1,
   },
   elementPallet: {
     marginTop: 10,
-    shadowColor: COLORS.black,
-    shadowOpacity: 0.1,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    marginLeft: 10,
-    marginRight: 10,
+    marginHorizontal: SIZES.small
   },
   element: {
     flexDirection: "row",
-    marginBottom: 10,
-    padding: 8,
+    padding: SIZES.medium,
     alignItems: "center",
     backgroundColor: COLORS.white,
-    shadowColor: COLORS.black,
-    marginHorizontal: 10,
+    marginLeft: 5,
+    marginBottom: SIZES.xSmall
   },
   infoArea: {
     flex: 3,
-    margin: 10,
+    marginLeft: SIZES.medium,
   },
   infoTitle: {
     fontSize: FONTSIZE.medium,
     fontWeight: FONT_WEIGHT.bold,
   },
   infoSub: {
-    marginTop: 5,
-    fontSize: FONTSIZE.small,
+    marginTop: SIZES.xSmall,
+    fontSize: FONTSIZE.xSmall,
+    color: COLORS.light_black
   },
   inforMoreContainer: {
     flex: 1,
@@ -81,11 +76,11 @@ export default styles = StyleSheet.create({
   },
   imageArea: {
     flex: 1,
-    height: 90,
+    height: 80,
   },
   botImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 50,
+    borderRadius: 40,
   },
 });
