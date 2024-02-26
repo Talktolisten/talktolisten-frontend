@@ -16,8 +16,8 @@ const Voice = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [buttonRecording, setButtonRecording] = useState("Start");
-  const {botInfo, chat_id} = route.params;
+  const { botInfo, chat_id } = route.params;
+  const [buttonRecording, setButtonRecording] = useState("Stop");
 
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [recording, setRecording] = useState(null);
@@ -27,6 +27,21 @@ const Voice = () => {
 
   useAnimation(isUserTalking || isBotTalking, scaleValue1, scaleValue2);
 
+  const playBase64Audio = async (base64String) => {
+    const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
+
+    try {
+      await FileSystem.writeAsStringAsync(fileUri, base64String, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const { sound } = await Audio.Sound.createAsync({ uri: fileUri });
+
+      await sound.playAsync();
+    } catch (error) {
+      console.error('Error playing Base64 audio:', error);
+    }
+  };
 
   async function startRecording() {
     try {
@@ -40,8 +55,7 @@ const Voice = () => {
       });
 
       console.log('Starting recording..');
-      // setIsUserTalking(true);
-      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
       setRecording(recording);
       console.log('Recording started');
@@ -49,28 +63,6 @@ const Voice = () => {
       console.error('Failed to start recording', err);
     }
   }
-
-
-  const playBase64Audio = async (base64String) => {
-    // Define the file URI where the audio will be written
-    const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
-  
-    try {
-      // Write the Base64 string to a file
-      await FileSystem.writeAsStringAsync(fileUri, base64String, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-  
-      // Load the audio file into the player
-      const { sound } = await Audio.Sound.createAsync({ uri: fileUri });
-  
-      // Play the audio file
-      await sound.playAsync();
-    } catch (error) {
-      console.error('Error playing Base64 audio:', error);
-    }
-  };
-
 
   async function stopRecording() {
     console.log('Stopping recording..');
@@ -83,15 +75,22 @@ const Voice = () => {
     );
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
-    // setIsUserTalking(false);
-    setIsBotTalking(true);
     const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: "base64" });
     try {
       const response = await voice_talk(chat_id, botInfo.bot_id, base64Audio);
-      await playBase64Audio(response.response);
-      setIsBotTalking(false);
+      if (response.is_response) {
+        playBase64Audio(response.response);
+        setIsBotTalking(true);
+        setIsUserTalking(false);
+      } else {
+        if (response.user_speaking) {
+          setIsUserTalking(true);
+        } else {
+          setIsUserTalking(false);
+        }
+      }
     } catch (error) {
-      console.error('Error uploading audio:', error);
+      console.error('Error sending audio:', error);
       throw error;
     }
   }
@@ -99,17 +98,17 @@ const Voice = () => {
   const handleButtonPress = () => {
     if (buttonRecording === "Start") {
       setButtonRecording("Stop");
-      startRecording();
+      stopRecording();
     } else {
       setButtonRecording("Start");
-      stopRecording();
+      startRecording();
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 40}}>{botInfo.bot_name}</Text>
-      <Text style={{fontSize: 14, paddingHorizontal: 20, marginTop: 15}}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 40 }}>{botInfo.bot_name}</Text>
+      <Text style={{ fontSize: 14, paddingHorizontal: 20, marginTop: 15 }}>
         {botInfo.description}
       </Text>
       <View style={styles.imageArea}>
@@ -135,16 +134,16 @@ const Voice = () => {
             },
           ]}
         />
-        <Image source={{uri: botInfo.profile_picture }} style={styles.imageItem} />
+        <Image source={{ uri: botInfo.profile_picture }} style={styles.imageItem} />
       </View>
       <TouchableOpacity style={styles.buttonRecordingContainer} onPress={handleButtonPress}>
         {buttonRecording === 'Start' ? (
-          <Image source={voiceEnd} style={styles.image} />
-        ) : (
           <Image source={voiceStart} style={styles.image} />
+        ) : (
+          <Image source={voiceEnd} style={styles.image} />
         )}
         <Text style={styles.buttonRecording}>
-          {buttonRecording === 'Start' ? 'Stopped' : 'Listening...'}
+          {buttonRecording === 'Start' ? 'Listening...' : ''}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}>
