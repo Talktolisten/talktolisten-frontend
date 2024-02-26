@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2024-02-26
+
+## Added
+- Update UI for explore, sign up/login, message, chat, voice screen.
+- Add search functionality for explore page.
+
 ## [1.0.3] - 2024-02-24
 
 ## Fixed
