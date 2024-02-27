@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2024-02-26
+
+## Added
+- Update Profile functions: Theme, Notification, About.
+
 ## [1.1.0] - 2024-02-26
 
 ## Added
