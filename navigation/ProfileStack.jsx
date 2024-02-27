@@ -5,6 +5,9 @@ import ProfileScreen from "../screens/Profile";
 import UserProfileScreen from "../screens/UserProfile";
 import EditProfileScreen from "../screens/EditProfile";
 import SettingsScreen from "../screens/Settings";
+import ThemeSettingScreen from "../screens/ThemeSetting";
+import NotificationScreen from "../screens/Notification";
+import AboutScreen from "../screens/About";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
@@ -53,6 +56,21 @@ const ProfileStack = () => {
             <Stack.Screen
                 name={SCREEN_NAMES.USER_PROFILE}
                 component={UserProfileScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.THEME_SETTING}
+                component={ThemeSettingScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.NOTIFICATION}
+                component={NotificationScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.ABOUT_US}
+                component={AboutScreen}
                 options={{ headerShown: true }}
             />
             {/* <Stack.Screen

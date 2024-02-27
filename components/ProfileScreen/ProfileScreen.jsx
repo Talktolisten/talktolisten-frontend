@@ -109,12 +109,11 @@ const Profile = () => {
       </View>
 
       <View style={styles.settingList}>
-        <SettingItem
+        {/* <SettingItem
           type="Feather"
           icon="play-circle"
           text="Subscription"
           onPress={() => {
-            /* navigation logic here */
           }}
         />
         <SettingItem
@@ -122,7 +121,6 @@ const Profile = () => {
           icon="mode-edit"
           text="Edit Profile"
           onPress={() => {
-            /* navigation logic here */
           }}
         />
         <SettingItem
@@ -130,31 +128,29 @@ const Profile = () => {
           icon="settings"
           text="Settings"
           onPress={() => {
-            /* navigation logic here */
           }}
-        />
+        /> */}
         <SettingItem
           type="MaterialCommunityIcons"
           icon="theme-light-dark"
           text="Theme"
           onPress={() => {
-            /* navigation logic here */
+            navigation.navigate(SCREEN_NAMES.THEME_SETTING);
           }}
         />
-        <SettingItem
+        {/* <SettingItem
           type="MaterialIcons"
           icon="language"
           text="Language"
           onPress={() => {
-            /* navigation logic here */
           }}
-        />
+        /> */}
         <SettingItem
           type="MaterialIcons"
           icon="notifications-on"
           text="Notifications"
           onPress={() => {
-            /* navigation logic here */
+            navigation.navigate(SCREEN_NAMES.NOTIFICATION);
           }}
         />
         <SettingItem
@@ -162,7 +158,7 @@ const Profile = () => {
           icon="information-outline"
           text="About us"
           onPress={() => {
-            /* navigation logic here */
+            navigation.navigate(SCREEN_NAMES.ABOUT_US);
           }}
         />
         <TouchableOpacity

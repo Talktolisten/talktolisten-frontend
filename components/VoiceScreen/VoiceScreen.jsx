@@ -150,7 +150,7 @@ const Voice = () => {
           <Image source={voiceEnd} style={styles.image} />
         )}
         <Text style={styles.buttonRecording}>
-          {buttonRecording === 'Start' ? 'Listening...' : ''}
+          {buttonRecording === 'Start' ? 'Listening... Tap to Stop' : ''}
         </Text>
       </TouchableOpacity>
     </SafeAreaView>
