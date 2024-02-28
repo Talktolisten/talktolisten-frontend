@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTSIZE } from "../../styles";
+import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 export default StyleSheet.create({
   container: {
@@ -28,8 +28,9 @@ export default StyleSheet.create({
   },
   heading: {
     textAlign: "center",
-    marginTop: 10,
-    fontSize: 32,
+    marginTop: 20,
+    fontSize: FONTSIZE.xxLarge,
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.black,
   },
   subheading: {
@@ -47,8 +48,6 @@ export default StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 8,
-    borderWidth: 1,
-    borderColor: COLORS.black,
     borderRadius: 4,
     fontSize: 18,
     backgroundColor: COLORS.white,
@@ -71,7 +70,7 @@ export default StyleSheet.create({
   },
   button: {
     borderWidth: .5,
-    borderRadius: 50,
+    borderRadius: 15,
     height: 45,
     alignItems: "center",
     justifyContent: "center",
@@ -79,6 +78,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 18,
+    fontWeight: FONT_WEIGHT.medium,
+    fontSize: FONTSIZE.medium,
   },
 });

@@ -51,4 +51,5 @@ export const errorCode = {
   weakPassword: "auth/weak-password",
   emailExists: "auth/email-already-in-use",
   missingPassword: "auth/missing-password",
+  requiresRecentLogin: "auth/requires-recent-login",
 }

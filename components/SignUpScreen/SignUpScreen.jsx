@@ -4,19 +4,19 @@ import {
   View,
   Text,
   SafeAreaView,
-  TextInput,
   TouchableOpacity,
+  Alert
 } from "react-native";
 
 import styles from "./styles";
-
+import { TextInput } from 'react-native-paper';
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import auth from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getIdToken, getAuth } from "firebase/auth";
+import { getIdToken, getAuth, sendEmailVerification } from "firebase/auth";
 import { errorHandle } from "../LoginScreen/errorHandle";
 import { COLORS } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
@@ -25,7 +25,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const SignUp = () => {
   const navigation = useNavigation();
   const [error, setError] = useState(null);
-  const route = useRoute();
+  const [waitingEmailVerification, setWaitingEmailVerification] = useState(false);
 
   async function fetchToken() {
     const auth = getAuth();
@@ -36,8 +36,7 @@ const SignUp = () => {
   const handleSignUp = async (email, password) => {
 
     await AsyncStorage.setItem('@SignUpProcess', 'INCOMPLETE');
-
-    createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password, emailVerified = true)
       .then(async (userCredential) => {
         const uid = userCredential.user.uid;
         const token = await fetchToken();
@@ -67,7 +66,11 @@ const SignUp = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
-            handleSignUp(values.email, values.password);
+            if (waitingEmailVerification) {
+              checkEmailVerification();
+            } else {
+              handleSignUp(values.email, values.password);
+            }
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -85,6 +88,8 @@ const SignUp = () => {
                   value={values.email}
                   placeholder="Email"
                   style={styles.input}
+                  mode="outlined"
+                  label={"Email"}
                 />
               </View>
 
@@ -102,6 +107,8 @@ const SignUp = () => {
                   placeholder="Password"
                   style={styles.input}
                   secureTextEntry={true}
+                  mode="outlined"
+                  label={"Password"}
                 />
               </View>
 

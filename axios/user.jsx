@@ -1,4 +1,5 @@
 import Api from "./api";
+import { getAuth, deleteUser } from "firebase/auth";
 
 export const get_user_info = async (user_id) => {
   return await Api({
@@ -33,4 +34,29 @@ export const create_user = async (
   }).then((res) => {
     return res.data;
   });
+};
+
+export const delete_user = async (user_id) => {
+  return await Api({
+    method: "DELETE",
+    url: `api/v1/user/${user_id}`,
+  }).then((res) => {
+    return res.data;
+  });
+};
+
+export const deleteAccount = async (user_id) => {
+  try {
+    const auth = getAuth();
+    await deleteUser(auth.currentUser).then(() => {
+      console.log('Successfully deleted user from Firebase');
+    });
+
+    await delete_user(user_id).then(() => {
+      console.log('Successfully deleted user from backend');
+    });
+
+  } catch (error) {
+    console.error('Error deleting user:', error);
+  }
 };

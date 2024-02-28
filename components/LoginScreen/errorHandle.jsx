@@ -16,4 +16,7 @@ export const errorHandle = (eCode) => {
     else if (eCode === errorCode.missingPassword) {
         return "Please enter your password"
     }
+    else if (eCode === errorCode.requiresRecentLogin) {
+        return "Please verify your email"
+    }
 }

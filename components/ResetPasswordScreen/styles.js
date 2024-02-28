@@ -35,8 +35,6 @@ export default StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 8,
-    borderWidth: 1,
-    borderColor: COLORS.black,
     borderRadius: 4,
     fontSize: 18,
     backgroundColor: COLORS.white,

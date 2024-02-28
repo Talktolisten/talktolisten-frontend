@@ -2,12 +2,15 @@ import {
   Text,
   View,
   SafeAreaView,
+  ImageBackground,
   TouchableOpacity,
-  TextInput,
+  Image,
+  Animated
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { TextInput } from 'react-native-paper';
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { storeTokens, storeUserID } from "../../util/tokenUtils.js"
@@ -20,6 +23,9 @@ import auth from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { errorHandle } from "./errorHandle";
+import loginBackground from "../../assets/auth/login_background.jpg";
+import robotImage1 from "../../assets/auth/robot1.png";
+import robotImage2 from "../../assets/auth/robot2.png";
 
 const loginwithemail = async (email, password, navigation, setError, dispatch) => {
   signInWithEmailAndPassword(auth, email, password)
@@ -45,11 +51,46 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
+
+  const fadeAnim1 = useRef(new Animated.Value(0)).current;
+  const fadeAnim2 = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim1, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+
+    Animated.timing(fadeAnim2, {
+      toValue: 1,
+      duration: 2000,
+      delay: 1000, // delay the second animation
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+      <View style={styles.loginBackgroundContainer}>
+        <ImageBackground
+          source={loginBackground}
+          style={styles.loginBackground}
+        >
+          <Text style={styles.heading}>Welcome to Talk To Listen</Text>
+          <Text style={styles.subheading}>Let's talk</Text>
+          <Animated.Image
+            source={robotImage1}
+            style={{ ...styles.robotImage1, opacity: fadeAnim1 }}
+          />
+          <Animated.Image
+            source={robotImage2}
+            style={{ ...styles.robotImage2, opacity: fadeAnim2 }}
+          />
+        </ImageBackground>
+      </View>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Login</Text>
-        <Text style={styles.subheading}>Let's talk</Text>
+        <Text style={styles.loginHeading}>Login</Text>
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
@@ -71,6 +112,8 @@ const Login = () => {
                   value={values.email}
                   placeholder="Email"
                   style={styles.input}
+                  mode="outlined"
+                  label={"Email"}
                 />
               </View>
 
@@ -88,6 +131,8 @@ const Login = () => {
                   placeholder="Password"
                   style={styles.input}
                   secureTextEntry={true}
+                  mode="outlined"
+                  label={"Password"}
                 />
               </View>
 
@@ -121,13 +166,13 @@ const Login = () => {
                 onPress={handleSubmit}
                 style={[styles.button, { backgroundColor: COLORS.blue }]}
               >
-                <Text style={styles.buttonText}>Submit</Text>
+                <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
             </View>
           )}
         </Formik>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.button, { backgroundColor: COLORS.black }]}
         >
           <Text style={styles.buttonText}>Log in using Apple ID</Text>
@@ -138,7 +183,7 @@ const Login = () => {
           <Text style={[styles.buttonText, { color: COLORS.black }]}>
             Log in using Google
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={{

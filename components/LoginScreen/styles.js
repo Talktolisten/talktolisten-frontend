@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTSIZE } from "../../styles";
+import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { Dimensions } from "react-native";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   container: {
@@ -22,21 +26,64 @@ export default StyleSheet.create({
   moodButtonPressed: {
     opacity: 0.9,
   },
-  image: {
-    width: 75,
-    height: 75,
+  loginBackgroundContainer: {
+    borderRadius: 10,
+    flex: 1,
+    width: "100%", 
+    justifyContent: "center",
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  loginBackground: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   heading: {
     textAlign: "center",
     marginTop: 10,
     fontSize: FONTSIZE.xxLarge,
-    color: COLORS.black,
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHT.bold,
   },
   subheading: {
     textAlign: "center",
-    marginTop: 10,
-    fontSize: FONTSIZE.medium,
+    marginTop: 20,
+    fontSize: FONTSIZE.xLarge,
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHT.bold,
+  },
+  loginHeading: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: FONTSIZE.xxLarge,
     color: COLORS.black,
+    fontWeight: FONT_WEIGHT.bold,
+  },
+  robotImage1: {
+    position: 'absolute',
+    bottom: -windowHeight * 0.1, 
+    right: windowWidth * 0.5,
+    width: windowWidth * 0.75, 
+    height: windowWidth * 0.75, 
+    resizeMode: 'contain',
+    transform: [{ rotate: '30deg' }],
+  },
+  robotImage2: {
+    position: 'absolute',
+    bottom: -windowHeight * 0.1, 
+    right: -windowWidth * 0.2,
+    width: windowWidth * 0.75, 
+    height: windowWidth * 0.75, 
+    resizeMode: 'contain',
   },
   error: {
     color: COLORS.red,
@@ -47,8 +94,6 @@ export default StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 8,
-    borderWidth: 1,
-    borderColor: COLORS.black,
     borderRadius: 4,
     fontSize: 18,
     backgroundColor: COLORS.white,
@@ -71,7 +116,7 @@ export default StyleSheet.create({
   },
   button: {
     borderWidth: .5,
-    borderRadius: 50,
+    borderRadius: 15,
     height: 45,
     alignItems: "center",
     justifyContent: "center",
@@ -79,6 +124,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 18,
+    fontWeight: FONT_WEIGHT.medium,
+    fontSize: FONTSIZE.medium,
   },
 });

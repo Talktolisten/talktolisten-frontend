@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +15,7 @@ import { signOut } from "firebase/auth";
 import auth from "../../firebase";
 import { removeTokens } from "../../util/tokenUtils";
 import { defaultAvatarURL } from "../../util/constants";
-import { get_user_info } from "../../axios/user";
+import { get_user_info, deleteAccount } from "../../axios/user";
 
 const SettingItem = ({ type, icon, text, onPress }) => {
   const ICONCOMPONENTS = {
@@ -167,7 +167,39 @@ const Profile = () => {
             logout();
           }}
         >
-          <Text style={styles.buttonText}>Log out</Text>
+          <Text style={styles.buttonText}>Log Out</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
+          onPress={() => {
+            Alert.alert(
+              "Delete Account",
+              "Are you sure you want to delete your account? This action cannot be undone.",
+              [
+                {
+                  text: "No",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                },
+                {
+                  text: "Yes",
+                  onPress: async () => {
+                    try {
+                      await deleteAccount(userId);
+                      logout();
+                      navigation.navigate(SCREEN_NAMES.LOGIN);
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }
+                }
+              ],
+              { cancelable: false }
+            );
+          }}
+        >
+          <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -246,7 +278,9 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
     marginTop: 30,
+    width: "70%",
   },
   buttonText: {
     color: COLORS.black,

@@ -1,8 +1,9 @@
 // UserForm.js
 
 import React from "react";
-import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { Feather, Ionicons, AntDesign } from "@expo/vector-icons";
+import { TextInput } from 'react-native-paper';
 import { COLORS } from "../../styles";
 import styles from "./styles"; // Make sure to import your styles file
 
@@ -22,6 +23,8 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           value={values.username}
           placeholder="Username"
           style={styles.input}
+          mode="outlined"
+          label={"Username"}
         />
       </View>
 
@@ -38,6 +41,8 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           value={values.fname}
           placeholder="First Name"
           style={styles.input}
+          mode="outlined"
+          label={"First Name"}
         />
       </View>
 
@@ -54,6 +59,8 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           value={values.lname}
           placeholder="Last Name"
           style={styles.input}
+          mode="outlined"
+          label={"Last Name"}
         />
       </View>
 
@@ -85,6 +92,8 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           style={styles.input}
           keyboardType="numeric"
           maxLength={14}
+          mode="outlined"
+          label={"Date of Birth"}
         />
       </View>
 
