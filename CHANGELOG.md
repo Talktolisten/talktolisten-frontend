@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2024-02-28
+- Add user delete account, login UI, reset passwords
+- Add microphone permission to eas.json
+
 ## [1.1.1] - 2024-02-26
 
 ## Added
