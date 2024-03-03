@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   View,
   Text,
   SafeAreaView,
   TouchableOpacity,
-  Alert
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 import styles from "./styles";
@@ -59,76 +59,78 @@ const SignUp = () => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Sign Up</Text>
-        <Text style={styles.subheading}>Create an account to start</Text>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={(values) => {
-            if (waitingEmailVerification) {
-              checkEmailVerification();
-            } else {
-              handleSignUp(values.email, values.password);
-            }
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <View style={{ marginTop: 29 }}>
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="person-outline"
-                  size={24}
-                  color={COLORS.black}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="Email"
-                  style={styles.input}
-                  mode="outlined"
-                  label={"Email"}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <AntDesign
-                  name="lock1"
-                  size={24}
-                  color={COLORS.black}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Password"
-                  style={styles.input}
-                  secureTextEntry={true}
-                  mode="outlined"
-                  label={"Password"}
-                />
-              </View>
-
-              {error && (
-                <View style={{ marginTop: 20 }}>
-                  <Text style={styles.error}>{errorHandle(error)}</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.heading}>Sign Up</Text>
+          <Text style={styles.subheading}>Create an account to start</Text>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={(values) => {
+              if (waitingEmailVerification) {
+                checkEmailVerification();
+              } else {
+                handleSignUp(values.email, values.password);
+              }
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <View style={{ marginTop: 29 }}>
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="person-outline"
+                    size={24}
+                    color={COLORS.black}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Email"
+                    style={styles.input}
+                    mode="outlined"
+                    label={"Email"}
+                  />
                 </View>
-              )}
 
-              <TouchableOpacity
-                onPress={handleSubmit}
-                style={[styles.button, { backgroundColor: COLORS.blue }]}
-              >
-                <Text style={styles.buttonText}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
-      </SafeAreaView>
-    </View >
+                <View style={styles.inputContainer}>
+                  <AntDesign
+                    name="lock1"
+                    size={24}
+                    color={COLORS.black}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Password"
+                    style={styles.input}
+                    secureTextEntry={true}
+                    mode="outlined"
+                    label={"Password"}
+                  />
+                </View>
+
+                {error && (
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={styles.error}>{errorHandle(error)}</Text>
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={[styles.button, { backgroundColor: COLORS.blue }]}
+                >
+                  <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+        </SafeAreaView>
+      </View >
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, SafeAreaView, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import styles from "./styles";
@@ -42,21 +42,23 @@ const UserInfo = () => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Create Profile</Text>
-        <Formik
-          initialValues={{ username: "", dob: "", fname: "", lname: "" }}
-          onSubmit={async (values) => {
-            await signupwithemail(values);
-          }}
-        >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.heading}>Create Profile</Text>
+          <Formik
+            initialValues={{ username: "", dob: "", fname: "", lname: "" }}
+            onSubmit={async (values) => {
+              await signupwithemail(values);
+            }}
+          >
 
-          {(formikProps) => <UserForm {...formikProps} />}
+            {(formikProps) => <UserForm {...formikProps} />}
 
-        </Formik>
-      </SafeAreaView>
-    </View>
+          </Formik>
+        </SafeAreaView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

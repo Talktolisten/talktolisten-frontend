@@ -63,7 +63,7 @@ export default StyleSheet.create({
   },
   loginHeading: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 10,
     fontSize: FONTSIZE.xxLarge,
     color: COLORS.black,
     fontWeight: FONT_WEIGHT.bold,
@@ -88,11 +88,10 @@ export default StyleSheet.create({
   error: {
     color: COLORS.red,
     fontSize: FONTSIZE.small,
-    marginBottom: 10,
     textAlign: "center",
   },
   input: {
-    height: 50,
+    height: 60,
     paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 18,

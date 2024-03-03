@@ -4,7 +4,8 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
   Animated
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
@@ -71,108 +72,109 @@ const Login = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
-      <View style={styles.loginBackgroundContainer}>
-        <ImageBackground
-          source={loginBackground}
-          style={styles.loginBackground}
-        >
-          <Text style={styles.heading}>Welcome to Talk To Listen</Text>
-          <Text style={styles.subheading}>Let's talk</Text>
-          <Animated.Image
-            source={robotImage1}
-            style={{ ...styles.robotImage1, opacity: fadeAnim1 }}
-          />
-          <Animated.Image
-            source={robotImage2}
-            style={{ ...styles.robotImage2, opacity: fadeAnim2 }}
-          />
-        </ImageBackground>
-      </View>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.loginHeading}>Login</Text>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={(values) => {
-            loginwithemail(values.email, values.password, navigation, setError, dispatch);
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <View style={{ marginTop: 29 }}>
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="person-outline"
-                  size={24}
-                  color={COLORS.black}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="Email"
-                  style={styles.input}
-                  mode="outlined"
-                  label={"Email"}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <AntDesign
-                  name="lock1"
-                  size={24}
-                  color={COLORS.black}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Password"
-                  style={styles.input}
-                  secureTextEntry={true}
-                  mode="outlined"
-                  label={"Password"}
-                />
-              </View>
-
-              <TouchableOpacity
-                style={{
-                  width: "95%",
-                  fontWeight: FONT_WEIGHT.bold,
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-                onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
-              >
-                <Text
-                  style={{
-                    textAlign: "right",
-                    fontSize: FONTSIZE.xSmall,
-                    fontWeight: FONT_WEIGHT.regular
-                  }}
-                >
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
-
-              {error && (
-                <View style={{ marginTop: 20 }}>
-                  <Text style={styles.error}>{errorHandle(error)}</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+        <View style={styles.loginBackgroundContainer}>
+          <ImageBackground
+            source={loginBackground}
+            style={styles.loginBackground}
+          >
+            <Text style={styles.heading}>Welcome to Talk To Listen</Text>
+            <Text style={styles.subheading}>Let's talk</Text>
+            <Animated.Image
+              source={robotImage1}
+              style={{ ...styles.robotImage1, opacity: fadeAnim1 }}
+            />
+            <Animated.Image
+              source={robotImage2}
+              style={{ ...styles.robotImage2, opacity: fadeAnim2 }}
+            />
+          </ImageBackground>
+        </View>
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.loginHeading}>Login</Text>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={(values) => {
+              loginwithemail(values.email, values.password, navigation, setError, dispatch);
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <View style={{ marginTop: 29 }}>
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="person-outline"
+                    size={24}
+                    color={COLORS.black}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Email"
+                    style={styles.input}
+                    mode="outlined"
+                    label={"Email"}
+                  />
                 </View>
-              )}
 
-              <TouchableOpacity
-                onPress={handleSubmit}
-                style={[styles.button, { backgroundColor: COLORS.blue }]}
-              >
-                <Text style={styles.buttonText}>Login</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
+                <View style={styles.inputContainer}>
+                  <AntDesign
+                    name="lock1"
+                    size={24}
+                    color={COLORS.black}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Password"
+                    style={styles.input}
+                    secureTextEntry={true}
+                    mode="outlined"
+                    label={"Password"}
+                  />
+                </View>
 
-        {/* <TouchableOpacity
+                <TouchableOpacity
+                  style={{
+                    width: "95%",
+                    fontWeight: FONT_WEIGHT.bold,
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                  onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
+                >
+                  <Text
+                    style={{
+                      textAlign: "right",
+                      fontSize: FONTSIZE.xSmall,
+                      fontWeight: FONT_WEIGHT.regular
+                    }}
+                  >
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
+
+                {error && (
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={styles.error}>{errorHandle(error)}</Text>
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={[styles.button, { backgroundColor: COLORS.blue }]}
+                >
+                  <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+
+          {/* <TouchableOpacity
           style={[styles.button, { backgroundColor: COLORS.black }]}
         >
           <Text style={styles.buttonText}>Log in using Apple ID</Text>
@@ -185,25 +187,26 @@ const Login = () => {
           </Text>
         </TouchableOpacity> */}
 
-        <TouchableOpacity
-          style={{
-            marginTop: 30,
-            fontWeight: FONT_WEIGHT.bold,
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-          onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
-        >
-          <Text style={{
-            textAlign: "center",
-            fontWeight: FONT_WEIGHT.bold,
-            fontSize: FONTSIZE.small
-          }}>
-            Don't have an account? Sign up
-          </Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    </View>
+          <TouchableOpacity
+            style={{
+              marginTop: 30,
+              fontWeight: FONT_WEIGHT.bold,
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+            onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
+          >
+            <Text style={{
+              textAlign: "center",
+              fontWeight: FONT_WEIGHT.bold,
+              fontSize: FONTSIZE.small
+            }}>
+              Don't have an account? Sign up
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
