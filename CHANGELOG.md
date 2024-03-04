@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Added
 - Add Welcome Screen, terms and conditions, checkusername function
+- Add report and feedback screen
 
 ## Fixed
 - fix Login screen by add welcome screen.
