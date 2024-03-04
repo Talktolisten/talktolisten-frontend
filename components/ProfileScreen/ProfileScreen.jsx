@@ -51,6 +51,10 @@ const Profile = () => {
     signOut(auth)
       .then(() => {
         console.log("logged out");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: SCREEN_NAMES.WELCOME }],
+        });
       })
       .catch((error) => {
         console.log(error);

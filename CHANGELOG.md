@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2024.03-01
+
+## Fix
+- Fix log out by adding to the profile stack
+
 ## [3.0.0] - 2024.03-01
 
 ## Added

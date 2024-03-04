@@ -39,6 +39,7 @@ export default StyleSheet.create({
     fontSize: FONTSIZE.xxLarge,
     color: COLORS.white,
     fontWeight: FONT_WEIGHT.bold,
+    zIndex: 2,
   },
   subheading: {
     textAlign: "center",
