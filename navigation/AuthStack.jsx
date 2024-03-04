@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
+import WelcomeScreen from "../screens/Welcome";
 import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import ResetPasswordScreen from "../screens/ResetPassword";
@@ -45,24 +46,31 @@ const AuthStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREEN_NAMES.LOGIN}
+      initialRouteName={SCREEN_NAMES.WELCOME}
       screenOptions={screenOptions}
     >
       <Stack.Screen
+        name={SCREEN_NAMES.WELCOME}
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
         name={SCREEN_NAMES.LOGIN}
         component={LoginScreen}
-        options={{ headerLeft: () => null }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.SIGNUP}
-        component={SignUpScreen} />
+        component={SignUpScreen}
+      />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
       <Stack.Screen
         name={SCREEN_NAMES.USER_INFO}
-        component={UserInfoScreen} />
+        component={UserInfoScreen}
+      />
       <Stack.Screen
         name={SCREEN_NAMES.NAV_TAB}
         component={TabNavigator}

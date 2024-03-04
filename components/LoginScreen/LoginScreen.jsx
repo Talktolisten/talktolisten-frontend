@@ -2,13 +2,12 @@ import {
   Text,
   View,
   SafeAreaView,
-  ImageBackground,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Animated
 } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
+import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from 'react-native-paper';
@@ -24,9 +23,6 @@ import auth from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { errorHandle } from "./errorHandle";
-import loginBackground from "../../assets/auth/login_background.jpg";
-import robotImage1 from "../../assets/auth/robot1.png";
-import robotImage2 from "../../assets/auth/robot2.png";
 
 const loginwithemail = async (email, password, navigation, setError, dispatch) => {
   signInWithEmailAndPassword(auth, email, password)
@@ -53,46 +49,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
 
-  const fadeAnim1 = useRef(new Animated.Value(0)).current;
-  const fadeAnim2 = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(fadeAnim1, {
-      toValue: 1,
-      duration: 2000,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(fadeAnim2, {
-      toValue: 1,
-      duration: 2000,
-      delay: 1000, // delay the second animation
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
-        <View style={styles.loginBackgroundContainer}>
-          <ImageBackground
-            source={loginBackground}
-            style={styles.loginBackground}
-          >
-            <Text style={styles.heading}>Welcome to Talk To Listen</Text>
-            <Text style={styles.subheading}>Let's talk</Text>
-            <Animated.Image
-              source={robotImage1}
-              style={{ ...styles.robotImage1, opacity: fadeAnim1 }}
-            />
-            <Animated.Image
-              source={robotImage2}
-              style={{ ...styles.robotImage2, opacity: fadeAnim2 }}
-            />
-          </ImageBackground>
-        </View>
         <SafeAreaView style={styles.container}>
-          <Text style={styles.loginHeading}>Login</Text>
+          <Text style={styles.heading}>Login</Text>
           <Formik
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
@@ -116,6 +77,7 @@ const Login = () => {
                     style={styles.input}
                     mode="outlined"
                     label={"Email"}
+                    activeOutlineColor={COLORS.black}
                   />
                 </View>
 
@@ -135,6 +97,7 @@ const Login = () => {
                     secureTextEntry={true}
                     mode="outlined"
                     label={"Password"}
+                    activeOutlineColor={COLORS.black}
                   />
                 </View>
 
@@ -159,15 +122,29 @@ const Login = () => {
                 </TouchableOpacity>
 
                 {error && (
-                  <View style={{ marginTop: 20 }}>
+                  <View style={{ marginTop: 15, marginBottom: 10 }}>
                     <Text style={styles.error}>{errorHandle(error)}</Text>
                   </View>
                 )}
 
                 <TouchableOpacity
                   onPress={handleSubmit}
-                  style={[styles.button, { backgroundColor: COLORS.blue }]}
+                  style={styles.button}
                 >
+                  <LinearGradient
+                    colors={[
+                      'rgba(208, 179, 184, 255)',
+                      'rgba(237,196,132,255)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                    }}
+                  />
                   <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
               </View>
@@ -190,15 +167,12 @@ const Login = () => {
           <TouchableOpacity
             style={{
               marginTop: 30,
-              fontWeight: FONT_WEIGHT.bold,
-              justifyContent: "center",
-              textAlign: "center",
             }}
             onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
           >
             <Text style={{
               textAlign: "center",
-              fontWeight: FONT_WEIGHT.bold,
+              fontWeight: FONT_WEIGHT.medium,
               fontSize: FONTSIZE.small
             }}>
               Don't have an account? Sign up

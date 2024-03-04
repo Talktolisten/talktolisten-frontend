@@ -46,6 +46,7 @@ export default StyleSheet.create({
   },
   input: {
     height: 60,
+    lineHeight: 20,
     paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 18,
@@ -63,21 +64,31 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    flex: 1,
-    height: 40,
-    borderRadius: 50,
-  },
-  button: {
-    borderWidth: .5,
-    borderRadius: 15,
-    height: 45,
+    borderRadius: 10,
+    height: 55,
     alignItems: "center",
+    alignSelf: "center",
     justifyContent: "center",
     marginTop: 30,
+    width: "85%",
+    overflow: "hidden",
   },
   buttonText: {
-    color: COLORS.white,
-    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.black,
+    fontWeight: FONT_WEIGHT.bold,
     fontSize: FONTSIZE.medium,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    margin: 8,
+    fontSize: FONTSIZE.small,
+  },
+  link: {
+    fontWeight: FONT_WEIGHT.medium,
   },
 });

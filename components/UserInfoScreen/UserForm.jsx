@@ -1,40 +1,42 @@
-// UserForm.js
-
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { Feather, Ionicons, AntDesign } from "@expo/vector-icons";
 import { TextInput } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from "../../styles";
-import styles from "./styles"; // Make sure to import your styles file
+import { checkUsername } from "../../axios/user";
+import styles from "./styles";
 
 const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
+
+  const checkAndSetUsername = async (username) => {
+    const isAvailable = await checkUsername(username);
+    setUsernameAvailable(!isAvailable);
+  };
+
   return (
     <View style={{ marginTop: 29 }}>
       <View style={styles.inputContainer}>
-        <Feather
-          name="at-sign"
-          size={24}
-          color={COLORS.black}
-          style={styles.inputIcon}
-        />
         <TextInput
-          onChangeText={handleChange("username")}
+          onChangeText={(text) => {
+            handleChange("username")(text);
+            checkAndSetUsername(text);
+          }}
           onBlur={handleBlur("username")}
           value={values.username}
           placeholder="Username"
           style={styles.input}
           mode="outlined"
           label={"Username"}
+          activeOutlineColor={COLORS.black}
         />
       </View>
 
+      {!usernameAvailable && (
+        <Text style={styles.userError}>Username is already taken</Text>
+      )}
+
       <View style={styles.inputContainer}>
-        <Ionicons
-          name="person-outline"
-          size={24}
-          color={COLORS.black}
-          style={styles.inputIcon}
-        />
         <TextInput
           onChangeText={handleChange("fname")}
           onBlur={handleBlur("fname")}
@@ -43,16 +45,11 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           style={styles.input}
           mode="outlined"
           label={"First Name"}
+          activeOutlineColor={COLORS.black}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Ionicons
-          name="person-outline"
-          size={24}
-          color={COLORS.black}
-          style={styles.inputIcon}
-        />
         <TextInput
           onChangeText={handleChange("lname")}
           onBlur={handleBlur("lname")}
@@ -61,16 +58,11 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           style={styles.input}
           mode="outlined"
           label={"Last Name"}
+          activeOutlineColor={COLORS.black}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <AntDesign
-          name="calendar"
-          size={24}
-          color={COLORS.black}
-          style={styles.inputIcon}
-        />
         <TextInput
           onChangeText={(value) => {
             const numericValue = value.replace(/[^0-9]/g, '');
@@ -94,6 +86,7 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           maxLength={14}
           mode="outlined"
           label={"Date of Birth"}
+          activeOutlineColor={COLORS.black}
         />
       </View>
 
@@ -101,6 +94,20 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
         onPress={handleSubmit}
         style={[styles.button, { backgroundColor: COLORS.blue }]}
       >
+        <LinearGradient
+          colors={[
+            'rgba(208, 179, 184, 255)',
+            'rgba(237,196,132,255)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        />
         <Text style={styles.buttonText}>Create</Text>
       </TouchableOpacity>
     </View>

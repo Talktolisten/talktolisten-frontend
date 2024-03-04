@@ -22,6 +22,10 @@ axios.interceptors.response.use(
 );
 
 const Api = async (config) => {
+  if (config.url.startsWith("api/v1/user/check_username")) {
+    config.baseURL = URL;
+    return axios(config);
+  }
   const token = await getTokens();
   const { accessToken } = token;
 

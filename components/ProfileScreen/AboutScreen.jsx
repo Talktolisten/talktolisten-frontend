@@ -5,7 +5,7 @@ import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 const About = () => {
     const openURL = () => {
-        Linking.openURL('https://talktolisten.builder-preview.com');
+        Linking.openURL('https://talktolisten.com');
     };
 
     const acmWebsite = () => {
@@ -35,7 +35,7 @@ const About = () => {
                     This project is created by the team at Talk to Listen and is a collaboration with Association for Computing Machinery (ACM) at the University of South Florida
                 </Text>
                 <View style={styles.infoLogoContainer}>
-                    <TouchableOpacity onPress={openURL} style={styles.linkContainer}>
+                    <TouchableOpacity onPress={acmWebsite} style={styles.linkContainer}>
                         <Text style={styles.linkText}>Website</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={acmInstagram} style={styles.linkContainer}>

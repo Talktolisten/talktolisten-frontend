@@ -19,4 +19,7 @@ export const errorHandle = (eCode) => {
     else if (eCode === errorCode.requiresRecentLogin) {
         return "Please verify your email"
     }
+    else if (eCode === "not-agree") {
+        return "Please agree to the terms and conditions"
+    }
 }

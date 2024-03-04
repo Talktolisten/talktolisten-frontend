@@ -7,6 +7,7 @@ export const SCREEN_NAMES = {
   EXPLORE: "Explore",
 
   AUTH: "Authentication",
+  WELCOME: "Welcome",
   LOGIN: "Login",
   SIGNUP: "Signup",
   USER_INFO: "UserInfo",
@@ -53,3 +54,11 @@ export const errorCode = {
   missingPassword: "auth/missing-password",
   requiresRecentLogin: "auth/requires-recent-login",
 }
+
+export const LINKS = {
+  TTLWebsite: 'https://talktolisten.com',
+  acmWebsite: 'https://bullsconnect.usf.edu/acm/home/',
+  acmInstagram: 'https://www.instagram.com/usfacm/',
+  TTL_Terms_of_Use: 'https://talktolisten.com/terms-of-use',
+  TTL_Privacy_Policy: 'https://talktolisten.com/privacy-policy',
+};

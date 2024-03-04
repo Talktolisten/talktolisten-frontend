@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
+import { COLORS, FONTSIZE, FONT_WEIGHT, SIZES } from "../../styles";
 import { Dimensions } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
@@ -26,64 +26,18 @@ export default StyleSheet.create({
   moodButtonPressed: {
     opacity: 0.9,
   },
-  loginBackgroundContainer: {
-    borderRadius: 10,
-    flex: 1,
-    width: "100%", 
-    justifyContent: "center",
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  loginBackground: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   heading: {
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 20,
     fontSize: FONTSIZE.xxLarge,
-    color: COLORS.white,
     fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.black,
   },
   subheading: {
     textAlign: "center",
-    marginTop: 20,
-    fontSize: FONTSIZE.xLarge,
-    color: COLORS.white,
-    fontWeight: FONT_WEIGHT.bold,
-  },
-  loginHeading: {
-    textAlign: "center",
     marginTop: 10,
-    fontSize: FONTSIZE.xxLarge,
+    fontSize: 15,
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.bold,
-  },
-  robotImage1: {
-    position: 'absolute',
-    bottom: -windowHeight * 0.1, 
-    right: windowWidth * 0.5,
-    width: windowWidth * 0.75, 
-    height: windowWidth * 0.75, 
-    resizeMode: 'contain',
-    transform: [{ rotate: '30deg' }],
-  },
-  robotImage2: {
-    position: 'absolute',
-    bottom: -windowHeight * 0.1, 
-    right: -windowWidth * 0.2,
-    width: windowWidth * 0.75, 
-    height: windowWidth * 0.75, 
-    resizeMode: 'contain',
   },
   error: {
     color: COLORS.red,
@@ -92,6 +46,7 @@ export default StyleSheet.create({
   },
   input: {
     height: 60,
+    lineHeight: 20,
     paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 18,
@@ -109,21 +64,18 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    flex: 1,
-    height: 40,
-    borderRadius: 50,
-  },
-  button: {
-    borderWidth: .5,
-    borderRadius: 15,
-    height: 45,
+    borderRadius: 10,
+    height: 55,
     alignItems: "center",
+    alignSelf: "center",
     justifyContent: "center",
     marginTop: 30,
+    width: "85%",
+    overflow: "hidden",
   },
   buttonText: {
-    color: COLORS.white,
-    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.black,
+    fontWeight: FONT_WEIGHT.bold,
     fontSize: FONTSIZE.medium,
   },
 });

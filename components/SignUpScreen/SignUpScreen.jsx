@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Linking
 } from "react-native";
 
 import styles from "./styles";
+import Checkbox from 'expo-checkbox';
 import { TextInput } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
@@ -19,12 +22,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { getIdToken, getAuth, sendEmailVerification } from "firebase/auth";
 import { errorHandle } from "../LoginScreen/errorHandle";
 import { COLORS } from "../../styles";
-import { SCREEN_NAMES } from "../../util/constants";
+import { SCREEN_NAMES, LINKS } from "../../util/constants";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const SignUp = () => {
   const navigation = useNavigation();
   const [error, setError] = useState(null);
+  const [isChecked, setChecked] = useState(false);
   const [waitingEmailVerification, setWaitingEmailVerification] = useState(false);
 
   async function fetchToken() {
@@ -34,6 +38,11 @@ const SignUp = () => {
   }
 
   const handleSignUp = async (email, password) => {
+
+    if (!isChecked) {
+      setError("not-agree");
+      return;
+    }
 
     await AsyncStorage.setItem('@SignUpProcess', 'INCOMPLETE');
     createUserWithEmailAndPassword(auth, email, password, emailVerified = true)
@@ -91,6 +100,7 @@ const SignUp = () => {
                     style={styles.input}
                     mode="outlined"
                     label={"Email"}
+                    activeOutlineColor={COLORS.black}
                   />
                 </View>
 
@@ -110,19 +120,52 @@ const SignUp = () => {
                     secureTextEntry={true}
                     mode="outlined"
                     label={"Password"}
+                    activeOutlineColor={COLORS.black}
                   />
                 </View>
 
                 {error && (
-                  <View style={{ marginTop: 20 }}>
+                  <View style={{ marginTop: 15, marginBottom: 15 }}>
                     <Text style={styles.error}>{errorHandle(error)}</Text>
                   </View>
                 )}
 
+                <View style={styles.checkboxContainer}>
+                  <Checkbox
+                    value={isChecked}
+                    onValueChange={setChecked}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>
+                    I agree to the
+                    <Text onPress={() => Linking.openURL(LINKS.TTL_Terms_of_Use)} style={styles.link}>
+                      {" "}Terms of Use{" "}
+                    </Text>
+                    and
+                    <Text onPress={() => Linking.openURL(LINKS.TTL_Privacy_Policy)} style={styles.link}>
+                      {" "}Privacy Policy{" "}
+                    </Text>
+                  </Text>
+                </View>
+
                 <TouchableOpacity
                   onPress={handleSubmit}
-                  style={[styles.button, { backgroundColor: COLORS.blue }]}
+                  style={styles.button}
                 >
+                  <LinearGradient
+                    colors={[
+                      'rgba(208, 179, 184, 255)',
+                      'rgba(237,196,132,255)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                    }}
+                  />
                   <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
               </View>

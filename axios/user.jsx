@@ -60,3 +60,12 @@ export const deleteAccount = async (user_id) => {
     console.error('Error deleting user:', error);
   }
 };
+
+export const checkUsername = async (username) => {
+  return await Api({
+    method: "GET",
+    url: `api/v1/user/check_username/${username}`,
+  }).then((res) => {
+    return res.data;
+  });
+};

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../styles";
+import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 export default StyleSheet.create({
   container: {
@@ -14,7 +14,6 @@ export default StyleSheet.create({
   exerciseBox: {
     width: 125,
     height: 125,
-    backgroundColor: COLORS.beige,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
@@ -28,8 +27,9 @@ export default StyleSheet.create({
   },
   heading: {
     textAlign: "center",
-    marginTop: 10,
-    fontSize: 32,
+    marginTop: 20,
+    fontSize: FONTSIZE.xxLarge,
+    fontWeight: FONT_WEIGHT.medium,
     color: COLORS.black,
   },
   subheading: {
@@ -38,14 +38,21 @@ export default StyleSheet.create({
     fontSize: 15,
     color: COLORS.black,
   },
+  userError: {
+    color: COLORS.red,
+    fontSize: FONTSIZE.small,
+    textAlign: "center",
+    marginBottom: SIZES.small
+  },
   input: {
     height: 50,
+    lineHeight: 20,
     paddingHorizontal: 8,
     borderRadius: 4,
     fontSize: 18,
     backgroundColor: COLORS.white,
     marginBottom: 20,
-    width: "85%",
+    width: "90%",
     marginLeft: 16,
   },
   inputContainer: {
@@ -58,17 +65,14 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    flex: 1,
-    height: 40,
-    borderRadius: 50,
-  },
-  button: {
-    borderWidth: 0.5,
-    borderRadius: 50,
-    height: 45,
+    borderRadius: 10,
+    height: 55,
     alignItems: "center",
+    alignSelf: "center",
     justifyContent: "center",
     marginTop: 30,
+    width: "90%",
+    overflow: "hidden",
   },
   buttonText: {
     color: COLORS.white,
