@@ -80,12 +80,12 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
           }}
           onBlur={handleBlur('dob')}
           value={values.dob}
-          placeholder="MM / DD / YYYY"
+          placeholder="MM / DD / YYYY (Optional)"
           style={styles.input}
           keyboardType="numeric"
           maxLength={14}
           mode="outlined"
-          label={"Date of Birth"}
+          label={"Date of Birth (Optional)"}
           activeOutlineColor={COLORS.black}
         />
       </View>
