@@ -154,8 +154,24 @@ const Profile = () => {
           }}
         />
         <SettingItem
+          type="MaterialIcons"
+          icon="feedback"
+          text="Feedback - Contact us"
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.FEEDBACK);
+          }}
+        />
+        <SettingItem
+          type="MaterialIcons"
+          icon="report"
+          text="Report a problem"
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.REPORT);
+          }}
+        />
+        <SettingItem
           type="MaterialCommunityIcons"
-          icon="information-outline"
+          icon="information"
           text="About us"
           onPress={() => {
             navigation.navigate(SCREEN_NAMES.ABOUT_US);

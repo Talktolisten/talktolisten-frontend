@@ -1,21 +1,9 @@
 import React from "react";
 import { Text, View, SafeAreaView, TouchableOpacity, Linking } from "react-native";
-
+import { LINKS } from "../../util/constants";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 const About = () => {
-    const openURL = () => {
-        Linking.openURL('https://talktolisten.com');
-    };
-
-    const acmWebsite = () => {
-        Linking.openURL('https://bullsconnect.usf.edu/acm/home/');
-    }
-
-    const acmInstagram = () => {
-        Linking.openURL('https://www.instagram.com/usfacm/');
-    }
-
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.heading}>About us</Text>
@@ -24,7 +12,7 @@ const About = () => {
                     We want to create an innovative platform that allows users to engage in lifelike conversations with AI-powered characters
                 </Text>
                 <View style={styles.infoLogoContainer}>
-                    <TouchableOpacity onPress={openURL} style={styles.linkContainer}>
+                    <TouchableOpacity onPress={() => Linking.openURL(LINKS.TTLWebsite)} style={styles.linkContainer}>
                         <Text style={styles.linkText}>Visit our website</Text>
                     </TouchableOpacity>
                 </View>
@@ -35,10 +23,10 @@ const About = () => {
                     This project is created by the team at Talk to Listen and is a collaboration with Association for Computing Machinery (ACM) at the University of South Florida
                 </Text>
                 <View style={styles.infoLogoContainer}>
-                    <TouchableOpacity onPress={acmWebsite} style={styles.linkContainer}>
+                    <TouchableOpacity onPress={() => Linking.openURL(LINKS.acmWebsite)} style={styles.linkContainer}>
                         <Text style={styles.linkText}>Website</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={acmInstagram} style={styles.linkContainer}>
+                    <TouchableOpacity onPress={() => Linking.openURL(LINKS.acmInstagram)} style={styles.linkContainer}>
                         <Text style={styles.linkText}>Instagram</Text>
                     </TouchableOpacity>
                 </View>

@@ -1,7 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2024.03-01
+
+## Added
+- Add Welcome Screen, terms and conditions, checkusername function
+
+## Fixed
+- fix Login screen by add welcome screen.
+
 ## [2.0.0] - 2024-02-28
+
+## Added
 - Add user delete account, login UI, reset passwords
 - Add microphone permission to eas.json
 

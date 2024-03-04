@@ -19,6 +19,8 @@ export const SCREEN_NAMES = {
   SETTINGS: "Settings",
   THEME_SETTING: "Theme Setting",
   NOTIFICATION: "Notification",
+  FEEDBACK: "Feedback",
+  REPORT: "Report",
   ABOUT_US: "About Us",
 
   CHAT: "Chat",
