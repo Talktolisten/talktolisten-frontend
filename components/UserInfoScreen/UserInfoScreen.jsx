@@ -49,6 +49,9 @@ const UserInfo = () => {
           <Formik
             initialValues={{ username: "", dob: "", fname: "", lname: "" }}
             onSubmit={async (values) => {
+              if (values.dob === "") {
+                values.dob = "01 / 01 / 1990";
+              }
               await signupwithemail(values);
             }}
           >
