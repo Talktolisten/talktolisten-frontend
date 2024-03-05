@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.0.1] - 2024-03-05
+
+## Change
+- Change app logo because of Apple Copycat
+
 ## [4.0.0] - 2024-03-05
 
 ## Add
