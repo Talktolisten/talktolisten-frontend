@@ -34,8 +34,14 @@ const loginwithemail = async (email, password, navigation, setError, dispatch) =
       await storeUserID(user.uid);
       dispatch(setUserID(user.uid));
       await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
+      await AsyncStorage.setItem('@GuestMode', 'FALSE');
     })
-    .then(() => navigation.navigate(SCREEN_NAMES.NAV_TAB))
+    .then(() =>
+      navigation.reset({
+        index: 0,
+        routes: [{ name: SCREEN_NAMES.NAV_TAB }],
+      })
+    )
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -78,6 +84,7 @@ const Login = () => {
                     mode="outlined"
                     label={"Email"}
                     activeOutlineColor={COLORS.black}
+                    autoCapitalize="none"
                   />
                 </View>
 

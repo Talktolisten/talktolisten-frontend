@@ -19,7 +19,7 @@ import { Formik } from "formik";
 import auth from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getIdToken, getAuth, sendEmailVerification } from "firebase/auth";
+import { getIdToken, getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { errorHandle } from "../LoginScreen/errorHandle";
 import { COLORS } from "../../styles";
 import { SCREEN_NAMES, LINKS } from "../../util/constants";
@@ -31,13 +31,13 @@ const SignUp = () => {
   const [isChecked, setChecked] = useState(false);
   const [waitingEmailVerification, setWaitingEmailVerification] = useState(false);
 
-  async function fetchToken() {
-    const auth = getAuth();
+  async function fetchToken(auth) {
     const token = await getIdToken(auth.currentUser);
     return token;
   }
 
   const handleSignUp = async (email, password) => {
+    const auth = getAuth();
 
     if (!isChecked) {
       setError("not-agree");
@@ -45,11 +45,12 @@ const SignUp = () => {
     }
 
     await AsyncStorage.setItem('@SignUpProcess', 'INCOMPLETE');
+
     createUserWithEmailAndPassword(auth, email, password, emailVerified = true)
       .then(async (userCredential) => {
+        await AsyncStorage.setItem('@GuestMode', 'FALSE');
         const uid = userCredential.user.uid;
-        const token = await fetchToken();
-
+        const token = await fetchToken(auth);
         return { uid, token };
       })
       .then(({ uid, token }) => {
@@ -101,6 +102,7 @@ const SignUp = () => {
                     mode="outlined"
                     label={"Email"}
                     activeOutlineColor={COLORS.black}
+                    autoCapitalize="none"
                   />
                 </View>
 

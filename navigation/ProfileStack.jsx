@@ -10,7 +10,6 @@ import NotificationScreen from "../screens/Notification";
 import FeedbackScreen from "../screens/Feedback";
 import ReportScreen from "../screens/Report";
 import AboutScreen from "../screens/About";
-import AuthStack from "./AuthStack";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
@@ -95,11 +94,6 @@ const ProfileStack = () => {
                 component={SettingsScreen}
                 options={{ headerShown: false }}
             /> */}
-            <Stack.Screen
-                name={SCREEN_NAMES.WELCOME}
-                component={AuthStack}
-                options={{ headerShown: false, headerLeft: () => null }}
-            />
         </Stack.Navigator>
     );
 };

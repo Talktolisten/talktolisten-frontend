@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -12,8 +12,10 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { signOut } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "../../firebase";
 import { removeTokens } from "../../util/tokenUtils";
+import { removeUserID } from "../../redux/actions/userActions";
 import { defaultAvatarURL } from "../../util/constants";
 import { get_user_info, deleteAccount } from "../../axios/user";
 
@@ -45,12 +47,24 @@ const SettingItem = ({ type, icon, text, onPress }) => {
 
 const Profile = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [guest_mode, setGuestMode] = useState(false);
+
+  useEffect(() => {
+    async function checkGuestMode() {
+      const isGuest = await AsyncStorage.getItem('@GuestMode');
+      setGuestMode(isGuest === 'TRUE' ? true : false);
+    }
+
+    checkGuestMode();
+  }, []);
 
   async function logout() {
-    removeTokens();
     signOut(auth)
       .then(() => {
-        console.log("logged out");
+        removeTokens();
+        dispatch(removeUserID());
+        console.log("User logged out");
         navigation.reset({
           index: 0,
           routes: [{ name: SCREEN_NAMES.WELCOME }],
@@ -181,46 +195,59 @@ const Profile = () => {
             navigation.navigate(SCREEN_NAMES.ABOUT_US);
           }}
         />
-        <TouchableOpacity
-          style={[styles.button, { borderColor: COLORS.black }]}
-          onPress={async () => {
-            logout();
-          }}
-        >
-          <Text style={styles.buttonText}>Log Out</Text>
-        </TouchableOpacity>
+        {guest_mode ?
+          <TouchableOpacity
+            style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
+            onPress={async () => {
+              await deleteAccount(userId);
+              await AsyncStorage.setItem('@GuestMode', "FALSE");
+              logout();
+            }}
+          >
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
+          </TouchableOpacity> : (
+            <View>
+              <TouchableOpacity
+                style={[styles.button, { borderColor: COLORS.black }]}
+                onPress={async () => {
+                  logout();
+                }}
+              >
+                <Text style={styles.buttonText}>Log Out</Text>
+              </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
-          onPress={() => {
-            Alert.alert(
-              "Delete Account",
-              "Are you sure you want to delete your account? This action cannot be undone.",
-              [
-                {
-                  text: "No",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-                {
-                  text: "Yes",
-                  onPress: async () => {
-                    try {
-                      await deleteAccount(userId);
-                      logout();
-                      navigation.navigate(SCREEN_NAMES.LOGIN);
-                    } catch (error) {
-                      console.error(error);
-                    }
-                  }
-                }
-              ],
-              { cancelable: false }
-            );
-          }}
-        >
-          <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
-        </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
+                onPress={() => {
+                  Alert.alert(
+                    "Delete Account",
+                    "Are you sure you want to delete your account? This action cannot be undone.",
+                    [
+                      {
+                        text: "No",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                      },
+                      {
+                        text: "Yes",
+                        onPress: async () => {
+                          try {
+                            await deleteAccount(userId);
+                            logout();
+                          } catch (error) {
+                            console.error(error);
+                          }
+                        }
+                      }
+                    ],
+                    { cancelable: false }
+                  );
+                }}
+              >
+                <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
+              </TouchableOpacity>
+            </View>
+          )}
       </View>
     </SafeAreaView>
   );

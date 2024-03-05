@@ -59,3 +59,11 @@ export const removeTokens = async () => {
     console.error("Error removing the tokens:", error);
   }
 };
+
+export const removeUserIDInStore = async () => {
+  try {
+    await SecureStore.deleteItemAsync('user_id');
+  } catch (error) {
+    console.error("Error removing the user:", error);
+  }
+};

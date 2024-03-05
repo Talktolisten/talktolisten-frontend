@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, Image, Text } from "react-native";
 import { GiftedChat, Send, MessageText } from "react-native-gifted-chat";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { getIcon } from "../Icons";
-import { COLORS } from "../../styles";
+import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 import {
   renderInputToolbar,
@@ -35,7 +35,15 @@ const MessageScreen = () => {
   useLayoutEffect(() => {
     if (botInfo && botInfo.bot_name) {
       navigation.setOptions({
-        headerTitle: botInfo.bot_name
+        headerTitle: () => (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={{ uri: botInfo.profile_picture }}
+              style={styles.headerImage}
+            />
+            <Text style={styles.headerTitleText}>{botInfo.bot_name}</Text>
+          </View>
+        ),
       });
     }
   }, [botInfo, navigation]);
@@ -167,5 +175,16 @@ const styles = StyleSheet.create({
   messageContainer: {
     backgroundColor: COLORS.white,
     marginLeft: 10,
+  },
+  headerTitleText: {
+    fontSize: FONTSIZE.small,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.black,
+  },
+  headerImage: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    borderRadius: 40,
   }
 });

@@ -7,6 +7,12 @@ import {
   Animated
 } from "react-native";
 import React, { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { storeTokens, storeUserID } from "../../util/tokenUtils.js";
+import { setUserID } from "../../redux/actions/userActions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -16,9 +22,13 @@ import WelcomeBackground from "../../assets/auth/background.jpg";
 import robotImage1 from "../../assets/auth/robot1.png";
 import robotImage2 from "../../assets/auth/robot2.png";
 import { SCREEN_NAMES } from "../../util/constants.js";
+import { create_guest_user } from "../../axios/guest.jsx";
+import { checkUserByID } from "../../axios/user.jsx";
+import { handleGuestPress } from "./handleGuest.jsx";
 
 const Welcome = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const fadeAnim1 = useRef(new Animated.Value(0)).current;
   const fadeAnim2 = useRef(new Animated.Value(0)).current;
@@ -46,7 +56,6 @@ const Welcome = () => {
           style={styles.Background}
         >
           <Text style={styles.heading}>Welcome to Talk To Listen</Text>
-          <Text style={styles.subheading}>Let's talk</Text>
           <Animated.Image
             source={robotImage1}
             style={{ ...styles.robotImage1, opacity: fadeAnim1 }}
@@ -59,8 +68,39 @@ const Welcome = () => {
       </View>
       <SafeAreaView style={styles.container}>
         <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            await AsyncStorage.setItem('@GuestMode', 'TRUE');
+            handleGuestPress(dispatch, navigation)
+          }}
+        >
+          <LinearGradient
+            colors={['rgba(237,196,132,255)',
+              'rgba(208, 179, 184, 255)',
+              'rgba(150,139,173,255)',
+            ]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            }}
+          />
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={styles.buttonText}>
+              Let's Talk
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[styles.button, { backgroundColor: COLORS.grey, borderColor: COLORS.black, borderWidth: 2 }]}
-          onPress={() => navigation.navigate(SCREEN_NAMES.LOGIN)}
+          onPress={async () => {
+            await AsyncStorage.setItem('@GuestMode', 'FALSE');
+            navigation.navigate(SCREEN_NAMES.LOGIN)
+          }}
         >
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={styles.buttonText}>
@@ -70,7 +110,10 @@ const Welcome = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
+          onPress={async () => {
+            await AsyncStorage.setItem('@GuestMode', 'FALSE');
+            navigation.navigate(SCREEN_NAMES.SIGNUP)
+          }}
         >
           <LinearGradient
             colors={['rgba(150,139,173,255)',

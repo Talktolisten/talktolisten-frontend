@@ -1,4 +1,4 @@
-import { SET_USER_ID } from "../actionTypes";
+import { SET_USER_ID, REMOVE_USER_ID } from "../actionTypes";
 
 const initialState = {
     userID: null,
@@ -10,6 +10,11 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userID: action.payload,
+            };
+        case REMOVE_USER_ID:
+            return {
+                ...state,
+                userID: null,
             };
         default:
             return state;

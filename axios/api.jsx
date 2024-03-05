@@ -22,7 +22,7 @@ axios.interceptors.response.use(
 );
 
 const Api = async (config) => {
-  if (config.url.startsWith("api/v1/user/check_username")) {
+  if (config.url.startsWith("api/v1/user/check_username") || config.url.startsWith("api/v1/user/signup")) {
     config.baseURL = URL;
     return axios(config);
   }

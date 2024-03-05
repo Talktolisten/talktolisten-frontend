@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Text, SafeAreaView, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -11,26 +10,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import UserForm from "./UserForm";
 import { SCREEN_NAMES } from "../../util/constants";
 import { create_user } from "../../axios/user";
-import { storeTokens, storeUserID } from "../../util/tokenUtils";
-import { setUserID } from "../../redux/actions/userActions";
 
 const UserInfo = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [createUserSuccess, setCreateUserSuccess] = useState(false);
   const { email, userId, userToken } = route.params || {};
 
   const signupwithemail = async (values) => {
     try {
-      await storeTokens(userToken);
-      await storeUserID(userId);
-
-      dispatch(setUserID(userId));
       const { username, fname: first_name, lname: last_name, dob } = values;
-      await create_user(userId, username, email, first_name, last_name, dob);
-
+      await create_user(userId, username, email, first_name, last_name, "", "", dob);
       await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
       setCreateUserSuccess(true);
     } catch (error) {
