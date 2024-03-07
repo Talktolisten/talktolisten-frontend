@@ -6,8 +6,7 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
+  buttonContainer: {
     marginHorizontal: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -18,12 +17,13 @@ export default StyleSheet.create({
     width: "100%", 
     justifyContent: "center",
     overflow: "hidden",
-    shadowColor: "#000",
+    backgroundColor: COLORS.white,
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 1.25,
     shadowRadius: 3.84,
     elevation: 5,
   },
@@ -34,8 +34,7 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   heading: {
-    textAlign: "center",
-    marginTop: 10,
+    marginBottom: 32,
     fontSize: FONTSIZE.xxLarge,
     color: COLORS.white,
     fontWeight: FONT_WEIGHT.bold,
@@ -66,7 +65,7 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   button: {
-    borderRadius: 50,
+    borderRadius: 10,
     height: 55,
     alignItems: "center",
     justifyContent: "center",

@@ -1,55 +1,66 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.0.2] - 2024-03-07
+
+### Change
+- Change Welcome screen UI
+
+### Fix
+- User will not hear sound when going out of the voice screen.
+- Animation in Voice screen only happen when bot is talking.
+
+### Fix
+
 ## [4.0.1] - 2024-03-05
 
-## Change
+### Change
 - Change app logo because of Apple Copycat
 
 ## [4.0.0] - 2024-03-05
 
-## Add
+### Add
 - User can log in with guest mode
 
 ## [3.0.1] - 2024-03-01
 
-## Fix
+### Fix
 - Fix log out by adding to the profile stack
 
 ## [3.0.0] - 2024-03-01
 
-## Added
+### Added
 - Add Welcome Screen, terms and conditions, checkusername function
 - Add report and feedback screen
 
-## Fixed
+### Fixed
 - fix Login screen by add welcome screen.
 
 ## [2.0.0] - 2024-02-28
 
-## Added
+### Added
 - Add user delete account, login UI, reset passwords
 - Add microphone permission to eas.json
 
 ## [1.1.1] - 2024-02-26
 
-## Added
+### Added
 - Update Profile functions: Theme, Notification, About.
 
 ## [1.1.0] - 2024-02-26
 
-## Added
+### Added
 - Update UI for explore, sign up/login, message, chat, voice screen.
 - Add search functionality for explore page.
 
 ## [1.0.3] - 2024-02-24
 
-## Fixed
+### Fixed
 - Fix error by installing react-native-svg and react-native-screen, react-native-saft-area-view
 
 ## [1.0.2] - 2024-02-24
 
-## Added
+### Added
 - Add debug error to fix the onboarding process of iPad
 
 ## [1.0.1] - 2024-02-23

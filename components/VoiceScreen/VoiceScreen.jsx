@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar } from "react-native";
-import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from "react";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -24,8 +24,9 @@ const Voice = () => {
 
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
+  const [sound, setSound] = useState(null);
 
-  useAnimation(isUserTalking || isBotTalking, scaleValue1, scaleValue2);
+  useAnimation(isBotTalking, scaleValue1, scaleValue2);
 
   useLayoutEffect(() => {
     if (botInfo && botInfo.bot_name) {
@@ -35,6 +36,25 @@ const Voice = () => {
     }
   }, [botInfo, navigation]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        sound?.stopAsync();
+      };
+    }, [sound])
+  );
+
+
+  useEffect(() => {
+    return sound
+      ? () => {
+        console.log('Unloading Sound');
+        sound.unloadAsync(); // Stops and unloads the audio
+      }
+      : undefined;
+  }, [sound]);
+
+
   const playBase64Audio = async (base64String) => {
     const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
 
@@ -43,9 +63,17 @@ const Voice = () => {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      const { sound } = await Audio.Sound.createAsync({ uri: fileUri });
+      const { sound: soundObject } = await Audio.Sound.createAsync({ uri: fileUri });
+      setSound(soundObject);
 
-      await sound.playAsync();
+      await soundObject.playAsync();
+
+      soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
+        if (playbackStatus.didJustFinish) {
+          setIsBotTalking(false);
+        }
+      });
+
     } catch (error) {
       console.error('Error playing Base64 audio:', error);
     }
