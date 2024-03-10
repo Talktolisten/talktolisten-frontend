@@ -1,7 +1,6 @@
 import Api from "./api";
 import { getAuth, deleteUser } from "firebase/auth";
 import { defaultAvatarURL, defaultBio } from "../util/constants";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export const get_user_info = async (user_id) => {
   return await Api({

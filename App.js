@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
 import store from './redux/store';
 import { loadFonts } from './util/helpers';
@@ -26,10 +27,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar style="dark" />
         <Nav />
-      </>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

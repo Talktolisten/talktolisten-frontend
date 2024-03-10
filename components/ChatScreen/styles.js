@@ -83,4 +83,17 @@ export default styles = StyleSheet.create({
     height: "100%",
     borderRadius: 40,
   },
+  rightAction: {
+    backgroundColor: '#dd2c00', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width: 100, 
+    height: '90%',
+  },
+  actionText: {
+    color: COLORS.white,
+    padding: 10,
+    fontSize: FONTSIZE.xSmall,
+    fontWeight: FONT_WEIGHT.medium
+  },
 });
