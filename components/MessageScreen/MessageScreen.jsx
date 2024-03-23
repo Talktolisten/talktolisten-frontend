@@ -22,7 +22,7 @@ import {
   renderTime,
 } from "./MessageBubble";
 import { sendMessageToBackend, fetchAllMessages } from "./MessageSendRequest";
-
+import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 import { get_bot_info } from "../../axios/bots";
 
 const MessageScreen = () => {
@@ -30,6 +30,7 @@ const MessageScreen = () => {
   const { bot_id, chat_id } = route.params;
   const [botInfo, setBotInfo] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -134,6 +135,11 @@ const MessageScreen = () => {
     return getIcon("icon-park:down", 35, "#2e64e5");
   };
 
+  const toggleModal = () => {
+    console.log(botInfo);
+    setModalVisible(!isModalVisible);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <GiftedChat
@@ -151,6 +157,7 @@ const MessageScreen = () => {
         isCustomViewBottom
         renderAvatarOnTop
         renderAvatar={renderAvatar}
+        onPressAvatar={toggleModal}
         alwaysShowSend
         renderSend={renderSend}
         renderInputToolbar={renderInputToolbar}
@@ -160,6 +167,12 @@ const MessageScreen = () => {
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
         messagesContainerStyle={styles.messageContainer}
+      />
+      <CharacterProfileModal
+        isModalVisible={isModalVisible}
+        toggleModal={toggleModal}
+        selectedBotInfo={botInfo}
+        navigation={navigation}
       />
     </SafeAreaView>
   );

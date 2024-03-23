@@ -10,7 +10,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+import Modal from "react-native-modal";
 
 import DynamicSearchBar from "./SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -21,7 +22,9 @@ import {
   explore_get_bots_categories,
   explore_get_bots_search,
 } from "./ExploreRequest";
-import { handlePressBot } from "./CreateChat";
+import { get_bot_info } from "../../axios/bots";
+
+import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 
 const types = [
   "Featured",
@@ -42,6 +45,8 @@ const Explore = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeType, setActiveType] = useState("Featured");
   const [newBots, setNewBots] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedBotInfo, setSelectedBotInfo] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +68,14 @@ const Explore = () => {
     fetchData();
   }, [searchTerm, activeType]);
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFocused) {
+      setModalVisible(false);
+    }
+  }, [isFocused]);
+
   const handleChangeText = (text) => {
     setSearchTerm(text);
   };
@@ -71,6 +84,20 @@ const Explore = () => {
     setSearchTerm("");
     setActiveType("Featured");
   }
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const handlePressBot = async (botId) => {
+    try {
+      const botInfo = await get_bot_info(botId);
+      setSelectedBotInfo(botInfo); // Set the fetched bot info into the state
+      toggleModal(); // Open the modal after fetching the bot info
+    } catch (error) {
+      console.error("Failed to fetch bot info:", error);
+    }
+  };
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
@@ -103,9 +130,7 @@ const Explore = () => {
                   style={styles.element}
                   key={bot.bot_id}
                   activeOpacity={0.8}
-                  onPress={() => {
-                    handlePressBot(bot.bot_id, navigation);
-                  }}
+                  onPress={handlePressBot.bind(this, bot.bot_id)}
                 >
                   <View style={styles.infoArea}>
                     <Text style={styles.infoTitle}>{bot.bot_name}</Text>
@@ -143,6 +168,15 @@ const Explore = () => {
             })}
           </ScrollView>
         </View>
+
+        {isModalVisible ?
+          <CharacterProfileModal
+            isModalVisible={isModalVisible}
+            toggleModal={toggleModal}
+            selectedBotInfo={selectedBotInfo}
+            navigation={navigation}
+          />
+          : null}
       </SafeAreaView>
     </View>
   );
@@ -230,6 +264,23 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 10,
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  modalContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    width: "100%",
+    margin: 5,
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    height: "80%",
+    width: "100%",
   },
 });
 

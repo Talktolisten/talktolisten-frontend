@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: FONTSIZE.small,
     marginBottom: SIZES.xLarge,
-    textAlign: "center",
+    textAlign: "left",
     marginHorizontal: 15
   }
 });
