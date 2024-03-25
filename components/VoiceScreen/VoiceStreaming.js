@@ -1,5 +1,5 @@
-import { createClient, LiveTranscriptionEvents, LiveClient } from "@deepgram/sdk";
-import { useState } from "react";
+import { createClient, LiveTranscriptionEvents } from "@deepgram/sdk";
+import LiveAudioStream from 'react-native-live-audio-stream';
 
 
 export function startConnection() {

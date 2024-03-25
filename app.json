@@ -20,7 +20,10 @@
       "bundleIdentifier": "com.hieu65.talktolisten",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Our app uses the microphone to record your voice commands and questions, which are then sent to our server to understand your requests and generate interactive responses from characters. For example, you can ask a character about the weather, and the app will provide a spoken response as if you're having a conversation."
-      }
+      },
+      "UIBackgroundModes": [
+        "audio"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +31,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.hieu65.talktolisten",
-      "versionCode": 403
+      "versionCode": 403,
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
