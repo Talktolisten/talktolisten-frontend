@@ -10,8 +10,8 @@ import { voice_talk } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
-import { startConnection } from "./VoiceStreaming";
-import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient } from "@deepgram/sdk";
+import LiveAudioStream from "./setup/dataStreaming";
+import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient, createClient } from "@deepgram/sdk";
 
 
 const Voice = () => {
@@ -60,6 +60,45 @@ const Voice = () => {
       : undefined;
   }, [sound]);
 
+  const startConnection = async () => {
+    const deepgram = createClient(process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY);
+
+    const connection = deepgram.listen.live({ model: "nova-2-conversationalai" });
+
+    connection.on(LiveTranscriptionEvents.Open, async () => {
+      connection.getReadyState() ? console.log("Connection opened") : console.error("Connection failed to open");
+      setButtonRecording("Start");
+      LiveAudioStream.on('data', (data) => {
+        if (connection && connection.getReadyState() === 1) {
+          connection.send(data);
+        }
+      });
+
+      await startRecording();
+    });
+
+    connection.on(LiveTranscriptionEvents.Close, (event) => {
+      console.log("Connection closed", event);
+    });
+
+    connection.on(LiveTranscriptionEvents.Transcript, (results) => {
+      console.log("Received transcription results", results);
+    });
+
+    connection.on(LiveTranscriptionEvents.Metadata, (metadata) => {
+      console.log("Received metadata", metadata);
+    });
+
+    connection.on(LiveTranscriptionEvents.Error, (error) => {
+      console.error("An error occurred", error);
+    });
+
+    connection.on(LiveTranscriptionEvents.Warning, (warning) => {
+      console.warn("Received a warning", warning);
+    });
+
+    return connection;
+  };
 
   const playBase64Audio = async (base64String) => {
     const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
@@ -96,12 +135,18 @@ const Voice = () => {
         playsInSilentModeIOS: true,
       });
 
-      console.log('Starting recording..');
-      // const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
-      // setRecording(recording);
-      console.log('Recording started');
-    } catch (err) {
-      console.error('Failed to start recording', err);
+      // Start audio recording
+      const recording = new Audio.Recording();
+      setRecording(recording);
+      await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      await recording.startAsync();
+
+      // Listen for audio data and send it
+      LiveAudioStream.start();
+
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      throw error;
     }
   }
 
@@ -115,20 +160,21 @@ const Voice = () => {
         console.error('Error: No active connection to finish');
       }
     } catch (error) {
-      console.error('Error sending audio:', error);
+      console.error('Error stopping recording:', error);
       throw error;
     }
   }
 
-  const handleButtonPress = () => {
+
+  const handleButtonPress = async () => {
     if (buttonRecording === "Start") {
       setButtonRecording("Stop");
-      stopRecording();
+      LiveAudioStream.stop();
+      await recording.stopAndUnloadAsync();
+      await stopRecording();
     } else {
-      const connection = startConnection();
+      const connection = await startConnection();
       setConnection(connection);
-      setButtonRecording("Start");
-      startRecording();
     }
   };
 
