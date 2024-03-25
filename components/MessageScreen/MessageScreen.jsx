@@ -136,7 +136,6 @@ const MessageScreen = () => {
   };
 
   const toggleModal = () => {
-    console.log(botInfo);
     setModalVisible(!isModalVisible);
   };
 

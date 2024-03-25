@@ -1,4 +1,4 @@
-
+import 'react-native-url-polyfill/auto';
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';

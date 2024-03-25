@@ -10,6 +10,10 @@ import { voice_talk } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
+import { startConnection } from "./VoiceStreaming";
+import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient } from "@deepgram/sdk";
+
+
 const Voice = () => {
   const scaleValue1 = useRef(new Animated.Value(0)).current;
   const scaleValue2 = useRef(new Animated.Value(0)).current;
@@ -25,6 +29,8 @@ const Voice = () => {
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
   const [sound, setSound] = useState(null);
+
+  const [connection, setConnection] = useState(null);
 
   useAnimation(isBotTalking, scaleValue1, scaleValue2);
 
@@ -91,9 +97,8 @@ const Voice = () => {
       });
 
       console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
-      setRecording(recording);
+      // const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+      // setRecording(recording);
       console.log('Recording started');
     } catch (err) {
       console.error('Failed to start recording', err);
@@ -102,28 +107,12 @@ const Voice = () => {
 
   async function stopRecording() {
     console.log('Stopping recording..');
-    setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-    await Audio.setAudioModeAsync(
-      {
-        allowsRecordingIOS: false,
-      }
-    );
-    const uri = recording.getURI();
-    console.log('Recording stopped and stored at', uri);
-    const base64Audio = await FileSystem.readAsStringAsync(uri, { encoding: "base64" });
     try {
-      const response = await voice_talk(chat_id, botInfo.bot_id, base64Audio);
-      if (response.is_response) {
-        playBase64Audio(response.response);
-        setIsBotTalking(true);
-        setIsUserTalking(false);
+      if (connection) {
+        connection.finish();
+        setConnection(null);
       } else {
-        if (response.user_speaking) {
-          setIsUserTalking(true);
-        } else {
-          setIsUserTalking(false);
-        }
+        console.error('Error: No active connection to finish');
       }
     } catch (error) {
       console.error('Error sending audio:', error);
@@ -136,6 +125,8 @@ const Voice = () => {
       setButtonRecording("Stop");
       stopRecording();
     } else {
+      const connection = startConnection();
+      setConnection(connection);
       setButtonRecording("Start");
       startRecording();
     }
