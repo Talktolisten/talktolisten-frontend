@@ -10,6 +10,7 @@ import { voice_talk } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
+import { Buffer } from "buffer";
 import LiveAudioStream from "./setup/dataStreaming";
 import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient, createClient } from "@deepgram/sdk";
 
@@ -30,7 +31,7 @@ const Voice = () => {
   const [isBotTalking, setIsBotTalking] = useState(false);
   const [sound, setSound] = useState(null);
 
-  const [connection, setConnection] = useState(null);
+  const [connection, setConnection] = useState(LiveClient | null);
 
   useAnimation(isBotTalking, scaleValue1, scaleValue2);
 
@@ -70,7 +71,8 @@ const Voice = () => {
       setButtonRecording("Start");
       LiveAudioStream.on('data', (data) => {
         if (connection && connection.getReadyState() === 1) {
-          connection.send(data);
+          var chunk = Buffer.from(data, 'base64');
+          connection.send(chunk);
         }
       });
 
