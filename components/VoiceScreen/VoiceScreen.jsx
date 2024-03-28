@@ -12,6 +12,7 @@ import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
 import { Buffer } from "buffer";
 import LiveAudioStream from "./setup/dataStreaming";
+import { createDeepgramConnection } from "./setup/deepgram";
 import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient, createClient } from "@deepgram/sdk";
 
 
@@ -30,6 +31,7 @@ const Voice = () => {
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
   const [sound, setSound] = useState(null);
+  const [processingText, setProcessingText] = useState("");
 
   const [connection, setConnection] = useState(LiveClient | null);
 
@@ -62,21 +64,24 @@ const Voice = () => {
   }, [sound]);
 
   const startConnection = async () => {
-    const deepgram = createClient(process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY);
-
-    const connection = deepgram.listen.live({ model: "nova-2-conversationalai" });
+    const connection = createDeepgramConnection();
 
     connection.on(LiveTranscriptionEvents.Open, async () => {
       connection.getReadyState() ? console.log("Connection opened") : console.error("Connection failed to open");
       setButtonRecording("Start");
       LiveAudioStream.on('data', (data) => {
         if (connection && connection.getReadyState() === 1) {
+          // Decode base64 to raw binary data
           var chunk = Buffer.from(data, 'base64');
           connection.send(chunk);
         }
       });
 
-      await startRecording();
+      try {
+        await startRecording();
+      } catch (error) {
+        console.error("Failed to start recording:", error);
+      }
     });
 
     connection.on(LiveTranscriptionEvents.Close, (event) => {
@@ -84,6 +89,14 @@ const Voice = () => {
     });
 
     connection.on(LiveTranscriptionEvents.Transcript, (results) => {
+      const text = results.channel.alternatives[0].transcript;
+      if (text) {
+        setIsUserTalking(true);
+        if (results.is_final) {
+          setIsUserTalking(false);
+          setIsBotTalking(true);
+        }
+      }
       console.log("Received transcription results", results);
     });
 
@@ -136,7 +149,7 @@ const Voice = () => {
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       });
-
+      console.log('Starting recording..');
       // Start audio recording
       const recording = new Audio.Recording();
       setRecording(recording);
