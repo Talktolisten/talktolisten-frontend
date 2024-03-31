@@ -1,15 +1,16 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar } from "react-native";
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
-import { SCREEN_NAMES } from "../../util/constants";
 import { useAnimation } from "./hook";
 import { voice_talk } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
+import { get_user_info } from "../../axios/user";
 import { Buffer } from "buffer";
 import LiveAudioStream from "./setup/dataStreaming";
 import { createDeepgramConnection } from "./setup/deepgram";
@@ -23,19 +24,58 @@ const Voice = () => {
   const route = useRoute();
 
   const { botInfo, chat_id } = route.params;
-  const [buttonRecording, setButtonRecording] = useState("Stop");
+  const userId = useSelector((state) => state.user.userID);
+  const [userInfo, setUserInfo] = useState({});
 
+  const [buttonRecording, setButtonRecording] = useState("Stop");
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [recording, setRecording] = useState(null);
 
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
   const [sound, setSound] = useState(null);
-  const [processingText, setProcessingText] = useState("");
+
+  const [processingText, setProcessingText] = useState("Say something..");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const processingRef = useRef(false);
 
   const [connection, setConnection] = useState(LiveClient | null);
+  const [connectionReady, setConnectionReady] = useState(false);
 
   useAnimation(isBotTalking, scaleValue1, scaleValue2);
+
+  const fetchUserInfo = async () => {
+    try {
+      const fetchedUserInfo = await get_user_info(userId);
+      setUserInfo(fetchedUserInfo);
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchUserInfo();
+
+    const requestMicrophonePermission = async () => {
+      try {
+        if (permissionResponse && permissionResponse.status !== 'granted') {
+          console.log('Requesting permission..');
+          await requestPermission();
+        }
+        // Set audio mode to allow recording and playing in silent mode
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
+      }
+      catch (error) {
+        console.error('Error requesting permission:', error);
+      }
+    };
+
+    requestMicrophonePermission();
+  }, [permissionResponse]);
 
   useLayoutEffect(() => {
     if (botInfo && botInfo.bot_name) {
@@ -47,57 +87,81 @@ const Voice = () => {
 
   useFocusEffect(
     useCallback(() => {
-      return () => {
+      return async () => {
         sound?.stopAsync();
       };
     }, [sound])
   );
 
+  useEffect(() => {
+    return () => {
+      if (sound) {
+        console.log('Unloading Sound');
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
 
   useEffect(() => {
-    return sound
-      ? () => {
-        console.log('Unloading Sound');
-        sound.unloadAsync(); // Stops and unloads the audio
+    const inConversation = async () => {
+      if (buttonRecording === "Start" && connection && connectionReady) {
+        if (!isBotTalking && !recording) {
+          try {
+            await startRecording();
+          } catch (error) {
+            console.error('Error starting recording:', error);
+          }
+        }
       }
-      : undefined;
-  }, [sound]);
+    };
+    inConversation();
+  }, [connection, connectionReady, buttonRecording, isBotTalking, isUserTalking]);
+
+  useEffect(() => {
+    const processText = async () => {
+      if (processingText && processingText.length > 0 && isProcessing && processingRef.current) {
+        setProcessingText("");
+        const audio = await voice_talk(chat_id, botInfo.bot_id, processingText);
+        await playBase64Audio(audio);
+        setIsProcessing(false);
+        processingRef.current = false;
+      }
+    };
+    processText();
+  }, [isProcessing]);
+
 
   const startConnection = async () => {
     const connection = createDeepgramConnection();
 
     connection.on(LiveTranscriptionEvents.Open, async () => {
       connection.getReadyState() ? console.log("Connection opened") : console.error("Connection failed to open");
-      setButtonRecording("Start");
+      setConnectionReady(true);
       LiveAudioStream.on('data', (data) => {
         if (connection && connection.getReadyState() === 1) {
-          // Decode base64 to raw binary data
+          setIsUserTalking(true);
           var chunk = Buffer.from(data, 'base64');
           connection.send(chunk);
         }
       });
-
-      try {
-        await startRecording();
-      } catch (error) {
-        console.error("Failed to start recording:", error);
-      }
     });
 
     connection.on(LiveTranscriptionEvents.Close, (event) => {
       console.log("Connection closed", event);
     });
 
-    connection.on(LiveTranscriptionEvents.Transcript, (results) => {
+    connection.on(LiveTranscriptionEvents.Transcript, async (results) => {
       const text = results.channel.alternatives[0].transcript;
-      if (text) {
-        setIsUserTalking(true);
-        if (results.is_final) {
-          setIsUserTalking(false);
-          setIsBotTalking(true);
-        }
+      console.log(processingRef.current, text);
+      if (text.length > 0 && results.is_final && !processingRef.current) {
+        console.log("Received final transcription results", text);
+        setProcessingText(text);
+        setIsProcessing(true);
+        processingRef.current = true;
+        setIsBotTalking(true);
+        setIsUserTalking(false);
       }
-      console.log("Received transcription results", results);
+      // console.log("Received transcription results", results);
     });
 
     connection.on(LiveTranscriptionEvents.Metadata, (metadata) => {
@@ -141,22 +205,13 @@ const Voice = () => {
 
   async function startRecording() {
     try {
-      if (permissionResponse.status !== 'granted') {
-        console.log('Requesting permission..');
-        await requestPermission();
-      }
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
       console.log('Starting recording..');
-      // Start audio recording
-      const recording = new Audio.Recording();
-      setRecording(recording);
-      await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-      await recording.startAsync();
 
-      // Listen for audio data and send it
+      const newRecording = new Audio.Recording();
+      setRecording(newRecording);
+
+      await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      await newRecording.startAsync();
       LiveAudioStream.start();
 
     } catch (error) {
@@ -168,12 +223,9 @@ const Voice = () => {
   async function stopRecording() {
     console.log('Stopping recording..');
     try {
-      if (connection) {
-        connection.finish();
-        setConnection(null);
-      } else {
-        console.error('Error: No active connection to finish');
-      }
+      LiveAudioStream.stop();
+      await recording.stopAndUnloadAsync();
+      setRecording(null);
     } catch (error) {
       console.error('Error stopping recording:', error);
       throw error;
@@ -184,10 +236,15 @@ const Voice = () => {
   const handleButtonPress = async () => {
     if (buttonRecording === "Start") {
       setButtonRecording("Stop");
-      LiveAudioStream.stop();
-      await recording.stopAndUnloadAsync();
       await stopRecording();
+      if (connection) {
+        connection.finish();
+        setConnection(null);
+      } else {
+        console.error('Error: No active connection to finish');
+      }
     } else {
+      setButtonRecording("Start");
       const connection = await startConnection();
       setConnection(connection);
     }
@@ -229,9 +286,6 @@ const Voice = () => {
         ) : (
           <Image source={voiceEnd} style={styles.image} />
         )}
-        <Text style={styles.buttonRecording}>
-          {buttonRecording === 'Start' ? 'Listening... Tap to Stop' : ''}
-        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -266,7 +320,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 120,
+    marginBottom: 30,
   },
   buttonRecording: {
     color: COLORS.black,

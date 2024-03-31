@@ -1,10 +1,10 @@
 import Api from "../../axios/api";
 
-export const voice_talk = async (chat_id, bot_id, base64Audio) => {
+export const voice_talk = async (chat_id, bot_id, question) => {
     const payload = {
         chat_id: chat_id,
         bot_id: bot_id,
-        audio: base64Audio,
+        text: question,
     };
 
     const config = {
@@ -14,6 +14,7 @@ export const voice_talk = async (chat_id, bot_id, base64Audio) => {
     };
     try {
         const response = await Api(config);
+        console.log('receive response');
         return response.data;
     } catch (error) {
         console.error("Error uploading audio:", error);
