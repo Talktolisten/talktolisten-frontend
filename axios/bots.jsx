@@ -8,3 +8,12 @@ export const get_bot_info = async (botId) => {
     return res.data;
   });
 };
+
+export const get_random_bot = async () => {
+  return await Api({
+    method: "GET",
+    url: `api/v1/explore/random`,
+  }).then((res) => {
+    return res.data;
+  });
+}

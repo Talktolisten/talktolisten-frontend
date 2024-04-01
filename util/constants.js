@@ -2,6 +2,8 @@ export const SCREEN_NAMES = {
   NAV_TAB: "Tab Navigator",
   HOME: "Home",
   CHAT_TAB: "Chat Tab",
+  CREATE_CHARACTER_TAB: "Create Character Tab",
+  RANDOM_TAB: "Surprised me Tab",
   PROFILE_TAB: "Profile Tab",
 
   EXPLORE: "Explore",
@@ -26,6 +28,9 @@ export const SCREEN_NAMES = {
   CHAT: "Chat",
   MESSAGE: "Message",
   VOICE: "Voice",
+
+  CREATE_CHARACTER: "Create Character",
+  RANDOM: "Surprised me",
 };
 
 export const defaultAvatarURL = [

@@ -328,6 +328,42 @@ export const getIcon = (name, size, color, style) => {
         style={style}
       />
     ),
+
+    'streamline:ai-generate-variation-spark': (
+      <Iconify
+        icon="streamline:ai-generate-variation-spark"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'streamline:ai-generate-variation-spark-solid': (
+      <Iconify
+        icon="streamline:ai-generate-variation-spark-solid"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'material-symbols:add-circle-outline': (
+      <Iconify
+        icon="material-symbols:add-circle-outline"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
+
+    'material-symbols:add-circle': (
+      <Iconify
+        icon="material-symbols:add-circle"
+        size={size}
+        color={color}
+        style={style}
+      />
+    ),
   };
 
   return icons[name];
