@@ -39,7 +39,7 @@ const modalStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.white,
-        height: "80%",
+        height: "70%",
         width: "100%",
     },
 });
