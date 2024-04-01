@@ -33,10 +33,11 @@ const Voice = () => {
 
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
+  const [caption, setCaption] = useState('Let\'s talk!');
+  const [userText, setUserText] = useState('');
+
   const [sound, setSound] = useState(null);
 
-  const [processingText, setProcessingText] = useState("Say something..");
-  const [isProcessing, setIsProcessing] = useState(false);
   const processingRef = useRef(false);
 
   const [connection, setConnection] = useState(LiveClient | null);
@@ -80,7 +81,8 @@ const Voice = () => {
   useLayoutEffect(() => {
     if (botInfo && botInfo.bot_name) {
       navigation.setOptions({
-        headerTitle: botInfo.bot_name
+        headerTitle: botInfo.bot_name,
+        tabBarVisible: false,
       });
     }
   }, [botInfo, navigation]);
@@ -88,7 +90,9 @@ const Voice = () => {
   useFocusEffect(
     useCallback(() => {
       return async () => {
-        sound?.stopAsync();
+        if (sound?._loaded) {
+          await sound.stopAsync();
+        }
       };
     }, [sound])
   );
@@ -103,6 +107,20 @@ const Voice = () => {
   }, [sound]);
 
   useEffect(() => {
+    if (isUserTalking) {
+      if (userText.length > 0) {
+        setCaption(userText);
+      } else {
+        setCaption("Listening..");
+      }
+    } else if (isBotTalking) {
+      setTimeout(() => {
+        setCaption("");
+      }, 3000);
+    }
+  }, [isUserTalking, isBotTalking, userText]);
+
+  useEffect(() => {
     const inConversation = async () => {
       if (buttonRecording === "Start" && connection && connectionReady) {
         if (!isBotTalking && !recording) {
@@ -115,20 +133,17 @@ const Voice = () => {
       }
     };
     inConversation();
-  }, [connection, connectionReady, buttonRecording, isBotTalking, isUserTalking]);
+  }, [connection, connectionReady, buttonRecording]);
 
-  useEffect(() => {
-    const processText = async () => {
-      if (processingText && processingText.length > 0 && isProcessing && processingRef.current) {
-        setProcessingText("");
-        const audio = await voice_talk(chat_id, botInfo.bot_id, processingText);
-        await playBase64Audio(audio);
-        setIsProcessing(false);
-        processingRef.current = false;
-      }
-    };
-    processText();
-  }, [isProcessing]);
+  const processText = async (text) => {
+    if (text && text.length > 0 && !processingRef.current) {
+      console.log("Processing text..");
+      processingRef.current = true;
+      const audio = await voice_talk(chat_id, botInfo.bot_id, text);
+      setUserText('');
+      await playBase64Audio(audio);
+    }
+  };
 
 
   const startConnection = async () => {
@@ -139,7 +154,6 @@ const Voice = () => {
       setConnectionReady(true);
       LiveAudioStream.on('data', (data) => {
         if (connection && connection.getReadyState() === 1) {
-          setIsUserTalking(true);
           var chunk = Buffer.from(data, 'base64');
           connection.send(chunk);
         }
@@ -155,17 +169,19 @@ const Voice = () => {
       console.log(processingRef.current, text);
       if (text.length > 0 && results.is_final && !processingRef.current) {
         console.log("Received final transcription results", text);
-        setProcessingText(text);
-        setIsProcessing(true);
-        processingRef.current = true;
+        setIsUserTalking(true);
+        setUserText(text);
+        LiveAudioStream.stop();
         setIsBotTalking(true);
         setIsUserTalking(false);
+        processText(text);
+        LiveAudioStream.start();
       }
       // console.log("Received transcription results", results);
     });
 
     connection.on(LiveTranscriptionEvents.Metadata, (metadata) => {
-      console.log("Received metadata", metadata);
+      // console.log("Received metadata", metadata);
     });
 
     connection.on(LiveTranscriptionEvents.Error, (error) => {
@@ -189,12 +205,16 @@ const Voice = () => {
 
       const { sound: soundObject } = await Audio.Sound.createAsync({ uri: fileUri });
       setSound(soundObject);
-
+      console.log('Playing audio..');
       await soundObject.playAsync();
 
       soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
         if (playbackStatus.didJustFinish) {
           setIsBotTalking(false);
+          setIsUserTalking(true);
+          setTimeout(() => {
+            processingRef.current = false;
+          }, 3000);
         }
       });
 
@@ -237,6 +257,9 @@ const Voice = () => {
     if (buttonRecording === "Start") {
       setButtonRecording("Stop");
       await stopRecording();
+      setIsBotTalking(false);
+      setIsUserTalking(false);
+      setCaption('Let\'s talk!')
       if (connection) {
         connection.finish();
         setConnection(null);
@@ -252,8 +275,8 @@ const Voice = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 14, paddingHorizontal: 20, marginTop: 15 }}>
-        {botInfo.description}
+      <Text style={{ fontSize: FONTSIZE.medium, paddingHorizontal: 20, marginTop: 15, marginBottom: 70 }}>
+        {botInfo.short_description}
       </Text>
       <View style={styles.imageArea}>
         <Animated.View
@@ -280,6 +303,9 @@ const Voice = () => {
         />
         <Image source={{ uri: botInfo.profile_picture }} style={styles.imageItem} />
       </View>
+      <View style={styles.captionContainer}>
+        <Text style={styles.caption}>{caption}</Text>
+      </View>
       <TouchableOpacity style={styles.buttonRecordingContainer} onPress={handleButtonPress}>
         {buttonRecording === 'Start' ? (
           <Image source={voiceStart} style={styles.image} />
@@ -302,7 +328,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   imageArea: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -326,12 +351,23 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: FONTSIZE.medium,
     fontWeight: FONT_WEIGHT.bold,
-    marginTop: 10
+    marginTop: 10,
   },
   image: {
     width: 70,
     height: 70,
-  }
+  },
+  captionContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 30,
+  },
+  caption: {
+    fontSize: FONTSIZE.small,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLORS.light_black,
+  },
 });
 
 export default Voice;

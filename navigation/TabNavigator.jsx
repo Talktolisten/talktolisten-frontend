@@ -24,7 +24,7 @@ const TabNavigator = () => {
         elevation: 0,
         shadowOpacity: 0.1,
         paddingTop: 5,
-        display: routeName === "Message" ? "none" : "flex", // Hide tab bar in 'Message' screen
+        display: (routeName === SCREEN_NAMES.MESSAGE || routeName === SCREEN_NAMES.VOICE) ? "none" : "flex", // Hide tab bar in 'Message' screen
       },
       tabBarLabelStyle: {
         fontSize: 12,
