@@ -17,3 +17,29 @@ export const get_random_bot = async () => {
     return res.data;
   });
 }
+
+export const generate_greeting_description = async (bot_name, description) => {
+  return await Api({
+    method: "POST",
+    url: `api/v1/bot/create_bot/generate`,
+    data: {
+      bot_name,
+      description,
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
+export const optimize_description = async (bot_name, description) => {
+  return await Api({
+    method: "POST",
+    url: `api/v1/bot/create_bot/generate`,
+    data: {
+      bot_name,
+      description,
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}

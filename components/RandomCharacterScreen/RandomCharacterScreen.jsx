@@ -5,11 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "expo-status-bar";
-import {
-  Feather,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
 import { get_random_bot } from "../../axios/bots";
 import CharacterProfile from "../CharacterProfileScreen/CharacterProfileScreen";
 
@@ -42,8 +37,9 @@ const RandomCharacter = () => {
         >
           <LinearGradient
             colors={[
-              'rgba(208, 179, 184, 255)',
-              'rgba(237,196,132,255)']}
+              'rgba(237,196,132,255)',
+              'rgba(208, 179, 200, 255)'
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{
@@ -54,7 +50,7 @@ const RandomCharacter = () => {
               bottom: 0,
             }}
           />
-          <Text style={styles.buttonText}>Surprised me</Text>
+          <Text style={styles.buttonText}>Surprised me ✨</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -78,7 +74,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.bold,
+    fontWeight: FONT_WEIGHT.medium,
     fontSize: FONTSIZE.medium,
   },
 });

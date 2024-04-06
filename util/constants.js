@@ -29,8 +29,11 @@ export const SCREEN_NAMES = {
   MESSAGE: "Message",
   VOICE: "Voice",
 
-  CREATE_CHARACTER: "Create Character",
   RANDOM: "Surprised me",
+
+  CREATE_CHARACTER: "Create Character",
+  CREATE_CHARACTER_2: "Create Character step 2",
+  CREATE_CHARACTER_3: "Create Character step 3",
 };
 
 export const defaultAvatarURL = [

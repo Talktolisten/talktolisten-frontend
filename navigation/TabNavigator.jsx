@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import ProfileStack from "./ProfileStack";
-import ChatStack from "./ChatStack";
 import HomeStack from "./HomeStack";
+import ChatStack from "./ChatStack";
+import CreateCharacterStack from "./CreateCharacter";
+import ProfileStack from "./ProfileStack";
 import IconButton from "../components/UI/IconButton";
 
 import { SCREEN_NAMES } from "../util/constants";
@@ -81,9 +82,10 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER_TAB}
-        component={ChatStack}
+        component={CreateCharacterStack}
         options={{
           tabBarLabel: '',
+          tabBarLabelStyle: {},
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(focused ? "material-symbols:add-circle" : "material-symbols:add-circle-outline",
               35,
