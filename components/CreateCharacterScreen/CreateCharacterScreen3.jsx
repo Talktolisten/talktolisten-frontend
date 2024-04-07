@@ -4,9 +4,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
 import { LinearGradient } from 'expo-linear-gradient';
+import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { TextInput, RadioButton } from 'react-native-paper';
-import botDefaultAvatar from "../../assets/bot_default_avatar.png";
 import { SCREEN_NAMES } from "../../util/constants";
 
 const CreateCharacter3 = () => {
@@ -17,10 +17,14 @@ const CreateCharacter3 = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedAddOn, setSelectedAddOn] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [imageIndexSelected, setImageIndexSelected] = useState(0);
 
   const [imagePrompt, setImagePrompt] = useState(imagePrompt_ai || "");
 
-  const [image, setImage] = useState(botDefaultAvatar);
+  const botDefaultAvatar = "https://ttl.blob.core.windows.net/default-avatar/botdefault.webp";
+
+  const [images, setImages] = useState([botDefaultAvatar]);
+
   const [imageMode, setImageMode] = useState('ai-generated' || 'upload');
 
   const addOnStyles = [
@@ -65,19 +69,24 @@ const CreateCharacter3 = () => {
   //   }
   // };
 
-  const pickImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        quality: 1,
-      });
+  const handleImageArrow = (direction) => {
+    if (direction === 'left' && imageIndexSelected - 1 >= 0) {
+      setImageIndexSelected(imageIndexSelected - 1);
+    } else if (direction === 'right' && imageIndexSelected + 1 < images.length) {
+      setImageIndexSelected(imageIndexSelected + 1);
+    }
+  };
 
-      if (!result.canceled) {
-        setImage(result.assets[0].uri);
-        console.log(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.error("Error picking image: ", error);
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      let newImages = [...images, result.assets[0].uri];
+      setImages(newImages);
+      setImageIndexSelected(newImages.length - 1);
     }
   };
 
@@ -86,12 +95,26 @@ const CreateCharacter3 = () => {
       <SafeAreaView style={styles.container}>
         <Text style={styles.heading}>Character's Avatar</Text>
 
-        <View style={styles.imageContainer}>
-          <Image
-            key={image}
-            source={typeof image === 'string' ? { uri: image } : image}
-            style={styles.image}
-          />
+        <View style={styles.controlImageContainer}>
+          <TouchableOpacity onPress={() => handleImageArrow("left")} style={styles.arrowButton}>
+            <AntDesign name="left" size={28} color="black" />
+          </TouchableOpacity>
+          <View style={styles.imageContainer}>
+
+            <Image
+              key={images[imageIndexSelected]}
+              source={
+                typeof images[imageIndexSelected] === 'string'
+                  ? { uri: images[imageIndexSelected] }
+                  : images[imageIndexSelected]
+              }
+              style={styles.image}
+            />
+
+          </View>
+          <TouchableOpacity onPress={() => handleImageArrow("right")} style={styles.arrowButton}>
+            <AntDesign name="right" size={28} color="black" />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.radioButtonContainer}>
@@ -272,6 +295,19 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: "100%",
   },
+  controlImageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  arrowButton: {
+    borderRadius: 5,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   button: {
     borderRadius: 5,
     padding: 10,
@@ -336,7 +372,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
     alignSelf: 'center',
     borderColor: COLORS.black,
     backgroundColor: COLORS.white,
