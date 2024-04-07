@@ -4,6 +4,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { TextInput, RadioButton } from 'react-native-paper';
+import { SCREEN_NAMES } from "../../util/constants";
+import { generate_image_prompt } from "../../axios/bots";
+
 
 
 const CreateCharacter2 = () => {
@@ -13,13 +16,23 @@ const CreateCharacter2 = () => {
 
   const [greeting, setGreeting] = useState(greeting_ai)
   const [shortDescription, setShortDescription] = useState(short_description_ai);
-  const [gender, setGender] = useState(null);
-  const [privacy, setPrivacy] = useState(null);
+  const [gender, setGender] = useState('male');
+  const [privacy, setPrivacy] = useState('public');
+
+  const generateImagePrompt = async () => {
+    try {
+      const new_description = description + `\n(Gender: ${gender})`;
+      const imagePrompt = await generate_image_prompt(name, new_description);
+      navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_3, { name, description, greeting, shortDescription, gender, privacy, imagePrompt_ai: imagePrompt });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Create Character Profile</Text>
+        <Text style={styles.heading}>Character's Profile</Text>
 
         <View style={styles.inputContainer}>
           <View style={styles.topheadingContainer}>
@@ -109,17 +122,10 @@ const CreateCharacter2 = () => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={[styles.button, { backgroundColor: COLORS.white }]}
-          >
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            // onPress={}
+            onPress={generateImagePrompt}
             style={[styles.button, { backgroundColor: COLORS.blue }]}
           >
-            <Text style={[styles.buttonText, { color: COLORS.white }]}>Next</Text>
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
           </TouchableOpacity>
 
         </View>
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.small,
     backgroundColor: COLORS.white,
     marginBottom: 20,
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
     paddingBottom: 10,
   },
@@ -183,20 +189,20 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     position: "absolute",
     bottom: 20,
     width: "100%",
   },
   button: {
-    borderRadius: 15,
-    height: 50,
+    borderRadius: 5,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
-    width: "35%",
+    width: "25%",
     borderColor: COLORS.black,
     borderWidth: 1,
   },

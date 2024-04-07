@@ -206,6 +206,7 @@ const Voice = () => {
       const { sound: soundObject } = await Audio.Sound.createAsync({ uri: fileUri });
       setSound(soundObject);
       console.log('Playing audio..');
+      await soundObject.setVolumeAsync(1.0);
       await soundObject.playAsync();
 
       soundObject.setOnPlaybackStatusUpdate(playbackStatus => {

@@ -1,125 +1,228 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
+import * as ImagePicker from 'expo-image-picker';
+import Modal from "react-native-modal";
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { TextInput, RadioButton } from 'react-native-paper';
-
+import botDefaultAvatar from "../../assets/bot_default_avatar.png";
+import { SCREEN_NAMES } from "../../util/constants";
 
 const CreateCharacter3 = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { name, description, greeting_ai, short_description_ai } = route.params;
+  const { name, description, greeting, short_description, gender, privacy, imagePrompt_ai } = route.params;
 
-  const [greeting, setGreeting] = useState(greeting_ai)
-  const [shortDescription, setShortDescription] = useState(short_description_ai);
-  const [gender, setGender] = useState(null);
-  const [privacy, setPrivacy] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedAddOn, setSelectedAddOn] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState({});
+
+  const [imagePrompt, setImagePrompt] = useState(imagePrompt_ai || "");
+
+  const [image, setImage] = useState(botDefaultAvatar);
+  const [imageMode, setImageMode] = useState('ai-generated' || 'upload');
+
+  const addOnStyles = [
+    {
+      id: '0', name: 'Style', options: ['Anime', 'Realism', 'Cartoon', 'Fantasy',
+        'Cyberpunk', 'Steampunk', 'Gothic', 'Retro',
+        'Watercolor', 'Pixel Art', 'Chibi', 'Manga', 'Sketch',
+        'Pop Art', 'Photorealism', 'Concept Art', 'Graffiti']
+    },
+    { id: '1', name: 'Accessories', options: ['Glasses', 'Hat', 'Jewelry', 'Scarf', 'Tie'] },
+    { id: '2', name: 'Eyes Color', options: ['Blue', 'Brown', 'Black'] },
+    { id: '3', name: 'Background', options: ['City', 'Nature', 'Abstract', 'Indoors', 'Space'] },
+    { id: '5', name: 'Hair Style', options: ['Short', 'Long', 'Ponytail', 'Bun', 'Bald', 'Blonde', 'Brown', 'Black', 'Red', 'Grey', 'Pink'] },
+    { id: '6', name: 'Outfit', options: ['Casual', 'Formal', 'Sporty', 'Fantasy', 'Traditional'] },
+    { id: '7', name: 'Skin Tone', options: ['Fair', 'Medium', 'Olive', 'Tan', 'Dark'] },
+    { id: '11', name: 'Body Shape', options: ['Slim', 'Athletic', 'Average', 'Curvy', 'Muscular'] },
+  ];
+
+  const handleAddOnPress = (addOn) => {
+    setSelectedAddOn(addOn);
+    setModalVisible(true);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOptions(prevOptions => ({
+      ...prevOptions,
+      [option]: !prevOptions[option],
+    }));
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  // const generate_ai_image = async () => {
+  //   const ImagePrompt = imagePrompt + " " + Object.keys(selectedOptions).join(" ");
+  //   try {
+  //     const { image } = await generate_image(ImagePrompt);
+  //     setImage(image);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+        console.log(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error("Error picking image: ", error);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Create Character Profile</Text>
+        <Text style={styles.heading}>Character's Avatar</Text>
 
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Greeting</Text>
-          </View>
-
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>Introduction of your character</Text>
-          </View>
-
-          <TextInput
-            placeholder="Greeting"
-            style={[styles.input, { height: 75 }]}
-            mode="outlined"
-            label={"Greeting"}
-            activeOutlineColor={COLORS.black}
-            contentStyle={{ paddingTop: SIZES.xLarge }}
-            multiline
-            maxLength={200}
-            value={greeting}
-            onChangeText={(text) => setGreeting(text)}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Character Short Description</Text>
-          </View>
-
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>A short description for your character</Text>
-          </View>
-
-          <TextInput
-            placeholder="A short description of your character."
-            style={[styles.input, { height: 75 }]}
-            mode="outlined"
-            label={"Character Short Description"}
-            activeOutlineColor={COLORS.black}
-            contentStyle={{ paddingTop: SIZES.xLarge }}
-            multiline
-            textAlignVertical="top"
-            maxLength={300}
-            value={shortDescription}
-            onChangeText={(text) => setShortDescription(text)}
+        <View style={styles.imageContainer}>
+          <Image
+            key={image}
+            source={typeof image === 'string' ? { uri: image } : image}
+            style={styles.image}
           />
         </View>
 
         <View style={styles.radioButtonContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Gender</Text>
-          </View>
-          <RadioButton.Group onValueChange={value => setGender(value)} value={gender}>
+          <RadioButton.Group onValueChange={value => setImageMode(value)} value={imageMode}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[styles.radioButton, gender === 'male' ? styles.radioButtonSelected : {}]} onPress={() => setGender('male')}>
-                <Text style={[styles.radioButtonLabel, gender === 'male' ? styles.radioButtonLabelSelected : {}]}>Male</Text>
+              <TouchableOpacity style={[styles.radioButton, imageMode === 'upload' ? styles.radioButtonSelected : {}]} onPress={() => {
+                setImageMode('upload');
+                pickImage();
+              }}>
+                <Text style={[styles.radioButtonLabel, imageMode === 'upload' ? styles.radioButtonLabelSelected : {}]}>Upload your Avatar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, gender === 'female' ? styles.radioButtonSelected : {}]} onPress={() => setGender('female')}>
-                <Text style={[styles.radioButtonLabel, gender === 'female' ? styles.radioButtonLabelSelected : {}]}>Female</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, gender === 'non-binary' ? styles.radioButtonSelected : {}]} onPress={() => setGender('non-binary')}>
-                <Text style={[styles.radioButtonLabel, gender === 'non-binary' ? styles.radioButtonLabelSelected : {}]}>Non-binary</Text>
+              <TouchableOpacity style={[styles.radioButton, imageMode === 'ai-generated' ? styles.radioButtonSelected : {}]} onPress={() => setImageMode('ai-generated')}>
+                <Text style={[styles.radioButtonLabel, imageMode === 'ai-generated' ? styles.radioButtonLabelSelected : {}]}>AI-generated image</Text>
               </TouchableOpacity>
             </View>
           </RadioButton.Group>
         </View>
 
-        <View style={styles.radioButtonContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Privacy</Text>
-          </View>
-          <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
-                <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
-                <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
-              </TouchableOpacity>
-            </View>
-          </RadioButton.Group>
-          <Text style={styles.privacyDescription}>
-            {privacy === 'public' ? 'Other people can talk to your character' : 'Only you can talk to the character'}
-          </Text>
-        </View>
+        {imageMode === 'ai-generated' && (
+          <View>
+            <View style={styles.inputContainer}>
 
+              <TextInput
+                placeholder={imagePrompt}
+                style={[styles.input, { height: 100 }]}
+                mode="outlined"
+                label={"Image Prompt"}
+                activeOutlineColor={COLORS.black}
+                contentStyle={{ paddingTop: SIZES.xLarge }}
+                multiline
+                maxLength={1000}
+                value={imagePrompt}
+                onChangeText={(text) => setImagePrompt(text)}
+              />
+            </View>
+
+            <Modal
+              isVisible={isModalVisible}
+              animationInTiming={500}
+              animationOutTiming={1000}
+              backdropColor={COLORS.light_black}
+              backdropOpacity={0.85}
+              onBackdropPress={toggleModal}
+              swipeDirection={["down"]}
+              onSwipeComplete={toggleModal}
+              style={modalStyles.modalContainerScreen}
+            >
+              <View style={modalStyles.modalContainer}>
+                <Text style={modalStyles.modalHeading}>{selectedAddOn?.name}</Text>
+                {selectedAddOn && selectedAddOn.options && (
+                  <FlatList
+                    data={selectedAddOn.options}
+                    numColumns={5}
+                    keyExtractor={(item) => item}
+                    renderItem={({ item: option }) => (
+                      <TouchableOpacity
+                        key={option}
+                        style={[modalStyles.optionButton, selectedOptions[option] && modalStyles.selectedOption]}
+                        onPress={() => handleOptionSelect(option)}
+                      >
+                        <Text style={modalStyles.optionButtonText}>{option}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                )}
+              </View>
+            </Modal>
+
+            <View style={styles.addOnContainer}>
+              <FlatList
+                data={addOnStyles}
+                numColumns={4}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.addOnButton}
+                    onPress={() => {
+                      handleAddOnPress(item);
+                    }}
+                  >
+                    <Text style={styles.addOnButtonText}>{item.name}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </View>
+        )}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={[styles.button, { backgroundColor: COLORS.white }]}
-          >
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity
             // onPress={}
+            style={[styles.button, {
+              width: "55%", overflow: "hidden", borderRadius: 5
+            }]}
+          >
+            <LinearGradient
+              colors={[
+                'rgba(208, 179, 200, 255)',
+                'rgba(237,196,132,255)'
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              }}
+            />
+            <Text style={{
+              color: COLORS.black,
+              fontWeight: FONT_WEIGHT.medium,
+              fontSize: FONTSIZE.medium,
+            }}>Generate</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
+              name,
+              description,
+              greeting,
+              short_description,
+              gender,
+              privacy,
+              profile_picture: ""
+            })}
             style={[styles.button, { backgroundColor: COLORS.blue }]}
           >
-            <Text style={[styles.buttonText, { color: COLORS.white }]}>Next</Text>
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
           </TouchableOpacity>
 
         </View>
@@ -160,43 +263,21 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.small,
     textAlign: "center",
   },
-  input: {
-    height: 50,
-    lineHeight: 20,
-    borderRadius: 4,
-    fontSize: FONTSIZE.small,
-    backgroundColor: COLORS.white,
-    marginBottom: 20,
-    width: "90%",
-    alignSelf: "center",
-    paddingBottom: 10,
-  },
-  inputContainer: {
-    alignItems: "left",
-    alignSelf: "center",
-    display: "flex",
-    flexDirection: "column",
-    marginVertical: 10,
-    width: "100%",
-  },
-  inputIcon: {
-    marginBottom: 15,
-  },
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     position: "absolute",
     bottom: 20,
     width: "100%",
   },
   button: {
-    borderRadius: 15,
-    height: 50,
+    borderRadius: 5,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
-    width: "35%",
+    width: "25%",
     borderColor: COLORS.black,
     borderWidth: 1,
   },
@@ -206,12 +287,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.medium,
   },
   radioButtonContainer: {
-    marginBottom: SIZES.xLarge,
+    marginVertical: SIZES.xLarge,
     width: "100%",
   },
   radioButton: {
     flex: 1,
-    borderColor: COLORS.blue,
+    borderColor: COLORS.black,
     borderWidth: 1,
     backgroundColor: COLORS.white,
     alignItems: 'center',
@@ -219,19 +300,121 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   radioButtonSelected: {
+    borderColor: COLORS.blue,
     backgroundColor: COLORS.blue,
   },
   radioButtonLabelSelected: {
     color: COLORS.white,
+    fontWeight: FONT_WEIGHT.bold,
   },
   radioButtonLabel: {
     fontSize: FONTSIZE.small,
     textAlign: 'center',
   },
-  privacyDescription: {
-    textAlign: 'center',
+  input: {
+    height: 50,
+    lineHeight: 20,
+    borderRadius: 4,
     fontSize: FONTSIZE.small,
-    marginTop: SIZES.small,
+    backgroundColor: COLORS.white,
+    marginBottom: 20,
+    width: "100%",
+    alignSelf: "center",
+    paddingBottom: 10,
+  },
+  inputContainer: {
+    alignItems: "left",
+    alignSelf: "center",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+  },
+  imageContainer: {
+    width: 200,
+    height: 200,
+    borderRadius: 150,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    alignSelf: 'center',
+    borderColor: COLORS.black,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imagePlaceholderText: {
+    color: 'gray',
+  },
+  addOnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addOnButton: {
+    margin: 5,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: COLORS.black,
+    paddingHorizontal: 10,
+  },
+  addOnButtonText: {
+    fontSize: SIZES.small,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.black,
+    textAlign: 'center',
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  modalContainerScreen: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    width: "100%",
+    margin: 5,
+  },
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    height: "30%",
+    width: "100%",
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  modalHeading: {
+    fontSize: FONTSIZE.large,
+    marginBottom: 20,
+  },
+  modalContent: {
+    padding: 20,
+    borderRadius: 10,
+  },
+  optionButton: {
+    padding: 10,
+    margin: 5,
+    backgroundColor: COLORS.grey,
+    borderRadius: 20,
+  },
+  optionButtonText: {
+    fontSize: FONTSIZE.small,
+  },
+  selectedOption: {
+    borderColor: COLORS.black,
+    borderWidth: 1,
   },
 });
 

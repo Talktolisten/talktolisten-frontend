@@ -30,6 +30,7 @@ const MessageScreen = () => {
   const { bot_id, chat_id } = route.params;
   const [botInfo, setBotInfo] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [isSending, setIsSending] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
 
@@ -93,7 +94,9 @@ const MessageScreen = () => {
 
   const onSend = useCallback(
     (messages = []) => {
-      if (!botInfo) return;
+      if (!botInfo || isSending) return;
+
+      setIsSending(true);
 
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
@@ -123,12 +126,14 @@ const MessageScreen = () => {
           }
         } catch (error) {
           console.error("Failed to send message to backend:", error);
+        } finally {
+          setIsSending(false);
         }
       };
 
       sendMessage();
     },
-    [botInfo, chat_id]
+    [botInfo, chat_id, isSending]
   );
 
   const scrollToBottomComponent = () => {
@@ -158,7 +163,7 @@ const MessageScreen = () => {
         renderAvatar={renderAvatar}
         onPressAvatar={toggleModal}
         alwaysShowSend
-        renderSend={renderSend}
+        renderSend={(props) => renderSend({ ...props, isSending })}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderActions={(props) => renderActions(props, botInfo, chat_id)}

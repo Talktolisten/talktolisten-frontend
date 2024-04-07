@@ -34,6 +34,7 @@ export const SCREEN_NAMES = {
   CREATE_CHARACTER: "Create Character",
   CREATE_CHARACTER_2: "Create Character step 2",
   CREATE_CHARACTER_3: "Create Character step 3",
+  CREATE_CHARACTER_4: "Create Character step 4",
 };
 
 export const defaultAvatarURL = [

@@ -73,27 +73,12 @@ const CreateCharacter = () => {
           />
         </View>
 
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={generateCharacter}
-            style={styles.button}
+            style={[styles.button, { backgroundColor: COLORS.blue }]}
           >
-            <LinearGradient
-              colors={[
-                'rgba(208, 179, 200, 255)',
-                'rgba(237,196,132,255)'
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-              }}
-            />
-            <Text style={styles.buttonText}>Generate</Text>
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -140,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.small,
     backgroundColor: COLORS.white,
     marginBottom: 20,
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
     paddingBottom: 10,
   },
@@ -154,19 +139,27 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginBottom: 15,
   },
-  button: {
-    borderRadius: 10,
-    height: 55,
+  buttonContainer: {
+    flexDirection: "row-reverse",
     alignItems: "center",
     alignSelf: "center",
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 20,
+    width: "100%",
+  },
+  button: {
+    borderRadius: 5,
+    padding: 10,
+    alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
-    width: "90%",
-    overflow: "hidden",
+    width: "25%",
+    borderColor: COLORS.black,
+    borderWidth: 1,
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.bold,
+    fontWeight: FONT_WEIGHT.medium,
     fontSize: FONTSIZE.medium,
   },
 });
