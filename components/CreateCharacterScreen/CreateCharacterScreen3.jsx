@@ -8,6 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { TextInput, RadioButton } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
+import { generate_avatar } from "../../axios/bots";
 
 const CreateCharacter3 = () => {
   const navigation = useNavigation();
@@ -59,15 +60,17 @@ const CreateCharacter3 = () => {
     setModalVisible(!isModalVisible);
   };
 
-  // const generate_ai_image = async () => {
-  //   const ImagePrompt = imagePrompt + " " + Object.keys(selectedOptions).join(" ");
-  //   try {
-  //     const { image } = await generate_image(ImagePrompt);
-  //     setImage(image);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const generate_ai_image = async () => {
+    const ImagePrompt = imagePrompt + " " + Object.keys(selectedOptions).join(" ");
+    try {
+      const ai_img_url = await generate_avatar(ImagePrompt);
+      let newImages = [...images, ai_img_url];
+      setImages(newImages);
+      setImageIndexSelected(newImages.length - 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleImageArrow = (direction) => {
     if (direction === 'left' && imageIndexSelected - 1 >= 0) {
@@ -203,10 +206,11 @@ const CreateCharacter3 = () => {
           </View>
         )}
 
-        <View style={styles.buttonContainer}>
+        <View style={[styles.buttonContainer, imageMode === 'ai-generated' ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }]}>
 
-          <TouchableOpacity
-            // onPress={}
+
+          {imageMode === 'ai-generated' && (<TouchableOpacity
+            onPress={generate_ai_image}
             style={[styles.button, {
               width: "55%", overflow: "hidden", borderRadius: 5
             }]}
@@ -231,7 +235,7 @@ const CreateCharacter3 = () => {
               fontWeight: FONT_WEIGHT.medium,
               fontSize: FONTSIZE.medium,
             }}>Generate</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>)}
 
           <TouchableOpacity
             onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
@@ -241,7 +245,7 @@ const CreateCharacter3 = () => {
               short_description,
               gender,
               privacy,
-              profile_picture: ""
+              profile_picture: images[imageIndexSelected],
             })}
             style={[styles.button, { backgroundColor: COLORS.blue }]}
           >

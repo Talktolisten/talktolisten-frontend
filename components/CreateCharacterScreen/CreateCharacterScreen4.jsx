@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SCREEN_NAMES } from "../../util/constants";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { get_all_voices } from "../../axios/voice";
+import { create_new_bot } from "../../axios/bots";
 
 const CreateCharacter4 = () => {
   const navigation = useNavigation();
@@ -21,6 +22,38 @@ const CreateCharacter4 = () => {
   const [sound, setSound] = useState(new Audio.Sound());
 
   const userId = useSelector((state) => state.user.userID);
+  const createCharacter = (
+    name,
+    short_description,
+    description,
+    greeting,
+    profile_picture,
+    category,
+    voice_id,
+    privacy,
+    gender,
+    userId
+  ) => {
+    create_new_bot(
+      name,
+      short_description,
+      description,
+      greeting,
+      profile_picture,
+      category,
+      voice_id,
+      privacy,
+      gender,
+      userId
+    )
+      .then((response) => {
+        console.log(response);
+        navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_5, { bot_id: response.bot_id });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     sound.setOnPlaybackStatusUpdate((playbackStatus) => {
@@ -120,18 +153,20 @@ const CreateCharacter4 = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
-            name,
-            description,
-            short_description,
-            greeting,
-            profile_picture: "",
-            category: "",
-            voice_id: selectedVoice?.id,
-            privacy,
-            gender,
-            userId
-          })}
+          onPress={async () => {
+            await createCharacter(
+              name,
+              short_description,
+              description,
+              greeting,
+              profile_picture,
+              "",
+              selectedVoice?.id,
+              privacy,
+              gender,
+              userId
+            );
+          }}
           style={[styles.button, { backgroundColor: COLORS.blue, width: "100%" }]}
         >
           <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.medium }]}>Create Character</Text>

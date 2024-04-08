@@ -20,8 +20,8 @@ export const get_random_bot = async () => {
 
 export const create_new_bot = async (
   bot_name,
-  description,
   short_description,
+  description,
   greeting,
   profile_picture,
   category,
@@ -32,23 +32,37 @@ export const create_new_bot = async (
 ) => {
   return await Api({
     method: "POST",
-    url: `api/v1/bot/create_bot/generate`,
+    url: `api/v1/bot/`,
     data: {
       bot_name,
-      description,
       short_description,
+      description,
       greeting,
       profile_picture,
       category,
       voice_id,
-      created_by,
       privacy,
-      gender
+      gender,
+      created_by,
     },
   }).then((res) => {
     return res.data;
   });
 }
+
+export const generate_avatar = async (image_prompt) => {
+  return await Api({
+    method: "POST",
+    url: `api/v1/bot/create_bot/generate_image`,
+    data: {
+      image_prompt
+    }
+  }).then((res) => {
+    console.log(res.data);
+    return res.data;
+  });
+}
+
 
 export const generate_greeting_description = async (bot_name, description) => {
   return await Api({

@@ -23,7 +23,7 @@ const CreateCharacter2 = () => {
     try {
       const new_description = description + `\n(Gender: ${gender})`;
       const imagePrompt = await generate_image_prompt(name, new_description);
-      navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_3, { name, description, greeting, shortDescription, gender, privacy, imagePrompt_ai: imagePrompt });
+      navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_3, { name, description, greeting, short_description: shortDescription, gender, privacy, imagePrompt_ai: imagePrompt });
     } catch (error) {
       console.log(error);
     }

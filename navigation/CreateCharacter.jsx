@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
-import { CreateCharacterScreen, CreateCharacterScreen2, CreateCharacterScreen3, CreateCharacterScreen4 } from "../screens/CreateCharacter";
+import { CreateCharacterScreen, CreateCharacterScreen2, CreateCharacterScreen3, CreateCharacterScreen4, CreateCharacterScreen5 } from "../screens/CreateCharacter";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
@@ -61,6 +61,11 @@ const CreateCharacterStack = () => {
         name={SCREEN_NAMES.CREATE_CHARACTER_4}
         component={CreateCharacterScreen4}
         options={{ headerShown: true, headerTitle: "Choose a voice" }}
+      />
+      <Stack.Screen
+        name={SCREEN_NAMES.CREATE_CHARACTER_5}
+        component={CreateCharacterScreen5}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
