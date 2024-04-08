@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.0.2] - 2024-03-10
+
+### Add
+- Add version code for Android
+
 ## [4.0.2] - 2024-03-07
 
 ### Change
@@ -9,8 +14,6 @@ All notable changes to this project will be documented in this file.
 ### Fix
 - User will not hear sound when going out of the voice screen.
 - Animation in Voice screen only happen when bot is talking.
-
-### Fix
 
 ## [4.0.1] - 2024-03-05
 

@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,7 +29,9 @@ const CharacterProfile = ({ botInfo, navigation }) => {
                         <Text style={styles.short_description}>{botInfo.short_description}</Text>
                     </View>
 
-                    <Text style={styles.bio}>{botInfo.description}</Text>
+                    <ScrollView style={styles.scrollView}>
+                        <Text style={styles.bio}>{botInfo.description}</Text>
+                    </ScrollView>
 
                 </View>
             </View>
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
     profileContainer: {
         alignItems: "center",
         marginTop: 10,
+        paddingHorizontal: 10,
     },
     mainProfileContainer: {
         width: "100%",
@@ -95,13 +98,19 @@ const styles = StyleSheet.create({
     },
     short_description: {
         color: COLORS.black,
-        fontSize: FONTSIZE.small,
-        marginBottom: SIZES.xLarge,
+        fontSize: FONTSIZE.medium,
+        marginBottom: SIZES.small,
         textAlign: "center",
     },
+    scrollView: {
+        height: 150,
+        marginBottom: SIZES.xLarge,
+        paddingVertical: SIZES.small,
+    },
     bio: {
+        alignSelf: "center",
         color: COLORS.black,
-        fontSize: FONTSIZE.xSmall,
+        fontSize: FONTSIZE.small,
         marginBottom: SIZES.xLarge,
         textAlign: "left",
         marginHorizontal: 15
@@ -110,6 +119,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         marginBottom: 20,
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
     },
     button: {
         padding: 10,

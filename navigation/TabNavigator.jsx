@@ -1,8 +1,10 @@
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import ProfileStack from "./ProfileStack";
-import ChatStack from "./ChatStack";
 import HomeStack from "./HomeStack";
+import ChatStack from "./ChatStack";
+import CreateCharacterStack from "./CreateCharacter";
+import ProfileStack from "./ProfileStack";
 import IconButton from "../components/UI/IconButton";
 
 import { SCREEN_NAMES } from "../util/constants";
@@ -12,6 +14,8 @@ import { COLORS, FONT_NUNITO } from "../styles";
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const [initialScreen, setInitialScreen] = useState(SCREEN_NAMES.CHAT);
+  const ChatStackComponent = () => <ChatStack initialRouteName={initialScreen} />;
   const screenOptions = ({ navigation, route }) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Chat";
     return {
@@ -24,7 +28,7 @@ const TabNavigator = () => {
         elevation: 0,
         shadowOpacity: 0.1,
         paddingTop: 5,
-        display: routeName === "Message" ? "none" : "flex", // Hide tab bar in 'Message' screen
+        display: (routeName === SCREEN_NAMES.MESSAGE || routeName === SCREEN_NAMES.VOICE) ? "none" : "flex", // Hide tab bar in 'Message' screen
       },
       tabBarLabelStyle: {
         fontSize: 12,
@@ -57,7 +61,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? "ic:round-explore" : "ic:outline-explore",
-              25,
+              28,
               color
             ),
         }}
@@ -68,7 +72,38 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: "Chat",
           tabBarIcon: ({ focused, color, size }) =>
-            getIcon(focused ? "bi:chat-fill" : "bi:chat", 25, color),
+            getIcon(focused ? "bi:chat-fill" : "bi:chat",
+              25,
+              color),
+        }}
+        listeners={{
+          focus: () => setInitialScreen(SCREEN_NAMES.CHAT),
+        }}
+      />
+      <Tab.Screen
+        name={SCREEN_NAMES.CREATE_CHARACTER_TAB}
+        component={CreateCharacterStack}
+        options={{
+          tabBarLabel: '',
+          tabBarLabelStyle: {},
+          tabBarIcon: ({ focused, color, size }) =>
+            getIcon(focused ? "material-symbols:add-circle" : "material-symbols:add-circle-outline",
+              35,
+              color),
+        }}
+      />
+      <Tab.Screen
+        name={SCREEN_NAMES.RANDOM_TAB}
+        component={ChatStackComponent}
+        options={{
+          tabBarLabel: "Surprised",
+          tabBarIcon: ({ focused, color, size }) =>
+            getIcon(focused ? "streamline:ai-generate-variation-spark-solid" : "streamline:ai-generate-variation-spark",
+              23,
+              color),
+        }}
+        listeners={{
+          focus: () => setInitialScreen(SCREEN_NAMES.RANDOM),
         }}
       />
       <Tab.Screen
@@ -79,8 +114,8 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? "mdi:user-circle" : "mdi:user-circle-outline",
-              25,
-              color
+              size = 28,
+              color,
             ),
         }}
       />

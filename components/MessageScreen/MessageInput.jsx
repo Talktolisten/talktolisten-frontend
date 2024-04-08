@@ -59,23 +59,23 @@ export const renderComposer = (props) => (
   />
 );
 
-export const renderSend = (props) => (
-  <Send
-    {...props}
-    disabled={!props.text}
-    containerStyle={{
-      width: 44,
-      height: 44,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: 4,
-    }}
-  >
-    <Image
-      style={{ width: 32, height: 32 }}
-      source={
-        send
-      }
-    />
-  </Send>
-);
+export const renderSend = ({ isSending, ...props }) => {
+  return (
+    <Send
+      {...props}
+      disabled={isSending}
+      containerStyle={{
+        width: 44,
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 4,
+      }}
+    >
+      <Image
+        style={{ width: 32, height: 32, opacity: isSending ? 0.25 : 1 }}
+        source={send}
+      />
+    </Send>
+  );
+};
