@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
+import { useSelector } from "react-redux";
+import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from 'expo-linear-gradient';
 import { SCREEN_NAMES } from "../../util/constants";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { get_all_voices } from "../../axios/voice";
 
 const CreateCharacter4 = () => {
@@ -16,6 +17,37 @@ const CreateCharacter4 = () => {
 
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
+  const [isSamplePlaying, setIsSamplePlaying] = useState(false);
+  const [sound, setSound] = useState(new Audio.Sound());
+
+  const userId = useSelector((state) => state.user.userID);
+
+  useEffect(() => {
+    sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+      if (playbackStatus.didJustFinish) {
+        setIsSamplePlaying(false);
+      }
+    });
+
+    return () => {
+      sound.setOnPlaybackStatusUpdate(null);
+    };
+  }, [isSamplePlaying]);
+
+  const playSample = async (sample_url) => {
+    try {
+      const status = await sound.getStatusAsync();
+      if (status.isLoaded && isSamplePlaying) {
+        await sound.stopAsync();
+      }
+      await sound.unloadAsync();
+      await sound.loadAsync({ uri: sample_url });
+      await sound.playAsync();
+      setIsSamplePlaying(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getVoices = async () => {
     try {
@@ -34,12 +66,14 @@ const CreateCharacter4 = () => {
     return {
       id: voice.voice_id,
       title: voice.voice_name,
-      description: voice.voice_description
+      description: voice.voice_description,
+      sample_url: voice.sample_url,
     }
   });
 
-  const Item = ({ id, title, description }) => {
+  const Item = ({ id, title, description, sample_url }) => {
     const isSelected = selectedVoice?.id === id;
+    const isPlaying = isSamplePlaying && isSelected;
 
     return (
       <TouchableOpacity
@@ -49,9 +83,16 @@ const CreateCharacter4 = () => {
         ]}
         onPress={() => {
           setSelectedVoice({ id: id, title, description });
+          if (!isPlaying) {
+            playSample(sample_url);
+          }
         }}
       >
-        <MaterialIcons name="play-circle-filled" size={24} color="black" />
+        {isPlaying ? (
+          <MaterialCommunityIcons name="stop-circle" size={24} color={COLORS.blue} />
+        ) : (
+          <MaterialIcons name="play-circle-filled" size={24} color={COLORS.black} />
+        )}
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
@@ -61,7 +102,7 @@ const CreateCharacter4 = () => {
   };
 
   const renderItem = ({ item }) => (
-    <Item id={item.id} title={item.title} description={item.description} />
+    <Item id={item.id} title={item.title} description={item.description} sample_url={item.sample_url} />
   );
 
   return (
@@ -82,11 +123,14 @@ const CreateCharacter4 = () => {
           onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
             name,
             description,
-            greeting,
             short_description,
-            gender,
+            greeting,
+            profile_picture: "",
+            category: "",
+            voice_id: selectedVoice?.id,
             privacy,
-            profile_picture: ""
+            gender,
+            userId
           })}
           style={[styles.button, { backgroundColor: COLORS.blue, width: "100%" }]}
         >

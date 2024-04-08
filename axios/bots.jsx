@@ -22,9 +22,12 @@ export const create_new_bot = async (
   bot_name,
   description,
   short_description,
+  greeting,
   profile_picture,
   category,
   voice_id,
+  privacy,
+  gender,
   created_by
 ) => {
   return await Api({
@@ -34,6 +37,7 @@ export const create_new_bot = async (
       bot_name,
       description,
       short_description,
+      greeting,
       profile_picture,
       category,
       voice_id,
