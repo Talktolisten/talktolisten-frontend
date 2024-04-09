@@ -19,7 +19,7 @@ import { removeUserID } from "../../redux/actions/userActions";
 import { defaultAvatarURL } from "../../util/constants";
 import { get_user_info, deleteAccount } from "../../axios/user";
 
-const SettingItem = ({ type, icon, text, onPress }) => {
+const SettingItem = ({ type, icon, text, color, onPress }) => {
   const ICONCOMPONENTS = {
     Feather: Feather,
     MaterialIcons: MaterialIcons,
@@ -31,11 +31,11 @@ const SettingItem = ({ type, icon, text, onPress }) => {
       <IconComponent
         name={icon}
         size={24}
-        color={COLORS.black}
+        color={color || COLORS.black}
         style={styles.icon}
       />
       <Text style={styles.settingText}>{text}</Text>
-      <IconComponent
+      <MaterialIcons
         name="chevron-right"
         size={24}
         color={COLORS.black}
@@ -148,6 +148,15 @@ const Profile = () => {
           onPress={() => {
           }}
         /> */}
+        <SettingItem
+          type="MaterialCommunityIcons"
+          icon="cards-heart"
+          text="Liked Characters"
+          color={COLORS.red}
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.LIKED_CHARACTERS);
+          }}
+        />
         <SettingItem
           type="MaterialCommunityIcons"
           icon="theme-light-dark"

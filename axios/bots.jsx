@@ -18,6 +18,16 @@ export const get_random_bot = async () => {
   });
 }
 
+
+export const get_liked_bot = async () => {
+  return await Api({
+    method: "GET",
+    url: `api/v1/bot/liked_bot`,
+  }).then((res) => {
+    return res.data;
+  });
+}
+
 export const create_new_bot = async (
   bot_name,
   short_description,
@@ -109,6 +119,18 @@ export const optimize_image_prompt = async (image_prompt) => {
     url: `api/v1/bot/create_bot/optimize_img_prompt`,
     data: {
       image_prompt
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
+export const user_likes_bot = async (bot_id) => {
+  return await Api({
+    method: "POST",
+    url: `api/v1/bot/like/${bot_id}`,
+    data: {
+      bot_id
     },
   }).then((res) => {
     return res.data;

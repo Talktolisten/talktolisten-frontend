@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "expo-status-bar";
 import { handlePressBot } from "../ExploreScreen/CreateChat";
+import { user_likes_bot } from "../../axios/bots";
 
 const CharacterProfile = ({ botInfo, navigation }) => {
 
@@ -39,14 +40,15 @@ const CharacterProfile = ({ botInfo, navigation }) => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={[styles.button, { backgroundColor: COLORS.white }]}
+                    onPress={() => user_likes_bot(botInfo.bot_id)}
                 >
-                    <Text style={[styles.buttonText, { color: COLORS.black }]}>Like</Text>
+                    <Text style={[styles.buttonText, { color: COLORS.black }]}>❤️ Like</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.button, { backgroundColor: COLORS.light_black }]}
                     onPress={() => handlePressBot(botInfo.bot_id, navigation)}
                 >
-                    <Text style={[styles.buttonText, { color: COLORS.white }]}>New Chat</Text>
+                    <Text style={[styles.buttonText, { color: COLORS.white }]}>💬 New Chat</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -120,12 +122,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         marginBottom: 20,
         position: "absolute",
-        bottom: 0,
+        bottom: 30,
         width: "100%",
     },
     button: {
         padding: 10,
-        borderRadius: 50,
+        borderRadius: 5,
         width: 150,
         alignItems: "center",
         borderColor: COLORS.black,

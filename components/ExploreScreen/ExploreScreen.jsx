@@ -119,6 +119,7 @@ const Explore = () => {
             keyExtractor={(item) => item}
             contentContainerStyle={{ columnGap: SIZES.small }}
             horizontal
+            showsHorizontalScrollIndicator={false}
           />
         </View>
 
@@ -194,7 +195,8 @@ const styles = StyleSheet.create({
   tabsContainer: {
     width: "100%",
     marginTop: SIZES.medium,
-    marginLeft: SIZES.small,
+    marginLeft: SIZES.xSmall,
+    paddingHorizontal: SIZES.small,
   },
   tab: (activeType, item) => ({
     paddingVertical: SIZES.small / 2,
@@ -211,7 +213,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   elementPallet: {
-    marginTop: 10,
     paddingTop: SIZES.small,
     marginLeft: 10,
     marginRight: 10,
