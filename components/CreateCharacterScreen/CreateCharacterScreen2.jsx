@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -12,6 +12,7 @@ import { generate_image_prompt } from "../../axios/bots";
 const CreateCharacter2 = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const [loading, setLoading] = useState(false);
   const { name, description, greeting_ai, short_description_ai } = route.params;
 
   const [greeting, setGreeting] = useState(greeting_ai)
@@ -20,6 +21,7 @@ const CreateCharacter2 = () => {
   const [privacy, setPrivacy] = useState('public');
 
   const generateImagePrompt = async () => {
+    setLoading(true);
     try {
       const new_description = description + `\n(Gender: ${gender})`;
       const imagePrompt = await generate_image_prompt(name, new_description);
@@ -27,6 +29,7 @@ const CreateCharacter2 = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   }
 
   return (
@@ -121,13 +124,16 @@ const CreateCharacter2 = () => {
 
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={generateImagePrompt}
-            style={[styles.button, { backgroundColor: COLORS.blue }]}
-          >
-            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
-          </TouchableOpacity>
-
+          {loading ? (
+            <ActivityIndicator size="small" color={COLORS.blue} />
+          ) : (
+            <TouchableOpacity
+              onPress={generateImagePrompt}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
+            >
+              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Audio } from "expo-av";
@@ -17,6 +17,7 @@ const CreateCharacter4 = () => {
   const route = useRoute();
   const { name, description, greeting, short_description, gender, privacy, profile_picture } = route.params;
 
+  const [loading, setLoading] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSamplePlaying, setIsSamplePlaying] = useState(false);
@@ -35,6 +36,7 @@ const CreateCharacter4 = () => {
     gender,
     userId
   ) => {
+    setLoading(true);
     if (!profile_picture.startsWith("http")) {
       profile_picture = await FileSystem.readAsStringAsync(profile_picture, {
         encoding: FileSystem.EncodingType.Base64,
@@ -59,6 +61,7 @@ const CreateCharacter4 = () => {
       .catch((error) => {
         console.log(error);
       });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -158,25 +161,28 @@ const CreateCharacter4 = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={async () => {
-            await createCharacter(
-              name,
-              short_description,
-              description,
-              greeting,
-              profile_picture,
-              "",
-              selectedVoice?.id,
-              privacy,
-              gender,
-              userId
-            );
-          }}
-          style={[styles.button, { backgroundColor: COLORS.blue, width: "100%" }]}
-        >
-          <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.medium }]}>Create Character</Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="small" color={COLORS.blue} />
+        ) : (
+          <TouchableOpacity
+            onPress={async () => {
+              await createCharacter(
+                name,
+                short_description,
+                description,
+                greeting,
+                profile_picture,
+                "",
+                selectedVoice?.id,
+                privacy,
+                gender,
+                userId
+              );
+            }}
+            style={[styles.button, { backgroundColor: COLORS.blue, width: "100%" }]}
+          >
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.medium }]}>Create Character</Text>
+          </TouchableOpacity>)}
 
       </View>
     </SafeAreaView>

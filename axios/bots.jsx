@@ -58,7 +58,6 @@ export const generate_avatar = async (image_prompt) => {
       image_prompt
     }
   }).then((res) => {
-    console.log(res.data);
     return res.data;
   });
 }

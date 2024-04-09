@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -14,14 +14,17 @@ const CreateCharacter = () => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const generateCharacter = async () => {
+    setLoading(true);
     try {
       const { greeting, short_description } = await generate_greeting_description(name, description);
       navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_2, { name: name, description: description, greeting_ai: greeting, short_description_ai: short_description });
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   }
 
   return (
@@ -74,12 +77,16 @@ const CreateCharacter = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={generateCharacter}
-            style={[styles.button, { backgroundColor: COLORS.blue }]}
-          >
-            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
-          </TouchableOpacity>
+          {loading ? (
+            <ActivityIndicator size="small" color={COLORS.blue} />
+          ) : (
+            <TouchableOpacity
+              onPress={generateCharacter}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
+            >
+              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

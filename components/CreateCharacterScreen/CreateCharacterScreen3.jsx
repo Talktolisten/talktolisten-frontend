@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
@@ -15,6 +15,7 @@ const CreateCharacter3 = () => {
   const route = useRoute();
   const { name, description, greeting, short_description, gender, privacy, imagePrompt_ai } = route.params;
 
+  const [loading, setLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedAddOn, setSelectedAddOn] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -61,6 +62,7 @@ const CreateCharacter3 = () => {
   };
 
   const generate_ai_image = async () => {
+    setLoading(true);
     const ImagePrompt = imagePrompt + " " + Object.keys(selectedOptions).join(" ");
     try {
       const ai_img_url = await generate_avatar(ImagePrompt);
@@ -70,6 +72,7 @@ const CreateCharacter3 = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const handleImageArrow = (direction) => {
@@ -206,53 +209,64 @@ const CreateCharacter3 = () => {
           </View>
         )}
 
-        <View style={[styles.buttonContainer, imageMode === 'ai-generated' ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }]}>
+        {loading ? (
+          <ActivityIndicator
+            style={{
+              alignSelf: "center",
+              position: "absolute",
+              bottom: 20,
+            }}
+            size="large"
+            color={"rgba(237, 196, 132, 255)"}
+          />
+        ) : (
+          <View style={[styles.buttonContainer, imageMode === 'ai-generated' ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }]}>
+            {imageMode === 'ai-generated' && (
+              <TouchableOpacity
+                onPress={generate_ai_image}
+                style={[styles.button, {
+                  width: "55%", overflow: "hidden", borderRadius: 5
+                }]}
+              >
+                <LinearGradient
+                  colors={[
+                    'rgba(208, 179, 200, 255)',
+                    'rgba(237,196,132,255)'
+                  ]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                  }}
+                />
+                <Text style={{
+                  color: COLORS.black,
+                  fontWeight: FONT_WEIGHT.medium,
+                  fontSize: FONTSIZE.medium,
+                }}>Generate</Text>
+              </TouchableOpacity>)}
 
+            <TouchableOpacity
+              onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
+                name,
+                description,
+                greeting,
+                short_description,
+                gender,
+                privacy,
+                profile_picture: images[imageIndexSelected],
+              })}
+              style={[styles.button, { backgroundColor: COLORS.blue }]}
+            >
+              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+            </TouchableOpacity>
 
-          {imageMode === 'ai-generated' && (<TouchableOpacity
-            onPress={generate_ai_image}
-            style={[styles.button, {
-              width: "55%", overflow: "hidden", borderRadius: 5
-            }]}
-          >
-            <LinearGradient
-              colors={[
-                'rgba(208, 179, 200, 255)',
-                'rgba(237,196,132,255)'
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-              }}
-            />
-            <Text style={{
-              color: COLORS.black,
-              fontWeight: FONT_WEIGHT.medium,
-              fontSize: FONTSIZE.medium,
-            }}>Generate</Text>
-          </TouchableOpacity>)}
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
-              name,
-              description,
-              greeting,
-              short_description,
-              gender,
-              privacy,
-              profile_picture: images[imageIndexSelected],
-            })}
-            style={[styles.button, { backgroundColor: COLORS.blue }]}
-          >
-            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
-          </TouchableOpacity>
-
-        </View>
+          </View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback >
   )
