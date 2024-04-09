@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
 import { LinearGradient } from 'expo-linear-gradient';
 import { SCREEN_NAMES } from "../../util/constants";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -22,7 +23,7 @@ const CreateCharacter4 = () => {
   const [sound, setSound] = useState(new Audio.Sound());
 
   const userId = useSelector((state) => state.user.userID);
-  const createCharacter = (
+  const createCharacter = async (
     name,
     short_description,
     description,
@@ -34,6 +35,11 @@ const CreateCharacter4 = () => {
     gender,
     userId
   ) => {
+    if (!profile_picture.startsWith("http")) {
+      profile_picture = await FileSystem.readAsStringAsync(profile_picture, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+    }
     create_new_bot(
       name,
       short_description,
