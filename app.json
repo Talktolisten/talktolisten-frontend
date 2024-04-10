@@ -2,7 +2,7 @@
   "expo": {
     "name": "Talk To Listen",
     "slug": "talk-to-listen",
-    "version": "4.1.1",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
@@ -31,7 +31,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.hieu65.talktolisten",
-      "versionCode": 410,
+      "versionCode": 500,
       "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {

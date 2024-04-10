@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [5.0.0] - 2024-04-10
+
+### Added
+- User can create a new bot, generate AI images for avatar, choose a voice
+- User can like a bot, see their liked characters, and created characters
+- User can choose a random character to chat with
+- User can delete a chat
+
+### Changed
+- Change the UI of the explore screen, and character profile.
+
 ## [4.0.2] - 2024-03-10
 
 ### Add

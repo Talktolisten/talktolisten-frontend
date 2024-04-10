@@ -4,6 +4,7 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import HomeStack from "./HomeStack";
 import ChatStack from "./ChatStack";
 import CreateCharacterStack from "./CreateCharacter";
+import RandomStack from "./RandomStack";
 import ProfileStack from "./ProfileStack";
 import IconButton from "../components/UI/IconButton";
 
@@ -14,8 +15,6 @@ import { COLORS, FONT_NUNITO } from "../styles";
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const [initialScreen, setInitialScreen] = useState(SCREEN_NAMES.CHAT);
-  const ChatStackComponent = () => <ChatStack initialRouteName={initialScreen} />;
   const screenOptions = ({ navigation, route }) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Chat";
     return {
@@ -76,9 +75,6 @@ const TabNavigator = () => {
               25,
               color),
         }}
-        listeners={{
-          focus: () => setInitialScreen(SCREEN_NAMES.CHAT),
-        }}
       />
       <Tab.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER_TAB}
@@ -94,16 +90,13 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name={SCREEN_NAMES.RANDOM_TAB}
-        component={ChatStackComponent}
+        component={RandomStack}
         options={{
           tabBarLabel: "Surprised",
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(focused ? "streamline:ai-generate-variation-spark-solid" : "streamline:ai-generate-variation-spark",
               23,
               color),
-        }}
-        listeners={{
-          focus: () => setInitialScreen(SCREEN_NAMES.RANDOM),
         }}
       />
       <Tab.Screen

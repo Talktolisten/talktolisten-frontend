@@ -4,12 +4,13 @@ import { AntDesign } from "@expo/vector-icons";
 import ChatScreen from "../screens/Chat";
 import MessageScreen from "../screens/Message";
 import VoiceScreen from "../screens/Voice";
+import RandomCharacterScreen from "../screens/RandomCharacter";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
 const Stack = createNativeStackNavigator();
 
-const ChatStack = () => {
+const RandomStack = () => {
   const screenOptions = ({ navigation }) => ({
     headerTitle: "",
     headerBackTitle: "",
@@ -41,12 +42,17 @@ const ChatStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREEN_NAMES.CHAT}
+      initialRouteName={SCREEN_NAMES.RANDOM}
       screenOptions={screenOptions}
     >
       <Stack.Screen
         name={SCREEN_NAMES.CHAT}
         component={ChatScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={SCREEN_NAMES.RANDOM}
+        component={RandomCharacterScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -62,4 +68,4 @@ const ChatStack = () => {
   );
 };
 
-export default ChatStack;
+export default RandomStack;

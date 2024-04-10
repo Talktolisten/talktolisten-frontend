@@ -41,14 +41,16 @@ const CreateCharacter = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       {guest_mode ? (
-        <TouchableOpacity
-          style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
-          onPress={async () => {
-            navigation.navigate(SCREEN_NAMES.PROFILE);
-          }}
-        >
-          <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
-        </TouchableOpacity>
+        <View style={{ flex: 1, justifyContent: "center", alignSelf: "center" }}>
+          <TouchableOpacity
+            style={[styles.button, { width: "80%", borderColor: COLORS.black, backgroundColor: COLORS.light_black, overflow: 'hidden' }]}
+            onPress={async () => {
+              navigation.navigate(SCREEN_NAMES.PROFILE);
+            }}
+          >
+            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to create your own character</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <SafeAreaView style={styles.container}>
           <Text style={styles.heading}>Create your Character</Text>
