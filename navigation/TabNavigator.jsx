@@ -20,7 +20,7 @@ const TabNavigator = () => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Chat";
     return {
       headerShown: false,
-      tabBarActiveTintColor: COLORS.black,
+      tabBarActiveTintColor: COLORS.light_black,
       tabBarInactiveTintColor: COLORS.black,
       tabBarStyle: {
         borderTopWidth: 10,

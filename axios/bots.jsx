@@ -28,6 +28,16 @@ export const get_liked_bot = async () => {
   });
 }
 
+
+export const get_created_bot = async () => {
+  return await Api({
+    method: "GET",
+    url: `api/v1/bot/created_bot`,
+  }).then((res) => {
+    return res.data;
+  });
+}
+
 export const create_new_bot = async (
   bot_name,
   short_description,
@@ -89,7 +99,7 @@ export const generate_greeting_description = async (bot_name, description) => {
 export const optimize_description = async (bot_name, description) => {
   return await Api({
     method: "POST",
-    url: `api/v1/bot/create_bot/generate`,
+    url: `api/v1/bot/create_bot/optimize_description`,
     data: {
       bot_name,
       description,
@@ -129,6 +139,19 @@ export const user_likes_bot = async (bot_id) => {
   return await Api({
     method: "POST",
     url: `api/v1/bot/like/${bot_id}`,
+    data: {
+      bot_id
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
+
+export const user_unlikes_bot = async (bot_id) => {
+  return await Api({
+    method: "DELETE",
+    url: `api/v1/bot/unlike/${bot_id}`,
     data: {
       bot_id
     },

@@ -158,6 +158,14 @@ const Profile = () => {
           }}
         />
         <SettingItem
+          type="MaterialIcons"
+          icon="create"
+          text="Your Characters"
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.CREATED_CHARACTERS);
+          }}
+        />
+        <SettingItem
           type="MaterialCommunityIcons"
           icon="theme-light-dark"
           text="Theme"

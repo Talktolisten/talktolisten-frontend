@@ -10,17 +10,17 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-// import { COLORS, FONTSIZE } from "../../styles";
-// import { MaterialIcons } from "@expo/vector-icons";
+import { COLORS, FONTSIZE } from "../../styles";
+import { MaterialIcons } from "@expo/vector-icons";
 // import { imagesDataURL } from "../constants/data";
 // import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
 
-const EditProfile = ({ navigation }) => {
-  // const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);
-  // const [name, setName] = useState("Melissa Peters");
-  // const [email, setEmail] = useState("metperters@gmail.com");
-  // const [password, setPassword] = useState("randompassword");
-  // const [country, setCountry] = useState("Nigeria");
+const EditProfile = () => {
+  const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);
+  const [name, setName] = useState("Melissa Peters");
+  const [email, setEmail] = useState("metperters@gmail.com");
+  const [password, setPassword] = useState("randompassword");
+  const [country, setCountry] = useState("Nigeria");
 
   // const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
   // const today = new Date();
@@ -39,20 +39,20 @@ const EditProfile = ({ navigation }) => {
   //   setOpenStartDatePicker(!openStartDatePicker);
   // };
 
-  // const handleImageSelection = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 4],
-  //     quality: 1,
-  //   });
+  const handleImageSelection = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
 
-  //   console.log(result);
+    console.log(result);
 
-  //   if (!result.canceled) {
-  //     setSelectedImage(result.assets[0].uri);
-  //   }
-  // };
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
 
   // function renderDatePicker() {
   //   return (
@@ -121,7 +121,7 @@ const EditProfile = ({ navigation }) => {
         paddingHorizontal: 22,
       }}
     >
-      {/* <View
+      <View
         style={{
           marginHorizontal: 12,
           flexDirection: "row",
@@ -264,7 +264,7 @@ const EditProfile = ({ navigation }) => {
             </View>
           </View>
 
-          <View
+          {/* <View
             style={{
               flexDirection: "column",
               marginBottom: 6,
@@ -286,10 +286,10 @@ const EditProfile = ({ navigation }) => {
             >
               <Text>{selectedStartDate}</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: "column",
             marginBottom: 6,
@@ -314,11 +314,11 @@ const EditProfile = ({ navigation }) => {
               editable={true}
             />
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={{
-            backgroundColor: COLORS.primary,
+            backgroundColor: COLORS.black,
             height: 44,
             borderRadius: 6,
             alignItems: "center",
@@ -336,7 +336,7 @@ const EditProfile = ({ navigation }) => {
         </TouchableOpacity>
 
         {renderDatePicker()}
-      </ScrollView> */}
+      </ScrollView>
     </SafeAreaView>
   );
 };

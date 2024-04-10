@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -16,6 +16,17 @@ const CreateCharacter = () => {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [guest_mode, setGuestMode] = useState(false);
+
+  useEffect(() => {
+    async function checkGuestMode() {
+      const isGuest = await AsyncStorage.getItem('@GuestMode');
+      setGuestMode(isGuest === 'TRUE' ? true : false);
+    }
+
+    checkGuestMode();
+  }, []);
+
   const generateCharacter = async () => {
     setLoading(true);
     try {
@@ -29,66 +40,76 @@ const CreateCharacter = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Create your Character</Text>
+      {guest_mode ? (
+        <TouchableOpacity
+          style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
+          onPress={async () => {
+            navigation.navigate(SCREEN_NAMES.PROFILE);
+          }}
+        >
+          <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
+        </TouchableOpacity>
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.heading}>Create your Character</Text>
 
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Name</Text>
+          <View style={styles.inputContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Name</Text>
+            </View>
+
+            <View style={styles.subheadingContainer}>
+              <Text style={styles.subheading}>Name your character</Text>
+            </View>
+
+            <TextInput
+              placeholder="Name"
+              style={[styles.input, { paddingBottom: 0 }]}
+              mode="outlined"
+              label={"Character Name"}
+              activeOutlineColor={COLORS.black}
+              maxLength={50}
+              value={name}
+              onChangeText={(text) => setName(text)}
+            />
           </View>
 
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>Name your character</Text>
+          <View style={styles.inputContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Character Description</Text>
+            </View>
+
+            <View style={styles.subheadingContainer}>
+              <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
+            </View>
+
+            <TextInput
+              placeholder="A cute cat with a big heart"
+              style={[styles.input, { height: 200 }]}
+              mode="outlined"
+              label={"Character Definition"}
+              activeOutlineColor={COLORS.black}
+              contentStyle={{ paddingTop: SIZES.xLarge }}
+              multiline
+              maxLength={1000}
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+            />
           </View>
 
-          <TextInput
-            placeholder="Name"
-            style={[styles.input, { paddingBottom: 0 }]}
-            mode="outlined"
-            label={"Character Name"}
-            activeOutlineColor={COLORS.black}
-            maxLength={50}
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Character Description</Text>
+          <View style={styles.buttonContainer}>
+            {loading ? (
+              <ActivityIndicator size="small" color={COLORS.blue} />
+            ) : (
+              <TouchableOpacity
+                onPress={generateCharacter}
+                style={[styles.button, { backgroundColor: COLORS.blue }]}
+              >
+                <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+              </TouchableOpacity>
+            )}
           </View>
-
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
-          </View>
-
-          <TextInput
-            placeholder="A cute cat with a big heart"
-            style={[styles.input, { height: 200 }]}
-            mode="outlined"
-            label={"Character Definition"}
-            activeOutlineColor={COLORS.black}
-            contentStyle={{ paddingTop: SIZES.xLarge }}
-            multiline
-            maxLength={1000}
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-          />
-        </View>
-
-        <View style={styles.buttonContainer}>
-          {loading ? (
-            <ActivityIndicator size="small" color={COLORS.blue} />
-          ) : (
-            <TouchableOpacity
-              onPress={generateCharacter}
-              style={[styles.button, { backgroundColor: COLORS.blue }]}
-            >
-              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>)}
     </TouchableWithoutFeedback>
   )
 };

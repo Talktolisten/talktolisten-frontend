@@ -50,12 +50,30 @@ const CreateCharacter3 = () => {
     setModalVisible(true);
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOptions(prevOptions => ({
-      ...prevOptions,
-      [option]: !prevOptions[option],
-    }));
+  const handleOptionSelect = (option, name) => {
+    setSelectedOptions(prevOptions => {
+      const categoryOptions = prevOptions[name] || {};
+
+      const isOptionSelected = categoryOptions[option];
+      const newOptions = {
+        ...prevOptions,
+        [name]: {
+          ...categoryOptions,
+          [option]: !isOptionSelected,
+        },
+      };
+
+      if (isOptionSelected) {
+        delete newOptions[name][option];
+        if (Object.keys(newOptions[name]).length === 0) {
+          delete newOptions[name];
+        }
+      }
+
+      return newOptions;
+    });
   };
+
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -63,7 +81,13 @@ const CreateCharacter3 = () => {
 
   const generate_ai_image = async () => {
     setLoading(true);
-    const ImagePrompt = imagePrompt + " " + Object.keys(selectedOptions).join(" ");
+    let addOnsArray = [];
+    for (let key in selectedOptions) {
+      const values = Object.keys(selectedOptions[key]);
+      const addOns = key.toString() + " : " + values.join(" ") + ".";
+      addOnsArray.push(addOns);
+    }
+    const ImagePrompt = imagePrompt + ". " + addOnsArray.join(" ");
     try {
       const ai_img_url = await generate_avatar(ImagePrompt);
       let newImages = [...images, ai_img_url];
@@ -159,33 +183,32 @@ const CreateCharacter3 = () => {
 
             <Modal
               isVisible={isModalVisible}
-              animationInTiming={500}
-              animationOutTiming={1000}
+              animationInTiming={250}
+              animationOutTiming={500}
               backdropColor={COLORS.light_black}
               backdropOpacity={0.85}
               onBackdropPress={toggleModal}
               swipeDirection={["down"]}
               onSwipeComplete={toggleModal}
               style={modalStyles.modalContainerScreen}
+              key={selectedAddOn ? selectedAddOn.id : 'modal'}
             >
               <View style={modalStyles.modalContainer}>
                 <Text style={modalStyles.modalHeading}>{selectedAddOn?.name}</Text>
-                {selectedAddOn && selectedAddOn.options && (
-                  <FlatList
-                    data={selectedAddOn.options}
-                    numColumns={5}
-                    keyExtractor={(item) => item}
-                    renderItem={({ item: option }) => (
-                      <TouchableOpacity
-                        key={option}
-                        style={[modalStyles.optionButton, selectedOptions[option] && modalStyles.selectedOption]}
-                        onPress={() => handleOptionSelect(option)}
-                      >
-                        <Text style={modalStyles.optionButtonText}>{option}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                )}
+                <View style={modalStyles.modalContent}>
+                  {selectedAddOn && selectedAddOn.options && selectedAddOn.options.map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={[
+                        modalStyles.optionButton,
+                        selectedOptions[selectedAddOn.name] && selectedOptions[selectedAddOn.name][option] ? modalStyles.selectedOption : {}
+                      ]}
+                      onPress={() => handleOptionSelect(option, selectedAddOn.name)}
+                    >
+                      <Text style={modalStyles.optionButtonText}>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
             </Modal>
 
@@ -443,18 +466,19 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    height: "30%",
+    height: "auto",
     width: "100%",
     paddingVertical: 20,
     paddingHorizontal: 10,
+    paddingBottom: 40,
   },
   modalHeading: {
     fontSize: FONTSIZE.large,
     marginBottom: 20,
   },
   modalContent: {
-    padding: 20,
-    borderRadius: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   optionButton: {
     padding: 10,

@@ -5,9 +5,42 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { StatusBar } from "expo-status-bar";
 import { handlePressBot } from "../ExploreScreen/CreateChat";
-import { user_likes_bot } from "../../axios/bots";
+import { user_likes_bot, user_unlikes_bot, get_liked_bot } from "../../axios/bots";
 
 const CharacterProfile = ({ botInfo, navigation }) => {
+    const [likedBots, setLikedBots] = useState([]);
+    const fetchLikeBots = async () => {
+        const botInfo = await get_liked_bot();
+        try {
+            setLikedBots(botInfo);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchLikeBots();
+    }, []);
+
+    const isLiked = likedBots.some((bot) => bot.bot_id === botInfo.bot_id);
+
+    const handleLike = async () => {
+        try {
+            await user_likes_bot(botInfo.bot_id);
+            fetchLikeBots();
+        } catch (error) {
+            console.error("Error liking bot:", error);
+        }
+    };
+
+    const handleUnlike = async () => {
+        try {
+            await user_unlikes_bot(botInfo.bot_id);
+            fetchLikeBots();
+        } catch (error) {
+            console.error("Error unlike bot:", error);
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -38,12 +71,21 @@ const CharacterProfile = ({ botInfo, navigation }) => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: COLORS.white }]}
-                    onPress={() => user_likes_bot(botInfo.bot_id)}
-                >
-                    <Text style={[styles.buttonText, { color: COLORS.black }]}>❤️ Like</Text>
-                </TouchableOpacity>
+                {isLiked ? (
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: COLORS.white }]}
+                        onPress={() => handleUnlike()}
+                    >
+                        <Text style={[styles.buttonText, { color: COLORS.red }]}>❤️ Liked</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: COLORS.white }]}
+                        onPress={() => handleLike()}
+                    >
+                        <Text style={[styles.buttonText, { color: COLORS.black }]}>❤️ Like</Text>
+                    </TouchableOpacity>
+                )}
                 <TouchableOpacity
                     style={[styles.button, { backgroundColor: COLORS.light_black }]}
                     onPress={() => handlePressBot(botInfo.bot_id, navigation)}

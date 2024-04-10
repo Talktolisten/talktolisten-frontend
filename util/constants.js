@@ -17,6 +17,7 @@ export const SCREEN_NAMES = {
   RESET_PASSWORD: "Reset Password",
   PROFILE: "Profile",
   LIKED_CHARACTERS: "Liked Characters",
+  CREATED_CHARACTERS: "Created Characters",
   USER_PROFILE: "User Profile",
   EDIT_PROFILE: "Edit Profile",
   SETTINGS: "Settings",

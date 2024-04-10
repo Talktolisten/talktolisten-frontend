@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import ProfileScreen from "../screens/Profile";
 import UserProfileScreen from "../screens/UserProfile";
 import LikedCharactersScreen from "../screens/LikedCharacters";
+import CreatedCharactersScreen from "../screens/CreatedCharacters";
 import EditProfileScreen from "../screens/EditProfile";
 import SettingsScreen from "../screens/Settings";
 import ThemeSettingScreen from "../screens/ThemeSetting";
@@ -59,6 +60,11 @@ const ProfileStack = () => {
             <Stack.Screen
                 name={SCREEN_NAMES.LIKED_CHARACTERS}
                 component={LikedCharactersScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.CREATED_CHARACTERS}
+                component={CreatedCharactersScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen
