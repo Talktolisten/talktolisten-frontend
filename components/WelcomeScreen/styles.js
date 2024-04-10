@@ -10,6 +10,7 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 3,
   },
   BackgroundContainer: {
     borderRadius: 10,
