@@ -28,8 +28,8 @@ const LikedCharacters = () => {
     const [selectedBotInfo, setSelectedBotInfo] = useState({});
 
     const fetchData = async () => {
-        const botInfo = await get_liked_bot();
         try {
+            const botInfo = await get_liked_bot();
             setLikedBots(botInfo);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -38,7 +38,7 @@ const LikedCharacters = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [isFocused]);
 
     const isFocused = useIsFocused();
 

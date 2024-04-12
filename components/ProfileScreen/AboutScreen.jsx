@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, SafeAreaView, TouchableOpacity, Linking } from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity, Linking, StyleSheet } from "react-native";
 import { LINKS } from "../../util/constants";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
@@ -36,7 +36,7 @@ const About = () => {
 
 export default About;
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
@@ -68,4 +68,4 @@ const styles = {
         gap: SIZES.medium,
         marginTop: SIZES.medium,
     },
-};
+});

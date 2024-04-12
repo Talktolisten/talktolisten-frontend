@@ -5,9 +5,9 @@ import {
     TouchableOpacity,
     Image,
     View,
-    FlatList,
     StyleSheet,
     SafeAreaView,
+    Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -17,30 +17,32 @@ import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
 import { StatusBar } from "react-native";
 
-import { get_bot_info, get_created_bot } from "../../axios/bots";
+import { get_bot_info, get_created_bot, delete_bot } from "../../axios/bots";
 
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 
 const CreatedCharacters = () => {
     const navigation = useNavigation();
+    const [refresh, setRefresh] = useState(false);
     const [createdBots, setCreatedBots] = useState([]);
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedBotInfo, setSelectedBotInfo] = useState({});
 
     const fetchData = async () => {
-        const botInfo = await get_created_bot();
         try {
+            const botInfo = await get_created_bot();
             setCreatedBots(botInfo);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [refresh, isFocused]);
 
-    const isFocused = useIsFocused();
 
     useEffect(() => {
         if (!isFocused) {
@@ -60,6 +62,35 @@ const CreatedCharacters = () => {
         } catch (error) {
             console.error("Failed to fetch bot info:", error);
         }
+    };
+
+    const handleEditBot = (botId) => {
+        navigation.navigate(SCREEN_NAMES.EDIT_CHARACTER, { botId });
+    };
+
+    const handleDeleteBot = (botId) => {
+        Alert.alert(
+            "Delete Character",
+            "Are you sure you want to delete this character?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        try {
+                            await delete_bot(botId);
+                            fetchData();
+                            setRefresh(!refresh);
+                        } catch (error) {
+                            console.error("Failed to delete bot:", error);
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     const hasAnyBots = createdBots.length > 0;
@@ -104,6 +135,21 @@ const CreatedCharacters = () => {
                                                     />
                                                     <Text>{bot.likes}</Text>
                                                 </View>
+                                            </View>
+                                            <View style={styles.buttonContainer}>
+                                                <TouchableOpacity
+                                                    style={[styles.button,
+                                                    { marginRight: 15 }]}
+                                                    onPress={handleEditBot.bind(this, bot.bot_id)}
+                                                >
+                                                    <Text style={[styles.buttonText, { color: COLORS.blue }]}>Edit</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    style={styles.button}
+                                                    onPress={handleDeleteBot.bind(this, bot.bot_id)}
+                                                >
+                                                    <Text style={[styles.buttonText, { color: COLORS.red }]}>Delete</Text>
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
                                         <View style={styles.imageArea}>
@@ -196,6 +242,23 @@ const styles = StyleSheet.create({
         height: "100%",
         borderRadius: 10,
     },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "spaceAround",
+        marginTop: 10,
+    },
+    button: {
+        padding: 7.5,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: COLORS.bright_grey,
+        width: "35%",
+        alignItems: "center",
+    },
+    buttonText: {
+        fontSize: FONTSIZE.xSmall,
+        fontWeight: FONT_WEIGHT.medium,
+    }
 });
 
 export default CreatedCharacters;

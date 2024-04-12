@@ -9,6 +9,15 @@ export const get_bot_info = async (botId) => {
   });
 };
 
+export const get_bot_info_toEdit = async (botId) => {
+  return await Api({
+    method: "GET",
+    url: `api/v1/bot/edit_bot/${botId}`,
+  }).then((res) => {
+    return res.data;
+  });
+};
+
 export const get_random_bot = async () => {
   return await Api({
     method: "GET",
@@ -65,6 +74,44 @@ export const create_new_bot = async (
       gender,
       created_by,
     },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
+export const update_bot = async (
+  bot_id,
+  bot_name,
+  short_description,
+  description,
+  profile_picture,
+  voice_id,
+  greeting,
+  privacy,
+  gender
+) => {
+  return await Api({
+    method: "PATCH",
+    url: `api/v1/bot/${bot_id}`,
+    data: {
+      bot_name,
+      short_description,
+      description,
+      profile_picture,
+      voice_id,
+      greeting,
+      privacy,
+      gender
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
+export const delete_bot = async (bot_id) => {
+  return await Api({
+    method: "DELETE",
+    url: `api/v1/bot/${bot_id}`,
   }).then((res) => {
     return res.data;
   });

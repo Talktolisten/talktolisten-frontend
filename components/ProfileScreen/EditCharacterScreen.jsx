@@ -10,41 +10,43 @@ import {
   StyleSheet
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useRoute, useIsFocused } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { RadioButton } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker";
-import { COLORS, FONTSIZE, SIZES } from "../../styles";
+import { COLORS, FONTSIZE, SIZES, FONT_WEIGHT } from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
-import { get_user_info, update_user } from "../../axios/user.jsx";
+import { get_bot_info_toEdit, update_bot } from "../../axios/bots.jsx";
 
-const EditProfile = () => {
-  const userId = useSelector((state) => state.user.userID);
+const EditCharacter = () => {
   const [refresh, setRefresh] = useState(false);
+  const route = useRoute();
+  const { botId } = route.params;
 
-  const fetchUserInfo = async () => {
+  const fetchBotInfo = async () => {
     try {
-      const fetchedUserInfo = await get_user_info(userId);
-      setSelectedImage(fetchedUserInfo.profile_picture);
-      setFName(fetchedUserInfo.first_name);
-      setLName(fetchedUserInfo.last_name);
-      setBio(fetchedUserInfo.bio);
-      setUsername(fetchedUserInfo.username);
-      setGmail(fetchedUserInfo.gmail);
+      const fetchedBotInfo = await get_bot_info_toEdit(botId);
+      setSelectedImage(fetchedBotInfo.profile_picture);
+      setName(fetchedBotInfo.bot_name);
+      setShortDescription(fetchedBotInfo.short_description);
+      setDescription(fetchedBotInfo.description);
+      setGreeting(fetchedBotInfo.greeting);
+      setPrivacy(fetchedBotInfo.privacy);
     } catch (error) {
-      console.error("Failed to fetch user info:", error);
+      console.error("Failed to fetch bot info:", error);
     }
   };
 
   useEffect(() => {
-    fetchUserInfo();
+    fetchBotInfo();
   }, [refresh]);
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [fname, setFName] = useState(null);
-  const [lname, setLName] = useState(null);
-  const [bio, setBio] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [gmail, setGmail] = useState(null);
+  const [name, setName] = useState(null);
+  const [shortDescription, setShortDescription] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [greeting, setGreeting] = useState(null);
+  const [privacy, setPrivacy] = useState(null);
 
   const handleImageSelection = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -105,13 +107,13 @@ const EditProfile = () => {
             <View
               style={styles.infoChildContainer}
             >
-              <Text style={styles.heading}>Username</Text>
+              <Text style={styles.heading}>Name</Text>
               <View
                 style={styles.inputContainer}
               >
                 <TextInput
-                  value={username}
-                  onChangeText={(value) => setUsername(value)}
+                  value={name}
+                  onChangeText={(value) => setName(value)}
                   editable={true}
                   style={styles.input}
                 />
@@ -121,13 +123,13 @@ const EditProfile = () => {
             <View
               style={styles.infoChildContainer}
             >
-              <Text style={styles.heading}>Bio</Text>
+              <Text style={styles.heading}>Character Definition</Text>
               <View
                 style={styles.inputContainer}
               >
                 <TextInput
-                  value={bio}
-                  onChangeText={(value) => setBio(value)}
+                  value={description}
+                  onChangeText={(value) => setDescription(value)}
                   editable={true}
                   style={[styles.input, { minHeight: 70 }]}
                   multiline={true}
@@ -136,52 +138,54 @@ const EditProfile = () => {
             </View>
 
             <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
+              style={styles.infoChildContainer}
             >
-              <View style={{ width: "45%", marginHorizontal: 2.5 }}>
-                <Text style={styles.heading}>First Name</Text>
-                <View
-                  style={styles.inputContainer}
-                >
-                  <TextInput
-                    value={fname}
-                    onChangeText={(value) => setFName(value)}
-                    editable={true}
-                  />
-                </View>
-              </View>
-              <View style={{ width: "45%", marginHorizontal: 2.5 }}>
-                <Text style={styles.heading}>Last Name</Text>
-                <View
-                  style={styles.inputContainer}
-                >
-                  <TextInput
-                    value={lname}
-                    onChangeText={(value) => setLName(value)}
-                    editable={true}
-                  />
-                </View>
+              <Text style={styles.heading}>Greeting</Text>
+              <View
+                style={styles.inputContainer}
+              >
+                <TextInput
+                  value={greeting}
+                  onChangeText={(value) => setGreeting(value)}
+                  editable={true}
+                  style={styles.input}
+                  multiline
+                />
               </View>
             </View>
 
             <View
               style={styles.infoChildContainer}
             >
-              <Text style={styles.heading}>Gmail</Text>
+              <Text style={styles.heading}>Short Description</Text>
               <View
                 style={styles.inputContainer}
               >
                 <TextInput
-                  value={gmail}
-                  onChangeText={(value) => setGmail(value)}
+                  value={shortDescription}
+                  onChangeText={(value) => setShortDescription(value)}
                   editable={true}
                   style={styles.input}
+                  multiline
                 />
               </View>
+            </View>
+
+            <View style={styles.infoChildContainer}>
+              <Text style={styles.heading}>Privacy</Text>
+              <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                  <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
+                    <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
+                    <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
+                  </TouchableOpacity>
+                </View>
+              </RadioButton.Group>
+              <Text style={styles.privacyDescription}>
+                {privacy === 'public' ? 'Other people can talk to your character' : 'Only you can talk to the character'}
+              </Text>
             </View>
 
           </View>
@@ -190,17 +194,15 @@ const EditProfile = () => {
             style={styles.buttonContainer}
             onPress={async () => {
               try {
-                await update_user(
-                  userId,
-                  username,
-                  gmail,
-                  fname,
-                  lname,
-                  null,
-                  null,
-                  bio,
+                await update_bot(
+                  botId,
+                  name,
+                  shortDescription,
+                  description,
                   selectedImage,
                   null,
+                  greeting,
+                  privacy,
                   null
                 );
                 setRefresh(!refresh);
@@ -221,9 +223,9 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditCharacter;
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
@@ -231,7 +233,7 @@ const styles = {
   },
   infoContainer: {
     marginBottom: SIZES.xLarge,
-    marginHorizontal: SIZES.small,
+    marginHorizontal: SIZES.xSmall,
     flexDirection: "column",
     justifyContent: "center",
   },
@@ -242,15 +244,16 @@ const styles = {
     fontSize: FONTSIZE.small,
   },
   input: {
-
+    borderRadius: 5,
   },
   inputContainer: {
-    borderColor: COLORS.black,
+    borderColor: COLORS.light_black,
     borderRadius: 5,
     borderWidth: 1,
     paddingHorizontal: 5,
     paddingVertical: 5,
     marginVertical: 5,
+    width: "100%",
   },
   buttonContainer: {
     backgroundColor: COLORS.black,
@@ -264,5 +267,34 @@ const styles = {
   buttonText: {
     fontSize: FONTSIZE.small,
     color: COLORS.white,
-  }
-};
+  },
+  radioButton: {
+    flex: 1,
+    borderColor: COLORS.blue,
+    borderWidth: 1,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 5,
+    marginVertical: 5,
+    marginTop: 10
+  },
+  radioButtonSelected: {
+    backgroundColor: COLORS.blue,
+  },
+  radioButtonLabelSelected: {
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  radioButtonLabel: {
+    fontSize: FONTSIZE.xSmall,
+    textAlign: 'center',
+  },
+  privacyDescription: {
+    textAlign: 'center',
+    fontSize: FONTSIZE.xSmall,
+    marginTop: SIZES.small,
+  },
+});

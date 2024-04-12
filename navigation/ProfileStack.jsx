@@ -6,6 +6,7 @@ import UserProfileScreen from "../screens/UserProfile";
 import LikedCharactersScreen from "../screens/LikedCharacters";
 import CreatedCharactersScreen from "../screens/CreatedCharacters";
 import EditProfileScreen from "../screens/EditProfile";
+import EditCharacterScreen from "../screens/EditCharacter";
 import SettingsScreen from "../screens/Settings";
 import ThemeSettingScreen from "../screens/ThemeSetting";
 import NotificationScreen from "../screens/Notification";
@@ -76,6 +77,11 @@ const ProfileStack = () => {
                 name={SCREEN_NAMES.EDIT_PROFILE}
                 component={EditProfileScreen}
                 options={{ headerShown: true, headerTitle: "Edit Profile" }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.EDIT_CHARACTER}
+                component={EditCharacterScreen}
+                options={{ headerShown: true, headerTitle: "Edit Character" }}
             />
             <Stack.Screen
                 name={SCREEN_NAMES.THEME_SETTING}
