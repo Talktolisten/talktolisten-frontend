@@ -110,19 +110,18 @@ const styles = StyleSheet.create({
     mainProfileContainer: {
         width: "100%",
         flexDirection: "column",
-        paddingTop: 20,
     },
     avatar: {
-        height: 200,
-        width: 200,
+        height: 150,
+        width: 150,
         borderRadius: 15,
         borderColor: COLORS.black,
-        borderWidth: 2,
+        borderWidth: 1,
         marginTop: 5,
         alignSelf: "center",
     },
     bot_name: {
-        fontSize: FONTSIZE.xLarge,
+        fontSize: FONTSIZE.large,
         fontWeight: FONT_WEIGHT.bold,
         color: COLORS.black,
         marginTop: 15,
@@ -142,24 +141,25 @@ const styles = StyleSheet.create({
     },
     short_description: {
         color: COLORS.black,
-        fontSize: FONTSIZE.medium,
-        marginBottom: SIZES.small,
+        fontSize: FONTSIZE.small,
+        marginBottom: SIZES.xSmall,
         textAlign: "center",
     },
     scrollView: {
-        height: 150,
+        maxHeight: 100,
         marginBottom: SIZES.xLarge,
         paddingVertical: SIZES.small,
     },
     bio: {
         alignSelf: "center",
         color: COLORS.black,
-        fontSize: FONTSIZE.small,
+        fontSize: FONTSIZE.xSmall,
         marginBottom: SIZES.xLarge,
         textAlign: "left",
         marginHorizontal: 15
     },
     buttonContainer: {
+        alignSelf: "center",
         flexDirection: "row",
         justifyContent: "space-around",
         marginBottom: 20,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttonText: {
-        fontSize: FONTSIZE.small,
+        fontSize: FONTSIZE.xSmall,
         fontWeight: FONT_WEIGHT.medium,
     },
 });

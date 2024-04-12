@@ -16,7 +16,6 @@ const ThemeSetting = () => {
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.grey }}>
             <SafeAreaView style={styles.container}>
-                <Text style={styles.heading}>Theme</Text>
                 <View style={styles.themeContainer}>
                     {themes.map((theme, index) => (
                         <TouchableOpacity
@@ -44,12 +43,6 @@ const styles = {
         flex: 1,
         alignItems: "center",
         backgroundColor: COLORS.white,
-    },
-    heading: {
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     themeContainer: {
         width: '80%',

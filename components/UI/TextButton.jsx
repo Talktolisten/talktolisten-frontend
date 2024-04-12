@@ -28,7 +28,7 @@ const TextButton = ({
       <View style={styles.container}>
         {icon ? icon : null}
         {isLoading ? (
-          <ActivityIndicator size="large" color={spinnerColor} />
+          <ActivityIndicator size="small" color={spinnerColor} />
         ) : (
           <Text style={[styles.label, textStyle]}>{label}</Text>
         )}
@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center',
     backgroundColor: COLORS.black,
-    width: 250,
     borderRadius: 15,
-    height: 60,
+    padding: 10,
+    paddingHorizontal: "20%",
     marginVertical: 15,
   },
   btnPressed: {

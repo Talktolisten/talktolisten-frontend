@@ -37,10 +37,10 @@ const RandomCharacter = () => {
         >
           <LinearGradient
             colors={[
+              'rgba(208, 179, 200, 255)',
               'rgba(237,196,132,255)',
-              'rgba(208, 179, 200, 255)'
             ]}
-            start={{ x: 0, y: 0 }}
+            start={{ x: 0.5, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{
               position: 'absolute',
@@ -50,7 +50,7 @@ const RandomCharacter = () => {
               bottom: 0,
             }}
           />
-          <Text style={styles.buttonText}>Surprised me ✨</Text>
+          <Text style={styles.buttonText}>Surprised me</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 10,
-    height: 55,
+    paddingVertical: SIZES.medium,
     alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.medium,
-    fontSize: FONTSIZE.medium,
+    fontWeight: FONT_WEIGHT.bold,
+    fontSize: FONTSIZE.small,
   },
 });
 

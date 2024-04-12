@@ -58,51 +58,51 @@ const ProfileStack = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name={SCREEN_NAMES.LIKED_CHARACTERS}
-                component={LikedCharactersScreen}
-                options={{ headerShown: true }}
-            />
-            <Stack.Screen
-                name={SCREEN_NAMES.CREATED_CHARACTERS}
-                component={CreatedCharactersScreen}
-                options={{ headerShown: true }}
-            />
-            <Stack.Screen
                 name={SCREEN_NAMES.USER_PROFILE}
                 component={UserProfileScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen
+                name={SCREEN_NAMES.LIKED_CHARACTERS}
+                component={LikedCharactersScreen}
+                options={{ headerShown: true, headerTitle: "Liked Characters" }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.CREATED_CHARACTERS}
+                component={CreatedCharactersScreen}
+                options={{ headerShown: true, headerTitle: "Created Characters" }}
+            />
+            <Stack.Screen
+                name={SCREEN_NAMES.EDIT_PROFILE}
+                component={EditProfileScreen}
+                options={{ headerShown: true, headerTitle: "Edit Profile" }}
+            />
+            <Stack.Screen
                 name={SCREEN_NAMES.THEME_SETTING}
                 component={ThemeSettingScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, headerTitle: "Theme" }}
             />
             <Stack.Screen
                 name={SCREEN_NAMES.NOTIFICATION}
                 component={NotificationScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, headerTitle: "Notification" }}
             />
             <Stack.Screen
                 name={SCREEN_NAMES.FEEDBACK}
                 component={FeedbackScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, headerTitle: "Contact us" }}
             />
             <Stack.Screen
                 name={SCREEN_NAMES.REPORT}
                 component={ReportScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, headerTitle: "Report" }}
             />
             <Stack.Screen
                 name={SCREEN_NAMES.ABOUT_US}
                 component={AboutScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: true, headerTitle: "About us" }}
             />
-            {/* <Stack.Screen
-                name={SCREEN_NAMES.EDIT_PROFILE}
-                component={EditProfileScreen}
-                options={{ headerShown: true }}
-            />
-            <Stack.Screen name={SCREEN_NAMES.SETTINGS}
+            {/* <Stack.Screen name={SCREEN_NAMES.SETTINGS}
                 component={SettingsScreen}
                 options={{ headerShown: false }}
             /> */}

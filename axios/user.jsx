@@ -51,6 +51,39 @@ export const create_user = async (
   });
 };
 
+export const update_user = async (
+  user_id,
+  username,
+  gmail,
+  first_name,
+  last_name,
+  dob,
+  subscription,
+  bio,
+  profile_picture,
+  status,
+  theme
+) => {
+  return await Api({
+    method: "PATCH",
+    url: `api/v1/user/${user_id}`,
+    data: {
+      username: username,
+      gmail: gmail,
+      first_name: first_name,
+      last_name: last_name,
+      dob: dob,
+      subscription: subscription,
+      bio: bio,
+      profile_picture: profile_picture,
+      status: status,
+      theme: theme,
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
+
 export const delete_user = async (user_id) => {
   return await Api({
     method: "DELETE",

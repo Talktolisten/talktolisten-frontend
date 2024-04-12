@@ -33,8 +33,6 @@ const Introduction = ({ setViewedOnboarding }) => {
   const btnLabel =
     currentIndex === slides.length - 1 ? "Get Started" : "Explore";
 
-  //Controls how the user navigates from the last slide to home page. AyncStorage is used to save that the onboarding instructions have already been viewed and will only be displayed once.
-  //See Note in HomeScreen/Home.jsx for how the onboarding would be reset if the user deletes their account
   const scrollTo = async () => {
     if (currentIndex < slides.length - 1) {
       slidesRef.current.scrollToIndex({ index: currentIndex + 1 });

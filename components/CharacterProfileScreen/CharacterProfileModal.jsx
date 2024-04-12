@@ -17,8 +17,6 @@ const CharacterProfileModal = ({
         backdropColor={COLORS.light_black}
         backdropOpacity={0.85}
         onBackdropPress={toggleModal}
-        swipeDirection={["down"]}
-        onSwipeComplete={toggleModal}
         style={modalStyles.modalContainer}
     >
         <View style={modalStyles.container}>

@@ -9,7 +9,6 @@ const Notification = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.heading}>Notification</Text>
             <View style={styles.switchContainer}>
                 <Text style={styles.switchText}>System Notifications</Text>
                 <Switch
@@ -40,13 +39,6 @@ const styles = {
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: COLORS.white,
-    },
-    heading: {
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     switchContainer: {
         flexDirection: 'row',

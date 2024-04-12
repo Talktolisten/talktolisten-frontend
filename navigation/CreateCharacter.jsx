@@ -32,10 +32,22 @@ const CreateCharacterStack = () => {
           size={24}
           color={COLORS.black}
           onPress={canGoBack ? navigation.goBack : null}
-          containerStyle={{ marginLeft: 10 }}
+          containerStyle={{ marginLeft: 5 }}
         />
       );
     },
+    // headerRight: () => (
+    //   <AntDesign
+    //     name="close"
+    //     size={24}
+    //     color={COLORS.black}
+    //     onPress={() => navigation.reset({
+    //       index: 0,
+    //       routes: [{ name: SCREEN_NAMES.EXPLORE }],
+    //     })}
+    //     containerStyle={{ marginRight: 5 }}
+    //   />
+    // ),
   });
 
   return (
@@ -46,7 +58,7 @@ const CreateCharacterStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER}
         component={CreateCharacterScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: "Create your character", headerLeft: () => null }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.PROFILE}

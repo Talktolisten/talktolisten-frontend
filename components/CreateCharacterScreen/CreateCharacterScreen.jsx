@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
 import { generate_greeting_description } from "../../axios/bots";
@@ -53,51 +52,47 @@ const CreateCharacter = () => {
         </View>
       ) : (
         <SafeAreaView style={styles.container}>
-          <Text style={styles.heading}>Create your Character</Text>
+          <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: "25%" }}>
+            <View style={styles.inputContainer}>
+              <View style={styles.topheadingContainer}>
+                <Text style={styles.topheading}>Name</Text>
+              </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.topheadingContainer}>
-              <Text style={styles.topheading}>Name</Text>
+              <View style={styles.subheadingContainer}>
+                <Text style={styles.subheading}>Name your character</Text>
+                <TextInput
+                  placeholder="Name"
+                  style={[styles.input, { paddingBottom: 0 }]}
+                  mode="outlined"
+                  activeOutlineColor={COLORS.black}
+                  maxLength={50}
+                  value={name}
+                  onChangeText={(text) => setName(text)}
+                />
+              </View>
             </View>
 
-            <View style={styles.subheadingContainer}>
-              <Text style={styles.subheading}>Name your character</Text>
+            <View style={styles.inputContainer}>
+              <View style={styles.topheadingContainer}>
+                <Text style={styles.topheading}>Character Description</Text>
+              </View>
+
+              <View style={styles.subheadingContainer}>
+                <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
+                <TextInput
+                  placeholder="A cute cat with a big heart"
+                  style={[styles.input, { height: 150 }]}
+                  mode="outlined"
+                  activeOutlineColor={COLORS.black}
+                  contentStyle={{ paddingTop: SIZES.xLarge }}
+                  multiline
+                  maxLength={1000}
+                  value={description}
+                  onChangeText={(text) => setDescription(text)}
+                />
+              </View>
             </View>
-
-            <TextInput
-              placeholder="Name"
-              style={[styles.input, { paddingBottom: 0 }]}
-              mode="outlined"
-              label={"Character Name"}
-              activeOutlineColor={COLORS.black}
-              maxLength={50}
-              value={name}
-              onChangeText={(text) => setName(text)}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <View style={styles.topheadingContainer}>
-              <Text style={styles.topheading}>Character Description</Text>
-            </View>
-
-            <View style={styles.subheadingContainer}>
-              <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
-            </View>
-
-            <TextInput
-              placeholder="A cute cat with a big heart"
-              style={[styles.input, { height: 200 }]}
-              mode="outlined"
-              label={"Character Definition"}
-              activeOutlineColor={COLORS.black}
-              contentStyle={{ paddingTop: SIZES.xLarge }}
-              multiline
-              maxLength={1000}
-              value={description}
-              onChangeText={(text) => setDescription(text)}
-            />
-          </View>
+          </ScrollView>
 
           <View style={styles.buttonContainer}>
             {loading ? (
@@ -107,7 +102,7 @@ const CreateCharacter = () => {
                 onPress={generateCharacter}
                 style={[styles.button, { backgroundColor: COLORS.blue }]}
               >
-                <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+                <Text style={[styles.buttonText]}>Next</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -121,46 +116,36 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
   },
-  heading: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: FONTSIZE.xxLarge,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLORS.black,
-    marginBottom: SIZES.xSmall,
-  },
   topheadingContainer: {
-    marginBottom: SIZES.xSmall,
-    alignSelf: "center",
+    marginBottom: SIZES.medium,
   },
   topheading: {
-    fontSize: FONTSIZE.large,
-    marginBottom: 10,
+    fontSize: FONTSIZE.small,
   },
   subheadingContainer: {
     alignSelf: "center",
-    paddingHorizontal: SIZES.small,
-    marginHorizontal: SIZES.xSmall,
-    marginBottom: SIZES.medium,
+    marginBottom: SIZES.small,
     width: "100%",
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: COLORS.bright_grey,
   },
   subheading: {
-    fontSize: FONTSIZE.small,
-    textAlign: "center",
+    fontSize: FONTSIZE.xSmall,
   },
   input: {
-    height: 50,
-    lineHeight: 20,
-    borderRadius: 4,
-    fontSize: FONTSIZE.small,
+    paddingTop: 5,
+    borderRadius: 5,
+    fontSize: FONTSIZE.xSmall,
     backgroundColor: COLORS.white,
-    marginBottom: 20,
+    marginTop: SIZES.xSmall,
     width: "100%",
     alignSelf: "center",
     paddingBottom: 10,
   },
   inputContainer: {
     alignItems: "left",
+    alignSelf: "center",
     display: "flex",
     flexDirection: "column",
     marginVertical: 10,
@@ -189,8 +174,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.medium,
-    fontSize: FONTSIZE.medium,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLORS.white,
+    fontSize: FONTSIZE.xSmall,
   },
 });
 

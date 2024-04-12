@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -35,93 +35,88 @@ const CreateCharacter2 = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Character's Profile</Text>
-
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Greeting</Text>
-          </View>
-
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>Introduction of your character</Text>
-          </View>
-
-          <TextInput
-            placeholder="Greeting"
-            style={[styles.input, { height: 75 }]}
-            mode="outlined"
-            label={"Greeting"}
-            activeOutlineColor={COLORS.black}
-            contentStyle={{ paddingTop: SIZES.xLarge }}
-            multiline
-            maxLength={200}
-            value={greeting}
-            onChangeText={(text) => setGreeting(text)}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Character Short Description</Text>
-          </View>
-
-          <View style={styles.subheadingContainer}>
-            <Text style={styles.subheading}>A short description for your character</Text>
-          </View>
-
-          <TextInput
-            placeholder="A short description of your character."
-            style={[styles.input, { height: 75 }]}
-            mode="outlined"
-            label={"Character Short Description"}
-            activeOutlineColor={COLORS.black}
-            contentStyle={{ paddingTop: SIZES.xLarge }}
-            multiline
-            textAlignVertical="top"
-            maxLength={300}
-            value={shortDescription}
-            onChangeText={(text) => setShortDescription(text)}
-          />
-        </View>
-
-        <View style={styles.radioButtonContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Gender</Text>
-          </View>
-          <RadioButton.Group onValueChange={value => setGender(value)} value={gender}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[styles.radioButton, gender === 'male' ? styles.radioButtonSelected : {}]} onPress={() => setGender('male')}>
-                <Text style={[styles.radioButtonLabel, gender === 'male' ? styles.radioButtonLabelSelected : {}]}>Male</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, gender === 'female' ? styles.radioButtonSelected : {}]} onPress={() => setGender('female')}>
-                <Text style={[styles.radioButtonLabel, gender === 'female' ? styles.radioButtonLabelSelected : {}]}>Female</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, gender === 'non-binary' ? styles.radioButtonSelected : {}]} onPress={() => setGender('non-binary')}>
-                <Text style={[styles.radioButtonLabel, gender === 'non-binary' ? styles.radioButtonLabelSelected : {}]}>Non-binary</Text>
-              </TouchableOpacity>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: "20%" }}>
+          <View style={styles.inputContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Greeting</Text>
             </View>
-          </RadioButton.Group>
-        </View>
 
-        <View style={styles.radioButtonContainer}>
-          <View style={styles.topheadingContainer}>
-            <Text style={styles.topheading}>Privacy</Text>
-          </View>
-          <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
-                <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
-                <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
-              </TouchableOpacity>
+            <View style={styles.subheadingContainer}>
+              <Text style={styles.subheading}>Introduction of your character</Text>
+              <TextInput
+                placeholder="Greeting"
+                style={[styles.input]}
+                multiline
+                mode="outlined"
+                activeOutlineColor={COLORS.black}
+                maxLength={200}
+                value={greeting}
+                onChangeText={(text) => setGreeting(text)}
+              />
             </View>
-          </RadioButton.Group>
-          <Text style={styles.privacyDescription}>
-            {privacy === 'public' ? 'Other people can talk to your character' : 'Only you can talk to the character'}
-          </Text>
-        </View>
 
+          </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Character Short Description</Text>
+            </View>
+
+            <View style={styles.subheadingContainer}>
+              <Text style={styles.subheading}>A short description for your character</Text>
+              <TextInput
+                placeholder="A short description of your character."
+                style={[styles.input]}
+                multiline
+                mode="outlined"
+                activeOutlineColor={COLORS.black}
+                maxLength={300}
+                value={shortDescription}
+                onChangeText={(text) => setShortDescription(text)}
+              />
+            </View>
+
+          </View>
+
+          <View style={styles.radioButtonContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Gender</Text>
+            </View>
+            <RadioButton.Group onValueChange={value => setGender(value)} value={gender}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <TouchableOpacity style={[styles.radioButton, gender === 'male' ? styles.radioButtonSelected : {}]} onPress={() => setGender('male')}>
+                  <Text style={[styles.radioButtonLabel, gender === 'male' ? styles.radioButtonLabelSelected : {}]}>Male</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.radioButton, gender === 'female' ? styles.radioButtonSelected : {}]} onPress={() => setGender('female')}>
+                  <Text style={[styles.radioButtonLabel, gender === 'female' ? styles.radioButtonLabelSelected : {}]}>Female</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.radioButton, gender === 'non-binary' ? styles.radioButtonSelected : {}]} onPress={() => setGender('non-binary')}>
+                  <Text style={[styles.radioButtonLabel, gender === 'non-binary' ? styles.radioButtonLabelSelected : {}]}>Non-binary</Text>
+                </TouchableOpacity>
+              </View>
+            </RadioButton.Group>
+          </View>
+
+          <View style={styles.radioButtonContainer}>
+            <View style={styles.topheadingContainer}>
+              <Text style={styles.topheading}>Privacy</Text>
+            </View>
+            <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
+                  <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
+                  <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
+                </TouchableOpacity>
+              </View>
+            </RadioButton.Group>
+            <Text style={styles.privacyDescription}>
+              {privacy === 'public' ? 'Other people can talk to your character' : 'Only you can talk to the character'}
+            </Text>
+          </View>
+
+        </ScrollView>
 
         <View style={styles.buttonContainer}>
           {loading ? (
@@ -131,7 +126,7 @@ const CreateCharacter2 = () => {
               onPress={generateImagePrompt}
               style={[styles.button, { backgroundColor: COLORS.blue }]}
             >
-              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+              <Text style={[styles.buttonText]}>Next</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -145,40 +140,29 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20
   },
-  heading: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: FONTSIZE.xxLarge,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLORS.black,
-    marginBottom: SIZES.xSmall
-  },
   topheadingContainer: {
-    marginBottom: SIZES.xSmall,
-    alignSelf: "center",
-    marginHorizontal: 10,
+    marginBottom: SIZES.medium,
   },
   topheading: {
-    fontSize: FONTSIZE.large,
+    fontSize: FONTSIZE.small,
   },
   subheadingContainer: {
     alignSelf: "center",
-    paddingHorizontal: SIZES.small,
-    marginHorizontal: SIZES.xSmall,
-    marginBottom: SIZES.medium,
+    marginBottom: SIZES.small,
     width: "100%",
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: COLORS.bright_grey,
   },
   subheading: {
-    fontSize: FONTSIZE.small,
-    textAlign: "center",
+    fontSize: FONTSIZE.xSmall,
   },
   input: {
-    height: 50,
-    lineHeight: 20,
-    borderRadius: 4,
-    fontSize: FONTSIZE.small,
+    paddingTop: 5,
+    borderRadius: 5,
+    fontSize: FONTSIZE.xSmall,
     backgroundColor: COLORS.white,
-    marginBottom: 20,
+    marginTop: SIZES.xSmall,
     width: "100%",
     alignSelf: "center",
     paddingBottom: 10,
@@ -214,8 +198,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.medium,
-    fontSize: FONTSIZE.medium,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLORS.white,
+    fontSize: FONTSIZE.xSmall,
   },
   radioButtonContainer: {
     marginBottom: SIZES.xLarge,
@@ -229,6 +214,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 5,
   },
   radioButtonSelected: {
     backgroundColor: COLORS.blue,
@@ -237,12 +224,12 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   radioButtonLabel: {
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
     textAlign: 'center',
   },
   privacyDescription: {
     textAlign: 'center',
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
     marginTop: SIZES.small,
   },
 });

@@ -49,70 +49,72 @@ const Report = () => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <SafeAreaView style={styles.container}>
-                <Text style={styles.heading}>Report</Text>
-                {isSubmitted ? (
-                    <Text style={styles.paragraph}>Thank you for reporting this issue. We will get back to you in 24 hours</Text>
-                ) : (
-                    <View style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <SafeAreaView style={styles.container}>
 
-                        <View style={styles.infoContainer}>
-                            <Text style={styles.paragraph}>
-                                Feel free to report any issues you find with our app. Help us maintain a positive community!
-                            </Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={[styles.input]}
-                                value={feedback}
-                                onChangeText={setFeedback}
-                                placeholder="Report an user, inappropriate behavior, or a bug..."
-                                placeholderTextColor={COLORS.light_black}
-                                multiline
-                                numberOfLines={4}
-                            />
-                        </View>
+                    {isSubmitted ? (
+                        <Text style={styles.paragraph}>Thank you for reporting this issue. We will get back to you in 24 hours</Text>
+                    ) : (
+                        <View style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 
-                        <Text style={styles.subheading}>Upload images (Optional)</Text>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.paragraph}>
+                                    Feel free to report any issues you find with our app. Help us maintain a positive community!
+                                </Text>
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={[styles.input]}
+                                    value={feedback}
+                                    onChangeText={setFeedback}
+                                    placeholder="Report an user, inappropriate behavior, or a bug..."
+                                    placeholderTextColor={COLORS.light_black}
+                                    multiline
+                                    numberOfLines={4}
+                                />
+                            </View>
 
-                        <ScrollView horizontal contentContainerStyle={styles.imageContainer}>
-                            {images.map((image, index) => (
-                                <View key={index} style={{ position: 'relative' }}>
-                                    <TouchableOpacity onPress={() => pickImage(index)}>
-                                        {image ? (
-                                            <Image source={{ uri: image }} style={{ width: 125, height: 125 }} />
-                                        ) : (
-                                            <View style={{ width: 125, height: 125, backgroundColor: COLORS.white, justifyContent: 'center', alignItems: 'center', borderRadius: 10, borderColor: COLORS.black, borderWidth: 1 }}>
-                                                <Text style={{ fontSize: FONTSIZE.xLarge + 22 }}>+</Text>
-                                            </View>
-                                        )}
-                                    </TouchableOpacity>
-                                    {image && (
-                                        <TouchableOpacity
-                                            style={{ position: 'absolute', right: 5, top: 5, backgroundColor: COLORS.red, width: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 20 }}
-                                            onPress={() => {
-                                                const newImages = [...images];
-                                                newImages.splice(index, 1);
-                                                setImages(newImages);
-                                            }}
-                                        >
-                                            <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                            <Text style={styles.subheading}>Upload images (Optional)</Text>
+
+                            <ScrollView horizontal contentContainerStyle={styles.imageContainer}>
+                                {images.map((image, index) => (
+                                    <View key={index} style={{ position: 'relative' }}>
+                                        <TouchableOpacity onPress={() => pickImage(index)}>
+                                            {image ? (
+                                                <Image source={{ uri: image }} style={{ width: 125, height: 125 }} />
+                                            ) : (
+                                                <View style={{ width: 125, height: 125, backgroundColor: COLORS.white, justifyContent: 'center', alignItems: 'center', borderRadius: 10, borderColor: COLORS.black, borderWidth: 1 }}>
+                                                    <Text style={{ fontSize: FONTSIZE.xLarge + 22 }}>+</Text>
+                                                </View>
+                                            )}
                                         </TouchableOpacity>
-                                    )}
-                                </View>
-                            ))}
-                        </ScrollView>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity
-                                onPress={handleSubmit}
-                                style={styles.button}
-                            >
-                                <Text style={styles.buttonText}>Send</Text>
-                            </TouchableOpacity>
+                                        {image && (
+                                            <TouchableOpacity
+                                                style={{ position: 'absolute', right: 5, top: 5, backgroundColor: COLORS.red, width: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 20 }}
+                                                onPress={() => {
+                                                    const newImages = [...images];
+                                                    newImages.splice(index, 1);
+                                                    setImages(newImages);
+                                                }}
+                                            >
+                                                <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
+                                ))}
+                            </ScrollView>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity
+                                    onPress={handleSubmit}
+                                    style={styles.button}
+                                >
+                                    <Text style={styles.buttonText}>Send</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-                )}
-            </SafeAreaView >
+                    )}
+                </SafeAreaView >
+            </ScrollView>
         </TouchableWithoutFeedback>
     );
 };
@@ -124,13 +126,6 @@ const styles = {
         flex: 1,
         alignItems: "center",
         padding: SIZES.medium,
-        backgroundColor: COLORS.white,
-    },
-    heading: {
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     subheading: {
         alignSelf: "flex-start",

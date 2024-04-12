@@ -6,7 +6,6 @@ import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 const About = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.heading}>About us</Text>
             <View style={styles.infoContainer}>
                 <Text style={styles.paragraph}>
                     We want to create an innovative platform that allows users to engage in lifelike conversations with AI-powered characters
@@ -43,12 +42,6 @@ const styles = {
         alignItems: "center",
         padding: SIZES.medium,
         backgroundColor: COLORS.white,
-    },
-    heading: {
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     infoContainer: {
         alignItems: "center",

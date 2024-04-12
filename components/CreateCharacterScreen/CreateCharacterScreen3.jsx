@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator, Alert, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
@@ -90,6 +90,11 @@ const CreateCharacter3 = () => {
     const ImagePrompt = imagePrompt + ". " + addOnsArray.join(" ");
     try {
       const ai_img_url = await generate_avatar(ImagePrompt);
+      if (ai_img_url === null) {
+        Alert.alert("The image prompt might contain harmful or inappropriate content, such as sexual content, hate speech, self-harm, and violence. Proceed with caution.");
+        setLoading(false);
+        return;
+      }
       let newImages = [...images, ai_img_url];
       setImages(newImages);
       setImageIndexSelected(newImages.length - 1);
@@ -123,102 +128,98 @@ const CreateCharacter3 = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Character's Avatar</Text>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: "20%" }}>
+          <View style={styles.controlImageContainer}>
+            <TouchableOpacity onPress={() => handleImageArrow("left")} style={styles.arrowButton}>
+              <AntDesign name="left" size={28} color="black" />
+            </TouchableOpacity>
+            <View style={styles.imageContainer}>
 
-        <View style={styles.controlImageContainer}>
-          <TouchableOpacity onPress={() => handleImageArrow("left")} style={styles.arrowButton}>
-            <AntDesign name="left" size={28} color="black" />
-          </TouchableOpacity>
-          <View style={styles.imageContainer}>
-
-            <Image
-              key={images[imageIndexSelected]}
-              source={
-                typeof images[imageIndexSelected] === 'string'
-                  ? { uri: images[imageIndexSelected] }
-                  : images[imageIndexSelected]
-              }
-              style={styles.image}
-            />
-
-          </View>
-          <TouchableOpacity onPress={() => handleImageArrow("right")} style={styles.arrowButton}>
-            <AntDesign name="right" size={28} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.radioButtonContainer}>
-          <RadioButton.Group onValueChange={value => setImageMode(value)} value={imageMode}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <TouchableOpacity style={[styles.radioButton, imageMode === 'upload' ? styles.radioButtonSelected : {}]} onPress={() => {
-                setImageMode('upload');
-                pickImage();
-              }}>
-                <Text style={[styles.radioButtonLabel, imageMode === 'upload' ? styles.radioButtonLabelSelected : {}]}>Upload your Avatar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.radioButton, imageMode === 'ai-generated' ? styles.radioButtonSelected : {}]} onPress={() => setImageMode('ai-generated')}>
-                <Text style={[styles.radioButtonLabel, imageMode === 'ai-generated' ? styles.radioButtonLabelSelected : {}]}>AI-generated image</Text>
-              </TouchableOpacity>
-            </View>
-          </RadioButton.Group>
-        </View>
-
-        {imageMode === 'ai-generated' && (
-          <View>
-            <View style={styles.inputContainer}>
-
-              <TextInput
-                placeholder={imagePrompt}
-                style={[styles.input, { height: 100 }]}
-                mode="outlined"
-                label={"Image Prompt"}
-                activeOutlineColor={COLORS.black}
-                contentStyle={{ paddingTop: SIZES.xLarge }}
-                multiline
-                maxLength={1000}
-                value={imagePrompt}
-                onChangeText={(text) => setImagePrompt(text)}
+              <Image
+                key={images[imageIndexSelected]}
+                source={
+                  typeof images[imageIndexSelected] === 'string'
+                    ? { uri: images[imageIndexSelected] }
+                    : images[imageIndexSelected]
+                }
+                style={styles.image}
               />
+
             </View>
+            <TouchableOpacity onPress={() => handleImageArrow("right")} style={styles.arrowButton}>
+              <AntDesign name="right" size={28} color="black" />
+            </TouchableOpacity>
+          </View>
 
-            <Modal
-              isVisible={isModalVisible}
-              animationInTiming={250}
-              animationOutTiming={500}
-              backdropColor={COLORS.light_black}
-              backdropOpacity={0.85}
-              onBackdropPress={toggleModal}
-              swipeDirection={["down"]}
-              onSwipeComplete={toggleModal}
-              style={modalStyles.modalContainerScreen}
-              key={selectedAddOn ? selectedAddOn.id : 'modal'}
-            >
-              <View style={modalStyles.modalContainer}>
-                <Text style={modalStyles.modalHeading}>{selectedAddOn?.name}</Text>
-                <View style={modalStyles.modalContent}>
-                  {selectedAddOn && selectedAddOn.options && selectedAddOn.options.map((option) => (
-                    <TouchableOpacity
-                      key={option}
-                      style={[
-                        modalStyles.optionButton,
-                        selectedOptions[selectedAddOn.name] && selectedOptions[selectedAddOn.name][option] ? modalStyles.selectedOption : {}
-                      ]}
-                      onPress={() => handleOptionSelect(option, selectedAddOn.name)}
-                    >
-                      <Text style={modalStyles.optionButtonText}>{option}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
+          <View style={styles.radioButtonContainer}>
+            <RadioButton.Group onValueChange={value => setImageMode(value)} value={imageMode}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <TouchableOpacity style={[styles.radioButton, imageMode === 'upload' ? styles.radioButtonSelected : {}]} onPress={() => {
+                  setImageMode('upload');
+                  pickImage();
+                }}>
+                  <Text style={[styles.radioButtonLabel, imageMode === 'upload' ? styles.radioButtonLabelSelected : {}]}>Upload your Avatar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.radioButton, imageMode === 'ai-generated' ? styles.radioButtonSelected : {}]} onPress={() => setImageMode('ai-generated')}>
+                  <Text style={[styles.radioButtonLabel, imageMode === 'ai-generated' ? styles.radioButtonLabelSelected : {}]}>AI-generated image</Text>
+                </TouchableOpacity>
               </View>
-            </Modal>
+            </RadioButton.Group>
+          </View>
 
-            <View style={styles.addOnContainer}>
-              <FlatList
-                data={addOnStyles}
-                numColumns={4}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
+          {imageMode === 'ai-generated' && (
+            <View>
+              <View style={styles.inputContainer}>
+
+                <TextInput
+                  placeholder={imagePrompt}
+                  style={[styles.input, { height: 100 }]}
+                  mode="outlined"
+                  label={"Image Prompt"}
+                  activeOutlineColor={COLORS.black}
+                  contentStyle={{ paddingTop: SIZES.xLarge }}
+                  multiline
+                  maxLength={1000}
+                  value={imagePrompt}
+                  onChangeText={(text) => setImagePrompt(text)}
+                />
+              </View>
+
+              <Modal
+                isVisible={isModalVisible}
+                animationInTiming={250}
+                animationOutTiming={500}
+                backdropColor={COLORS.light_black}
+                backdropOpacity={0.85}
+                onBackdropPress={toggleModal}
+                swipeDirection={["down"]}
+                onSwipeComplete={toggleModal}
+                style={modalStyles.modalContainerScreen}
+                key={selectedAddOn ? selectedAddOn.id : 'modal'}
+              >
+                <View style={modalStyles.modalContainer}>
+                  <Text style={modalStyles.modalHeading}>{selectedAddOn?.name}</Text>
+                  <View style={modalStyles.modalContent}>
+                    {selectedAddOn && selectedAddOn.options && selectedAddOn.options.map((option) => (
+                      <TouchableOpacity
+                        key={option}
+                        style={[
+                          modalStyles.optionButton,
+                          selectedOptions[selectedAddOn.name] && selectedOptions[selectedAddOn.name][option] ? modalStyles.selectedOption : {}
+                        ]}
+                        onPress={() => handleOptionSelect(option, selectedAddOn.name)}
+                      >
+                        <Text style={modalStyles.optionButtonText}>{option}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              </Modal>
+
+              <View style={styles.addOnContainer}>
+                {addOnStyles.map((item) => (
                   <TouchableOpacity
+                    key={item.id}
                     style={styles.addOnButton}
                     onPress={() => {
                       handleAddOnPress(item);
@@ -226,12 +227,12 @@ const CreateCharacter3 = () => {
                   >
                     <Text style={styles.addOnButtonText}>{item.name}</Text>
                   </TouchableOpacity>
-                )}
-              />
+                ))}
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
+        </ScrollView>
         {loading ? (
           <ActivityIndicator
             style={{
@@ -268,8 +269,8 @@ const CreateCharacter3 = () => {
                 />
                 <Text style={{
                   color: COLORS.black,
-                  fontWeight: FONT_WEIGHT.medium,
-                  fontSize: FONTSIZE.medium,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontSize: FONTSIZE.xSmall,
                 }}>Generate</Text>
               </TouchableOpacity>)}
 
@@ -299,14 +300,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 20
-  },
-  heading: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: FONTSIZE.xxLarge,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLORS.black,
-    marginBottom: SIZES.xSmall
   },
   topheadingContainer: {
     marginBottom: SIZES.xSmall,
@@ -360,8 +353,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.medium,
-    fontSize: FONTSIZE.medium,
+    fontWeight: FONT_WEIGHT.regular,
+    color: COLORS.white,
+    fontSize: FONTSIZE.xSmall,
   },
   radioButtonContainer: {
     marginVertical: SIZES.xLarge,
@@ -369,30 +363,31 @@ const styles = StyleSheet.create({
   },
   radioButton: {
     flex: 1,
-    borderColor: COLORS.black,
+    borderColor: COLORS.blue,
     borderWidth: 1,
     backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 5,
   },
   radioButtonSelected: {
-    borderColor: COLORS.blue,
     backgroundColor: COLORS.blue,
   },
   radioButtonLabelSelected: {
     color: COLORS.white,
-    fontWeight: FONT_WEIGHT.bold,
+    fontWeight: FONT_WEIGHT.medium,
   },
   radioButtonLabel: {
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
     textAlign: 'center',
   },
   input: {
     height: 50,
     lineHeight: 20,
     borderRadius: 4,
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
     backgroundColor: COLORS.white,
     marginBottom: 20,
     width: "100%",
@@ -435,6 +430,9 @@ const styles = StyleSheet.create({
   addOnContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   addOnButton: {
     margin: 5,
@@ -447,7 +445,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addOnButtonText: {
-    fontSize: SIZES.small,
+    fontSize: SIZES.xSmall,
     fontWeight: FONT_WEIGHT.medium,
     color: COLORS.black,
     textAlign: 'center',

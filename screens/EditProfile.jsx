@@ -1,4 +1,4 @@
-import EditProfile from "../components/EditProfileScreen/EditProfileScreen";
+import EditProfile from "../components/ProfileScreen/EditProfileScreen";
 
 const EditProfileScreen = () => <EditProfile />;
 

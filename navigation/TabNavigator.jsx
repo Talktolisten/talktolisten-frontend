@@ -8,7 +8,7 @@ import RandomStack from "./RandomStack";
 import ProfileStack from "./ProfileStack";
 import IconButton from "../components/UI/IconButton";
 
-import { SCREEN_NAMES } from "../util/constants";
+import { SCREEN_NAMES, SCREEN_NAMES_NO_TAB } from "../util/constants";
 import { getIcon } from "../components/Icons";
 import { COLORS, FONT_NUNITO } from "../styles";
 
@@ -27,12 +27,12 @@ const TabNavigator = () => {
         elevation: 0,
         shadowOpacity: 0.1,
         paddingTop: 5,
-        display: (routeName === SCREEN_NAMES.MESSAGE || routeName === SCREEN_NAMES.VOICE) ? "none" : "flex", // Hide tab bar in 'Message' screen
+        display: SCREEN_NAMES_NO_TAB.includes(routeName) ? "none" : "flex",
       },
       tabBarLabelStyle: {
         fontSize: 12,
         color: COLORS.black,
-        fontFamily: FONT_NUNITO.bold,
+        fontFamily: FONT_NUNITO.medium,
         marginTop: 10,
       },
 

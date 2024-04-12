@@ -40,6 +40,22 @@ export const SCREEN_NAMES = {
   CREATE_CHARACTER_5: "Create Character Final",
 };
 
+export const SCREEN_NAMES_NO_TAB = [
+  SCREEN_NAMES.RESET_PASSWORD,
+  SCREEN_NAMES.LIKED_CHARACTERS,
+  SCREEN_NAMES.CREATED_CHARACTERS,
+  SCREEN_NAMES.USER_PROFILE,
+  SCREEN_NAMES.EDIT_PROFILE,
+  SCREEN_NAMES.SETTINGS,
+  SCREEN_NAMES.THEME_SETTING,
+  SCREEN_NAMES.NOTIFICATION,
+  SCREEN_NAMES.FEEDBACK,
+  SCREEN_NAMES.REPORT,
+  SCREEN_NAMES.ABOUT_US,
+  SCREEN_NAMES.MESSAGE,
+  SCREEN_NAMES.VOICE
+];
+
 export const defaultAvatarURL = [
   "https://bots-ttl.s3.amazonaws.com/default_avatar/male1.webp",
   "https://bots-ttl.s3.amazonaws.com/default_avatar/male2.webp",

@@ -65,7 +65,6 @@ const LikedCharacters = () => {
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
             <SafeAreaView style={styles.container}>
-                <Text style={styles.heading}>Characters you liked ❤️</Text>
                 <View style={styles.listSection}>
                     <ScrollView style={styles.elementPallet}>
                         {likedBots.map((bot) => {
@@ -130,15 +129,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: StatusBar.currentHeight + 16,
-        backgroundColor: COLORS.grey,
         width: "100%",
-    },
-    heading: {
-        alignSelf: "center",
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     listSection: {
         flex: 1,

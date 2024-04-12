@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -126,18 +126,11 @@ const Profile = () => {
         </View>
       </View>
 
-      <View style={styles.settingList}>
+      <ScrollView style={styles.settingList} showsVerticalScrollIndicator={false}>
         {/* <SettingItem
           type="Feather"
           icon="play-circle"
           text="Subscription"
-          onPress={() => {
-          }}
-        />
-        <SettingItem
-          type="MaterialIcons"
-          icon="mode-edit"
-          text="Edit Profile"
           onPress={() => {
           }}
         />
@@ -148,6 +141,14 @@ const Profile = () => {
           onPress={() => {
           }}
         /> */}
+        <SettingItem
+          type="MaterialCommunityIcons"
+          icon="human-edit"
+          text="Edit Profile"
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.EDIT_PROFILE);
+          }}
+        />
         <SettingItem
           type="MaterialCommunityIcons"
           icon="cards-heart"
@@ -212,60 +213,62 @@ const Profile = () => {
             navigation.navigate(SCREEN_NAMES.ABOUT_US);
           }}
         />
-        {guest_mode ?
-          <TouchableOpacity
-            style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
-            onPress={async () => {
-              await deleteAccount(userId);
-              await AsyncStorage.setItem('@GuestMode', "FALSE");
-              logout();
-            }}
-          >
-            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
-          </TouchableOpacity> : (
-            <View>
-              <TouchableOpacity
-                style={[styles.button, { borderColor: COLORS.black }]}
-                onPress={async () => {
-                  logout();
-                }}
-              >
-                <Text style={styles.buttonText}>Log Out</Text>
-              </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          {guest_mode ?
+            <TouchableOpacity
+              style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
+              onPress={async () => {
+                await deleteAccount(userId);
+                await AsyncStorage.setItem('@GuestMode', "FALSE");
+                logout();
+              }}
+            >
+              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
+            </TouchableOpacity> : (
+              <View>
+                <TouchableOpacity
+                  style={[styles.button, { borderColor: COLORS.black }]}
+                  onPress={async () => {
+                    logout();
+                  }}
+                >
+                  <Text style={styles.buttonText}>Log Out</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
-                onPress={() => {
-                  Alert.alert(
-                    "Delete Account",
-                    "Are you sure you want to delete your account? This action cannot be undone.",
-                    [
-                      {
-                        text: "No",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
-                      },
-                      {
-                        text: "Yes",
-                        onPress: async () => {
-                          try {
-                            await deleteAccount(userId);
-                            logout();
-                          } catch (error) {
-                            console.error(error);
+                <TouchableOpacity
+                  style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
+                  onPress={() => {
+                    Alert.alert(
+                      "Delete Account",
+                      "Are you sure you want to delete your account? This action cannot be undone.",
+                      [
+                        {
+                          text: "No",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel"
+                        },
+                        {
+                          text: "Yes",
+                          onPress: async () => {
+                            try {
+                              await deleteAccount(userId);
+                              logout();
+                            } catch (error) {
+                              console.error(error);
+                            }
                           }
                         }
-                      }
-                    ],
-                    { cancelable: false }
-                  );
-                }}
-              >
-                <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-      </View>
+                      ],
+                      { cancelable: false }
+                    );
+                  }}
+                >
+                  <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -318,37 +321,44 @@ const styles = StyleSheet.create({
   },
   settingList: {
     flexDirection: "column",
-    marginTop: 30,
+    marginTop: 10,
     marginHorizontal: 20,
+    paddingHorizontal: SIZES.xSmall,
+    paddingVertical: SIZES.xSmall,
+    borderTopColor: COLORS.bright_grey,
+    borderTopWidth: 1,
   },
   settingItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20, // Add this
+    marginBottom: 20,
     marginVertical: 10,
   },
   settingText: {
-    flex: 1, // Add this
-    marginLeft: 10, // Add this
-    fontSize: FONTSIZE.medium,
+    flex: 1,
+    marginLeft: 10,
+    fontSize: FONTSIZE.small,
     color: COLORS.black,
   },
   icon: {
-    marginRight: 10, // Add this
+    marginRight: 10,
+  },
+  buttonContainer: {
+    marginBottom: 20,
   },
   button: {
     borderWidth: 0.5,
     borderRadius: 50,
-    height: 45,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: 30,
+    marginTop: 20,
     width: "70%",
   },
   buttonText: {
     color: COLORS.black,
-    fontSize: FONTSIZE.medium,
+    fontSize: FONTSIZE.small,
   },
 });
 

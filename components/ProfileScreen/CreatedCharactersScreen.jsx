@@ -72,7 +72,6 @@ const CreatedCharacters = () => {
                 </View>
             ) : (
                 <SafeAreaView style={styles.container}>
-                    <Text style={styles.heading}>Your characters</Text>
                     <View style={styles.listSection}>
                         <ScrollView style={styles.elementPallet}>
                             {createdBots.map((bot) => {
@@ -139,13 +138,6 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight + 16,
         backgroundColor: COLORS.grey,
         width: "100%",
-    },
-    heading: {
-        alignSelf: "center",
-        fontSize: FONTSIZE.large,
-        marginTop: SIZES.large,
-        marginBottom: SIZES.xLarge,
-        fontWeight: FONT_WEIGHT.bold,
     },
     listSection: {
         flex: 1,

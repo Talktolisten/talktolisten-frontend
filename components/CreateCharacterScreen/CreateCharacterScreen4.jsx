@@ -149,7 +149,6 @@ const CreateCharacter4 = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Character's voice</Text>
       <View style={styles.listContainer}>
         <FlatList
           data={voiceData}
@@ -194,14 +193,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
   },
-  heading: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: FONTSIZE.xxLarge,
-    fontWeight: FONT_WEIGHT.regular,
-    color: COLORS.black,
-    marginBottom: SIZES.xSmall,
-  },
   topheadingContainer: {
     marginBottom: SIZES.xSmall,
     alignSelf: "center",
@@ -241,12 +232,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.black,
-    fontWeight: FONT_WEIGHT.medium,
+    fontWeight: FONT_WEIGHT.small,
     fontSize: FONTSIZE.medium,
   },
   listContainer: {
     flex: 1,
-    marginBottom: 100,
+    marginBottom: "20%",
   },
   itemContainer: {
     flexDirection: 'row',

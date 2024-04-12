@@ -5,7 +5,7 @@ import {
   Image,
   useWindowDimensions,
 } from 'react-native';
-import { COLORS, FONT_NUNITO } from '../../styles';
+import { COLORS, FONT_NUNITO, FONTSIZE } from '../../styles';
 
 const IntroductionItem = ({ item }) => {
   const { width } = useWindowDimensions();
@@ -16,7 +16,7 @@ const IntroductionItem = ({ item }) => {
         source={item.image}
         style={[styles.image, { width, resizeMode: 'cover' }]}
       />
-      <View style={{ flex: 0.3 }}>
+      <View style={styles.textContainer}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </View>
@@ -29,16 +29,19 @@ export default IntroductionItem;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+  image: {
+    height: '50%',
+  },
+  textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-    flex: 0.5,
-    justifyContent: 'center',
-  },
   title: {
     fontFamily: FONT_NUNITO.bold,
-    fontSize: 28,
+    fontSize: FONTSIZE.xLarge,
     marginBottom: 10,
     color: COLORS.black,
     textAlign: 'center',
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: FONT_NUNITO.regular,
-    fontSize: 17,
+    fontSize: FONTSIZE.small,
     color: COLORS.black,
     textAlign: 'center',
     paddingHorizontal: 32,
