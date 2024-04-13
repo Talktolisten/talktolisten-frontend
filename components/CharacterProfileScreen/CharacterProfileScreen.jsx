@@ -149,6 +149,8 @@ const styles = StyleSheet.create({
         maxHeight: 100,
         marginBottom: SIZES.xLarge,
         paddingVertical: SIZES.small,
+        borderTopColor: COLORS.bright_grey,
+        borderTopWidth: 1.25,
     },
     bio: {
         alignSelf: "center",

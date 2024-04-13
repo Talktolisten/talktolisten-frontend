@@ -36,18 +36,18 @@ const CreateCharacterStack = () => {
         />
       );
     },
-    // headerRight: () => (
-    //   <AntDesign
-    //     name="close"
-    //     size={24}
-    //     color={COLORS.black}
-    //     onPress={() => navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: SCREEN_NAMES.EXPLORE }],
-    //     })}
-    //     containerStyle={{ marginRight: 5 }}
-    //   />
-    // ),
+    headerRight: () => (
+      <AntDesign
+        name="close"
+        size={24}
+        color={COLORS.black}
+        onPress={() => navigation.reset({
+          index: 0,
+          routes: [{ name: SCREEN_NAMES.HOME }],
+        })}
+        containerStyle={{ marginRight: 5 }}
+      />
+    ),
   });
 
   return (

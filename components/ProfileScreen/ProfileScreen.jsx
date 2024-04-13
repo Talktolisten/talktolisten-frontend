@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
@@ -16,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "../../firebase";
 import { removeTokens } from "../../util/tokenUtils";
 import { removeUserID } from "../../redux/actions/userActions";
-import { defaultAvatarURL } from "../../util/constants";
 import { get_user_info, deleteAccount } from "../../axios/user";
 
 const SettingItem = ({ type, icon, text, color, onPress }) => {
@@ -79,17 +78,20 @@ const Profile = () => {
 
   const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const fetchedUserInfo = await get_user_info(userId);
-        setUserInfo(fetchedUserInfo);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
-    fetchUserInfo();
-  }, []);
+  const fetchUserInfo = async () => {
+    try {
+      const fetchedUserInfo = await get_user_info(userId);
+      setUserInfo(fetchedUserInfo);
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserInfo();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,7 +100,7 @@ const Profile = () => {
       <View style={styles.profileContainer}>
         <View style={styles.mainProfileContainer}>
           <Image
-            source={{ uri: defaultAvatarURL[0] }}
+            source={{ uri: userInfo.profile_picture }}
             resizeMode="contain"
             style={styles.avatar}
           />

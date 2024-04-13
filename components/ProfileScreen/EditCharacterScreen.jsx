@@ -10,16 +10,20 @@ import {
   StyleSheet
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useRoute, useIsFocused } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RadioButton } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import { COLORS, FONTSIZE, SIZES, FONT_WEIGHT } from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { get_bot_info_toEdit, update_bot } from "../../axios/bots.jsx";
+import { set } from "firebase/database";
 
 const EditCharacter = () => {
   const [refresh, setRefresh] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
+  const [isAvatarChanged, setIsAvatarChanged] = useState(false);
   const route = useRoute();
   const { botId } = route.params;
 
@@ -56,10 +60,10 @@ const EditCharacter = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setIsAvatarChanged(true);
+      setIsChanged(true);
     }
   };
 
@@ -113,7 +117,10 @@ const EditCharacter = () => {
               >
                 <TextInput
                   value={name}
-                  onChangeText={(value) => setName(value)}
+                  onChangeText={(value) => {
+                    setName(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={styles.input}
                 />
@@ -129,7 +136,10 @@ const EditCharacter = () => {
               >
                 <TextInput
                   value={description}
-                  onChangeText={(value) => setDescription(value)}
+                  onChangeText={(value) => {
+                    setDescription(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={[styles.input, { minHeight: 70 }]}
                   multiline={true}
@@ -146,7 +156,10 @@ const EditCharacter = () => {
               >
                 <TextInput
                   value={greeting}
-                  onChangeText={(value) => setGreeting(value)}
+                  onChangeText={(value) => {
+                    setGreeting(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={styles.input}
                   multiline
@@ -163,7 +176,10 @@ const EditCharacter = () => {
               >
                 <TextInput
                   value={shortDescription}
-                  onChangeText={(value) => setShortDescription(value)}
+                  onChangeText={(value) => {
+                    setShortDescription(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={styles.input}
                   multiline
@@ -173,7 +189,11 @@ const EditCharacter = () => {
 
             <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Privacy</Text>
-              <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
+              <RadioButton.Group onValueChange={value => {
+                setPrivacy(value);
+                setIsChanged(true);
+              }}
+                value={privacy}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                   <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
                     <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
@@ -191,25 +211,33 @@ const EditCharacter = () => {
           </View>
 
           <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={async () => {
+            style={isChanged ? styles.buttonContainer : [styles.buttonContainer, { backgroundColor: COLORS.light_black }]}
+            onPress={isChanged ? async () => {
               try {
+                let profile_picture = null;
+                if (isAvatarChanged) {
+                  profile_picture = await FileSystem.readAsStringAsync(selectedImage, {
+                    encoding: FileSystem.EncodingType.Base64,
+                  });
+                }
                 await update_bot(
                   botId,
                   name,
                   shortDescription,
                   description,
-                  selectedImage,
+                  profile_picture,
                   null,
                   greeting,
                   privacy,
                   null
                 );
+                setIsChanged(false);
+                setIsAvatarChanged(false);
                 setRefresh(!refresh);
               } catch (error) {
                 console.error("Failed to update user info:", error);
               }
-            }}
+            } : null}
           >
             <Text
               style={styles.buttonText}

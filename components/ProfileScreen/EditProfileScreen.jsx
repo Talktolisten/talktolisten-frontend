@@ -12,6 +12,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { COLORS, FONTSIZE, SIZES } from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,6 +21,8 @@ import { get_user_info, update_user } from "../../axios/user.jsx";
 const EditProfile = () => {
   const userId = useSelector((state) => state.user.userID);
   const [refresh, setRefresh] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
+  const [isAvatarChanged, setIsAvatarChanged] = useState(false);
 
   const fetchUserInfo = async () => {
     try {
@@ -54,10 +57,10 @@ const EditProfile = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setIsChanged(true);
+      setIsAvatarChanged(true);
     }
   };
 
@@ -111,7 +114,10 @@ const EditProfile = () => {
               >
                 <TextInput
                   value={username}
-                  onChangeText={(value) => setUsername(value)}
+                  onChangeText={(value) => {
+                    setUsername(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={styles.input}
                 />
@@ -127,7 +133,10 @@ const EditProfile = () => {
               >
                 <TextInput
                   value={bio}
-                  onChangeText={(value) => setBio(value)}
+                  onChangeText={(value) => {
+                    setBio(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={[styles.input, { minHeight: 70 }]}
                   multiline={true}
@@ -149,7 +158,10 @@ const EditProfile = () => {
                 >
                   <TextInput
                     value={fname}
-                    onChangeText={(value) => setFName(value)}
+                    onChangeText={(value) => {
+                      setFName(value);
+                      setIsChanged(true);
+                    }}
                     editable={true}
                   />
                 </View>
@@ -161,7 +173,10 @@ const EditProfile = () => {
                 >
                   <TextInput
                     value={lname}
-                    onChangeText={(value) => setLName(value)}
+                    onChangeText={(value) => {
+                      setLName(value);
+                      setIsChanged(true);
+                    }}
                     editable={true}
                   />
                 </View>
@@ -177,7 +192,10 @@ const EditProfile = () => {
               >
                 <TextInput
                   value={gmail}
-                  onChangeText={(value) => setGmail(value)}
+                  onChangeText={(value) => {
+                    setGmail(value);
+                    setIsChanged(true);
+                  }}
                   editable={true}
                   style={styles.input}
                 />
@@ -187,9 +205,15 @@ const EditProfile = () => {
           </View>
 
           <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={async () => {
+            style={isChanged ? styles.buttonContainer : [styles.buttonContainer, { backgroundColor: COLORS.light_black }]}
+            onPress={isChanged ? async () => {
               try {
+                let profile_picture = null;
+                if (isAvatarChanged) {
+                  profile_picture = await FileSystem.readAsStringAsync(selectedImage, {
+                    encoding: FileSystem.EncodingType.Base64,
+                  });
+                }
                 await update_user(
                   userId,
                   username,
@@ -199,15 +223,17 @@ const EditProfile = () => {
                   null,
                   null,
                   bio,
-                  selectedImage,
+                  profile_picture,
                   null,
                   null
                 );
+                setIsChanged(false);
+                setIsAvatarChanged(false);
                 setRefresh(!refresh);
               } catch (error) {
                 console.error("Failed to update user info:", error);
               }
-            }}
+            } : null}
           >
             <Text
               style={styles.buttonText}

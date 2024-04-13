@@ -39,7 +39,7 @@ const UserProfile = () => {
       <View style={styles.profileContainer}>
         <View style={styles.mainProfileContainer}>
           <Image
-            source={{ uri: defaultAvatarURL[0] }}
+            source={{ uri: userInfo.profile_picture }}
             resizeMode="contain"
             style={styles.avatar}
           />
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   bio: {
     color: COLORS.black,
-    fontSize: FONTSIZE.small,
+    fontSize: FONTSIZE.xSmall,
     marginBottom: SIZES.xLarge,
     textAlign: "left",
     marginHorizontal: 15
