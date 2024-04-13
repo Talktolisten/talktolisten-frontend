@@ -12,7 +12,8 @@ export const COLORS = {
     grey: '#E9ECEF',
     red: '#cc0000',
     blue: '#1F93FF',
-    pink: '#B6244F'
+    pink: '#B6244F',
+    purple: '#7209B7',
 };
 
 export const SIZES = {

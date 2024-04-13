@@ -8,7 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { TextInput, RadioButton } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
-import { generate_avatar } from "../../axios/bots";
+import { generate_avatar, optimize_image_prompt } from "../../axios/bots";
 
 const CreateCharacter3 = () => {
   const navigation = useNavigation();
@@ -104,6 +104,11 @@ const CreateCharacter3 = () => {
     setLoading(false);
   };
 
+  const optimizeImagePrompt = async () => {
+    const optimized_image_prompt = await optimize_image_prompt(imagePrompt);
+    setImagePrompt(optimized_image_prompt);
+  };
+
   const handleImageArrow = (direction) => {
     if (direction === 'left' && imageIndexSelected - 1 >= 0) {
       setImageIndexSelected(imageIndexSelected - 1);
@@ -183,6 +188,18 @@ const CreateCharacter3 = () => {
                   value={imagePrompt}
                   onChangeText={(text) => setImagePrompt(text)}
                 />
+
+                <View style={styles.helperButtonContainer}>
+                  <TouchableOpacity>
+                    <Text
+                      style={styles.helperButtonText}
+                      onPress={optimizeImagePrompt}
+                    >
+                      Revise
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
 
               <Modal
@@ -389,7 +406,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontSize: FONTSIZE.xSmall,
     backgroundColor: COLORS.white,
-    marginBottom: 20,
+    marginBottom: 5,
     width: "100%",
     alignSelf: "center",
     paddingBottom: 10,
@@ -400,6 +417,15 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "100%",
+    marginBottom: SIZES.xSmall
+  },
+  helperButtonContainer: {
+    alignItems: "flex-start",
+  },
+  helperButtonText: {
+    color: COLORS.purple,
+    fontWeight: FONT_WEIGHT.medium,
+    fontSize: FONTSIZE.xSmall,
   },
   imageContainer: {
     width: 200,

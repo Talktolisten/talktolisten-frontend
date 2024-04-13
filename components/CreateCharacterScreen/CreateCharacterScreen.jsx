@@ -6,7 +6,7 @@ import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
-import { generate_greeting_description } from "../../axios/bots";
+import { generate_greeting_description, optimize_description } from "../../axios/bots";
 
 const CreateCharacter = () => {
   const navigation = useNavigation();
@@ -35,6 +35,11 @@ const CreateCharacter = () => {
       console.log(error);
     }
     setLoading(false);
+  }
+
+  const optimizeDescription = async () => {
+    const optimized_description = await optimize_description(name, description);
+    setDescription(optimized_description);
   }
 
   return (
@@ -90,6 +95,16 @@ const CreateCharacter = () => {
                   value={description}
                   onChangeText={(text) => setDescription(text)}
                 />
+                <View style={styles.helperButtonContainer}>
+                  <TouchableOpacity>
+                    <Text
+                      style={styles.helperButtonText}
+                      onPress={optimizeDescription}
+                    >
+                      Revise
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </ScrollView>
@@ -176,6 +191,15 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontWeight: FONT_WEIGHT.regular,
     color: COLORS.white,
+    fontSize: FONTSIZE.xSmall,
+  },
+  helperButtonContainer: {
+    alignItems: "flex-start",
+    marginTop: SIZES.xSmall,
+  },
+  helperButtonText: {
+    color: COLORS.purple,
+    fontWeight: FONT_WEIGHT.medium,
     fontSize: FONTSIZE.xSmall,
   },
 });
