@@ -21,6 +21,22 @@ const CreateCharacter4 = () => {
   const [isSamplePlaying, setIsSamplePlaying] = useState(false);
   const [sound, setSound] = useState(new Audio.Sound());
 
+  useEffect(() => {
+    const setAudioMode = async () => {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        interruptionModeIOS: 1,
+        playsInSilentModeIOS: true,
+        shouldDuckAndroid: true,
+        interruptionModeAndroid: 1,
+        playThroughEarpieceAndroid: false,
+        staysActiveInBackground: true,
+      });
+    };
+
+    setAudioMode();
+  }, []);
+
   const userId = useSelector((state) => state.user.userID);
   const createCharacter = async (
     name,
