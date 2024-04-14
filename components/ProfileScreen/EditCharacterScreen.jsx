@@ -195,10 +195,16 @@ const EditCharacter = () => {
               }}
                 value={privacy}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                  <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
+                  <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => {
+                    setPrivacy('public');
+                    setIsChanged(true);
+                  }}>
                     <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
+                  <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => {
+                    setPrivacy('private');
+                    setIsChanged(true);
+                  }}>
                     <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
                   </TouchableOpacity>
                 </View>

@@ -9,7 +9,7 @@ export const COLORS = {
     green_light: '#ACE1AF',
     green_dark: '#7CAF7F',
     grey: '#E9ECEF',
-    cool_grey: '#8D99AE',
+    cool_grey: '#ADB5BD',
     red: '#cc0000',
     blue: '#1F93FF',
     pink: '#B6244F',
