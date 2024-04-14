@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Avatar, Bubble, SystemMessage, Message, MessageText } from 'react-native-gifted-chat';
+import { Avatar, Bubble, SystemMessage, Message, MessageText, Day } from 'react-native-gifted-chat';
 import { COLORS, FONT_WEIGHT } from '../../styles';
 
 export const renderAvatar = (props) => (
@@ -77,6 +77,13 @@ export const renderMessageText = (props) => (
 );
 
 export const renderTime = (props) => null
+
+export const renderDay = (props) => (
+  <Day
+    {...props}
+    textStyle={{ color: COLORS.white, fontWeight: FONT_WEIGHT.medium }}
+  />
+);
 
 export const renderCustomView = ({ currentMessage, user }) => {
   if (currentMessage.user._id === user._id) {

@@ -12,7 +12,7 @@ export const renderInputToolbar = (props) => (
     {...props}
     containerStyle={{
       backgroundColor: COLORS.white,
-      paddingTop: 10,
+      paddingTop: 4,
       paddingBottom: 6,
     }}
     primaryStyle={{ alignItems: 'center' }}
@@ -50,8 +50,9 @@ export const renderComposer = (props) => (
     {...props}
     textInputStyle={{
       color: COLORS.black,
+      fontSize: 14,
       backgroundColor: COLORS.grey,
-      borderRadius: 25,
+      borderRadius: 20,
       paddingTop: 8.5,
       paddingHorizontal: 12,
       marginLeft: 0,

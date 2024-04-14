@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
-import { View, SafeAreaView, StyleSheet, Image, Text } from "react-native";
-import { GiftedChat, Send, MessageText } from "react-native-gifted-chat";
+import { View, SafeAreaView, StyleSheet, Image, Text, ImageBackground } from "react-native";
+import { GiftedChat } from "react-native-gifted-chat";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { getIcon } from "../Icons";
@@ -20,6 +20,7 @@ import {
   renderMessageText,
   renderCustomView,
   renderTime,
+  renderDay
 } from "./MessageBubble";
 import { sendMessageToBackend, fetchAllMessages } from "./MessageSendRequest";
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
@@ -145,40 +146,46 @@ const MessageScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <GiftedChat
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-        minInputToolbarHeight={60}
-        renderBubble={renderBubble}
-        renderSystemMessage={renderSystemMessage}
-        renderMessage={renderMessage}
-        renderMessageText={renderMessageText}
-        // renderCustomView={renderCustomView}
-        isCustomViewBottom
-        renderAvatarOnTop
-        renderAvatar={renderAvatar}
-        onPressAvatar={toggleModal}
-        alwaysShowSend
-        renderSend={(props) => renderSend({ ...props, isSending })}
-        renderInputToolbar={renderInputToolbar}
-        renderComposer={renderComposer}
-        renderActions={(props) => renderActions(props, botInfo, chat_id)}
-        renderTime={renderTime}
-        scrollToBottom
-        scrollToBottomComponent={scrollToBottomComponent}
-        messagesContainerStyle={styles.messageContainer}
-      />
-      <CharacterProfileModal
-        isModalVisible={isModalVisible}
-        toggleModal={toggleModal}
-        selectedBotInfo={botInfo}
-        navigation={navigation}
-      />
-    </SafeAreaView>
+    <ImageBackground
+      source={botInfo?.profile_picture ? { uri: botInfo?.profile_picture } : null}
+      style={{ flex: 1, backgroundColor: botInfo?.profile_picture ? 'transparent' : COLORS.white }}
+    >
+      <SafeAreaView style={styles.container}>
+        <GiftedChat
+          messages={messages}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+          minInputToolbarHeight={60}
+          renderBubble={renderBubble}
+          renderSystemMessage={renderSystemMessage}
+          renderMessage={renderMessage}
+          renderMessageText={renderMessageText}
+          // renderCustomView={renderCustomView}
+          isCustomViewBottom
+          renderAvatarOnTop
+          renderAvatar={renderAvatar}
+          onPressAvatar={toggleModal}
+          alwaysShowSend
+          renderSend={(props) => renderSend({ ...props, isSending })}
+          renderInputToolbar={renderInputToolbar}
+          renderComposer={renderComposer}
+          renderActions={(props) => renderActions(props, botInfo, chat_id)}
+          renderTime={renderTime}
+          renderDay={renderDay}
+          scrollToBottom
+          scrollToBottomComponent={scrollToBottomComponent}
+          messagesContainerStyle={styles.messageContainer}
+        />
+        <CharacterProfileModal
+          isModalVisible={isModalVisible}
+          toggleModal={toggleModal}
+          selectedBotInfo={botInfo}
+          navigation={navigation}
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
@@ -187,11 +194,10 @@ export default MessageScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: "transparent",
   },
   messageContainer: {
-    backgroundColor: COLORS.white,
-    marginLeft: 10,
+    backgroundColor: "transparent",
   },
   headerTitleText: {
     fontSize: FONTSIZE.small,
