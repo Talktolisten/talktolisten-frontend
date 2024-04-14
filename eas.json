@@ -18,10 +18,12 @@
     },
     "preview": {
       "extends": "base",
+      "channel": "preview",
       "distribution": "internal"
     },
     "production": {
-      "extends": "base"
+      "extends": "base",
+      "channel": "production"
     }
   },
   "submit": {

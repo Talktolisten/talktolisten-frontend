@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [6.0.0] - 2024-04-14
+
+### Add
+- User can see their created and liked bot and edit.
+- Update UI for the profile screen, message, explore, random.
+- Add expo updates for the app.
+
+### Fixed
+- UI of the random character screen not scrollable.
+
 ## [5.0.0] - 2024-04-10
 
 ### Added

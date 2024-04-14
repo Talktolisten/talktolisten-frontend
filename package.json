@@ -1,6 +1,6 @@
 {
   "name": "talktolisten",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -53,7 +53,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "expo-updates": "~0.18.19"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

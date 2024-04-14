@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
+import * as Updates from 'expo-updates';
 import store from './redux/store';
 import { loadFonts } from './util/helpers';
 import Nav from './navigation/Nav';
@@ -24,6 +25,23 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  async function onFetchUpdateAsync() {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        await Updates.fetchUpdateAsync();
+        await Updates.reloadAsync();
+      }
+    } catch (error) {
+      alert(`Error fetching latest Expo update: ${error}`);
+    }
+  }
+
+  useEffect(() => {
+    onFetchUpdateAsync();
+  }, []);
 
   return (
     <Provider store={store}>

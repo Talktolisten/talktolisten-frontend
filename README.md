@@ -29,3 +29,8 @@ npx eas submit --platform ios
 ```bash
 npx eas submit --platform android
 ```
+
+## Update
+```bash
+npx eas update --branch main --message "Update to latest version"
+```
