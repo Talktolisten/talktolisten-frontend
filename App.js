@@ -22,14 +22,11 @@ export default function App() {
     loadFontData();
   }, []);
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
+  
   async function onFetchUpdateAsync() {
     try {
       const update = await Updates.checkForUpdateAsync();
-
+      
       if (update.isAvailable) {
         await Updates.fetchUpdateAsync();
         await Updates.reloadAsync();
@@ -42,7 +39,11 @@ export default function App() {
   useEffect(() => {
     onFetchUpdateAsync();
   }, []);
-
+  
+  if (!fontsLoaded) {
+    return null;
+  }
+  
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
