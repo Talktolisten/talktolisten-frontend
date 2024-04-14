@@ -3,7 +3,13 @@
     "version": ">= 7.3.0"
   },
   "build": {
+    "base": {
+      "ios": {
+        "image": "latest"
+      }
+    },
     "development": {
+      "extends": "base",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -11,9 +17,12 @@
       }
     },
     "preview": {
+      "extends": "base",
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "extends": "base"
+    }
   },
   "submit": {
     "production": {}
