@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator, Alert, ScrollView } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator, Alert, ScrollView, TextInput } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
-import { TextInput, RadioButton } from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
 import { generate_avatar, optimize_image_prompt } from "../../axios/bots";
 
@@ -16,6 +16,7 @@ const CreateCharacter3 = () => {
   const { name, description, greeting, short_description, gender, privacy, imagePrompt_ai } = route.params;
 
   const [loading, setLoading] = useState(false);
+  const [isPromptFocused, setIsPromptFocused] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedAddOn, setSelectedAddOn] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -175,19 +176,20 @@ const CreateCharacter3 = () => {
           {imageMode === 'ai-generated' && (
             <View>
               <View style={styles.inputContainer}>
-
-                <TextInput
-                  placeholder={imagePrompt}
-                  style={[styles.input, { height: 100 }]}
-                  mode="outlined"
-                  label={"Image Prompt"}
-                  activeOutlineColor={COLORS.black}
-                  contentStyle={{ paddingTop: SIZES.xLarge }}
-                  multiline
-                  maxLength={1000}
-                  value={imagePrompt}
-                  onChangeText={(text) => setImagePrompt(text)}
-                />
+                <View
+                  style={isPromptFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                >
+                  <TextInput
+                    style={[styles.input, { minHeight: 150 }]}
+                    multiline
+                    placeholderTextColor={COLORS.cool_grey}
+                    maxLength={1000}
+                    value={imagePrompt}
+                    onChangeText={(text) => setImagePrompt(text)}
+                    onFocus={() => setIsPromptFocused(true)}
+                    onBlur={() => setIsPromptFocused(false)}
+                  />
+                </View>
 
                 <View style={styles.helperButtonContainer}>
                   <TouchableOpacity>
@@ -195,7 +197,7 @@ const CreateCharacter3 = () => {
                       style={styles.helperButtonText}
                       onPress={optimizeImagePrompt}
                     >
-                      Revise
+                      Optimize
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -365,8 +367,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "25%",
-    borderColor: COLORS.black,
-    borderWidth: 1,
   },
   buttonText: {
     color: COLORS.black,
@@ -401,15 +401,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    height: 50,
-    lineHeight: 20,
-    borderRadius: 4,
-    fontSize: FONTSIZE.xSmall,
-    backgroundColor: COLORS.white,
-    marginBottom: 5,
+    borderRadius: 5,
+  },
+  inputSmallContainer: {
+    backgroundColor: COLORS.bright_grey,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginVertical: 5,
+    marginTop: 10,
     width: "100%",
-    alignSelf: "center",
-    paddingBottom: 10,
+  },
+  inputContainerFocused: {
+    borderColor: COLORS.light_black,
+    borderWidth: 1.25,
   },
   inputContainer: {
     alignItems: "left",

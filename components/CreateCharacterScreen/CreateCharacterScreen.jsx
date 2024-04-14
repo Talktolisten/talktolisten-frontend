@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TextInput } from 'react-native-paper';
+// import { TextInput } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
 import { generate_greeting_description, optimize_description } from "../../axios/bots";
 
@@ -14,6 +14,8 @@ const CreateCharacter = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isNameFocused, setIsNameFocused] = useState(false);
+  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
 
   const [guest_mode, setGuestMode] = useState(false);
 
@@ -38,8 +40,10 @@ const CreateCharacter = () => {
   }
 
   const optimizeDescription = async () => {
+    setLoading(true);
     const optimized_description = await optimize_description(name, description);
     setDescription(optimized_description);
+    setLoading(false);
   }
 
   return (
@@ -65,15 +69,20 @@ const CreateCharacter = () => {
 
               <View style={styles.subheadingContainer}>
                 <Text style={styles.subheading}>Name your character</Text>
-                <TextInput
-                  placeholder="Name"
-                  style={[styles.input, { paddingBottom: 0 }]}
-                  mode="outlined"
-                  activeOutlineColor={COLORS.black}
-                  maxLength={50}
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                />
+                <View
+                  style={isNameFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                >
+                  <TextInput
+                    style={styles.input}
+                    placeholderTextColor={COLORS.cool_grey}
+                    maxLength={50}
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                    onFocus={() => setIsNameFocused(true)}
+                    onBlur={() => setIsNameFocused(false)}
+                    placeholder="Whiskers"
+                  />
+                </View>
               </View>
             </View>
 
@@ -84,17 +93,21 @@ const CreateCharacter = () => {
 
               <View style={styles.subheadingContainer}>
                 <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
-                <TextInput
-                  placeholder="A cute cat with a big heart"
-                  style={[styles.input, { height: 150 }]}
-                  mode="outlined"
-                  activeOutlineColor={COLORS.black}
-                  contentStyle={{ paddingTop: SIZES.xLarge }}
-                  multiline
-                  maxLength={1000}
-                  value={description}
-                  onChangeText={(text) => setDescription(text)}
-                />
+                <View
+                  style={isDescriptionFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                >
+                  <TextInput
+                    placeholder="A cute cat with a big heart"
+                    style={[styles.input, { minHeight: 150 }]}
+                    placeholderTextColor={COLORS.cool_grey}
+                    multiline
+                    maxLength={1000}
+                    value={description}
+                    onChangeText={(text) => setDescription(text)}
+                    onFocus={() => setIsDescriptionFocused(true)}
+                    onBlur={() => setIsDescriptionFocused(false)}
+                  />
+                </View>
                 <View style={styles.helperButtonContainer}>
                   <TouchableOpacity>
                     <Text
@@ -132,10 +145,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   topheadingContainer: {
-    marginBottom: SIZES.medium,
+    marginBottom: SIZES.xSmall,
   },
   topheading: {
     fontSize: FONTSIZE.small,
+    fontWeight: FONT_WEIGHT.bold,
   },
   subheadingContainer: {
     alignSelf: "center",
@@ -143,20 +157,25 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     borderRadius: 5,
-    backgroundColor: COLORS.bright_grey,
   },
   subheading: {
     fontSize: FONTSIZE.xSmall,
   },
   input: {
-    paddingTop: 5,
     borderRadius: 5,
-    fontSize: FONTSIZE.xSmall,
-    backgroundColor: COLORS.white,
-    marginTop: SIZES.xSmall,
+  },
+  inputSmallContainer: {
+    backgroundColor: COLORS.bright_grey,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginVertical: 5,
+    marginTop: 10,
     width: "100%",
-    alignSelf: "center",
-    paddingBottom: 10,
+  },
+  inputContainerFocused: {
+    borderColor: COLORS.light_black,
+    borderWidth: 1.25,
   },
   inputContainer: {
     alignItems: "left",
@@ -184,8 +203,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "25%",
-    borderColor: COLORS.black,
-    borderWidth: 1,
   },
   buttonText: {
     color: COLORS.black,

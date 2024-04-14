@@ -225,8 +225,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "25%",
-    borderColor: COLORS.black,
-    borderWidth: 1,
   },
   buttonText: {
     color: COLORS.black,

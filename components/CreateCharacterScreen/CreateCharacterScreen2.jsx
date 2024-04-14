@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView, TextInput } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
-import { TextInput, RadioButton } from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
 import { generate_image_prompt } from "../../axios/bots";
 
@@ -13,6 +13,8 @@ const CreateCharacter2 = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [loading, setLoading] = useState(false);
+  const [isGreetingFocused, setIsGreetingFocused] = useState(false);
+  const [isShortDescriptionFocused, setIsShortDescriptionFocused] = useState(false);
   const { name, description, greeting_ai, short_description_ai } = route.params;
 
   const [greeting, setGreeting] = useState(greeting_ai)
@@ -43,16 +45,21 @@ const CreateCharacter2 = () => {
 
             <View style={styles.subheadingContainer}>
               <Text style={styles.subheading}>Introduction of your character</Text>
-              <TextInput
-                placeholder="Greeting"
-                style={[styles.input]}
-                multiline
-                mode="outlined"
-                activeOutlineColor={COLORS.black}
-                maxLength={200}
-                value={greeting}
-                onChangeText={(text) => setGreeting(text)}
-              />
+              <View
+                style={isGreetingFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+              >
+                <TextInput
+                  placeholder="Hello! I am a character created by you."
+                  style={[styles.input, { minHeight: 50 }]}
+                  placeholderTextColor={COLORS.cool_grey}
+                  multiline
+                  maxLength={300}
+                  value={greeting}
+                  onChangeText={(text) => setGreeting(text)}
+                  onFocus={() => setIsGreetingFocused(true)}
+                  onBlur={() => setIsGreetingFocused(false)}
+                />
+              </View>
             </View>
 
           </View>
@@ -64,16 +71,21 @@ const CreateCharacter2 = () => {
 
             <View style={styles.subheadingContainer}>
               <Text style={styles.subheading}>A short description for your character</Text>
-              <TextInput
-                placeholder="A short description of your character."
-                style={[styles.input]}
-                multiline
-                mode="outlined"
-                activeOutlineColor={COLORS.black}
-                maxLength={300}
-                value={shortDescription}
-                onChangeText={(text) => setShortDescription(text)}
-              />
+              <View
+                style={isShortDescriptionFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+              >
+                <TextInput
+                  placeholder="A short description of your character."
+                  style={[styles.input, { minHeight: 50 }]}
+                  multiline
+                  placeholderTextColor={COLORS.cool_grey}
+                  maxLength={300}
+                  value={shortDescription}
+                  onChangeText={(text) => setShortDescription(text)}
+                  onFocus={() => setIsShortDescriptionFocused(true)}
+                  onBlur={() => setIsShortDescriptionFocused(false)}
+                />
+              </View>
             </View>
 
           </View>
@@ -152,20 +164,25 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     borderRadius: 5,
-    backgroundColor: COLORS.bright_grey,
   },
   subheading: {
     fontSize: FONTSIZE.xSmall,
   },
   input: {
-    paddingTop: 5,
     borderRadius: 5,
-    fontSize: FONTSIZE.xSmall,
-    backgroundColor: COLORS.white,
-    marginTop: SIZES.xSmall,
+  },
+  inputSmallContainer: {
+    backgroundColor: COLORS.bright_grey,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginVertical: 5,
+    marginTop: 10,
     width: "100%",
-    alignSelf: "center",
-    paddingBottom: 10,
+  },
+  inputContainerFocused: {
+    borderColor: COLORS.light_black,
+    borderWidth: 1.25,
   },
   inputContainer: {
     alignItems: "left",
@@ -193,8 +210,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "25%",
-    borderColor: COLORS.black,
-    borderWidth: 1,
   },
   buttonText: {
     color: COLORS.black,
