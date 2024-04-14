@@ -2,7 +2,7 @@
   "expo": {
     "name": "Talk To Listen",
     "slug": "talk-to-listen",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
@@ -32,7 +32,9 @@
       },
       "package": "com.hieu65.talktolisten",
       "versionCode": 600,
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -50,6 +52,12 @@
           "fallbackToCacheTimeout": 0
         }
       ]
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b2135036-aff9-49f5-b7dc-b8d435ba76cc"
+    }
   }
 }

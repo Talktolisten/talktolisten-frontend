@@ -32,7 +32,7 @@ export default function App() {
         await Updates.reloadAsync();
       }
     } catch (error) {
-      alert(`Error fetching latest Expo update: ${error}`);
+      console.log(`Error fetching latest Expo update: ${error}`);
     }
   }
 
