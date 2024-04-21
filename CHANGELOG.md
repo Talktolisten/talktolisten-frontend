@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.0.1] - 2024-04-21
+### Method
+- Expo Update
+
+### Fixed
+- The message screen is reset when in focus
+
+### Changed
+- Audio is fetched from storage, not decoded from base64 anymore
+
 ## [7.0.0] - 2024-04-21
 ### Method
 - Expo Update
