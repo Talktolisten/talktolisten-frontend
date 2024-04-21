@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.0.0] - 2024-04-21
+### Method
+- Expo Update
+
+### Fixed
+- User cannot record on iOS
+
+### Add
+- User can create a group chat
+- User can see the group chat list
+- User can talk in a group chat
+
 ## [6.0.2] - 2024-04-20
 
 ### Method

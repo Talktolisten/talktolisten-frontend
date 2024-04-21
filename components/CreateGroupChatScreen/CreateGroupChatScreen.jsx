@@ -75,7 +75,7 @@ const CreateGroupChat = () => {
     }
 
     const handlePressBot = async (bot) => {
-        if (groupchatBots.find((b) => b.bot_id === bot.bot_id) || groupchatBots.length >= 10) {
+        if (groupchatBots.find((b) => b.bot_id === bot.bot_id) || groupchatBots.length >= 9) {
             return;
         }
         try {
@@ -89,7 +89,7 @@ const CreateGroupChat = () => {
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
             <SafeAreaView style={styles.container}>
                 <View style={botsHolderStyles.container}>
-                    <Text style={botsHolderStyles.heading}>Group Chat ({groupchatLength}/10)</Text>
+                    <Text style={botsHolderStyles.heading}>Group Chat ({groupchatLength}/9)</Text>
                     <ScrollView ref={scrollViewRef} contentContainerStyle={botsHolderStyles.scrollViewContainer} style={botsHolderStyles.scrollView}>
                         {groupchatBots.map((bot) => {
                             return (
