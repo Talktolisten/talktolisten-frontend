@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { View, SafeAreaView, StyleSheet, Image, Text, ImageBackground } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { getIcon } from "../Icons";
 import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -70,36 +70,38 @@ const MessageGroup = () => {
     }
   }, [group_chat_id]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const fetchedMessages = await fetchAllMessages_GroupChat(group_chat_id);
-        const validMessages = fetchedMessages.filter((msg) => {
-          if (msg.is_bot) {
-            return bots.find((bot) => bot.bot_id === msg.created_by_bot);
-          }
-          return true;
-        });
-        const formattedMessages = validMessages.map((msg) => {
-          const bot = bots.find((bot) => bot.bot_id === msg.created_by_bot);
-          return {
-            _id: msg.message_id,
-            text: msg.message,
-            createdAt: new Date(msg.created_at),
-            user: {
-              _id: msg.is_bot && bot ? bot.bot_id : 1,
-              name: msg.is_bot && bot ? bot.bot_name : "User",
-              avatar: msg.is_bot && bot ? bot.profile_picture : null,
-            },
-          };
-        });
-        setMessages(formattedMessages);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-    fetchMessages();
-  }, [group_chat_id, bots]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchMessages = async () => {
+        try {
+          const fetchedMessages = await fetchAllMessages_GroupChat(group_chat_id);
+          const validMessages = fetchedMessages.filter((msg) => {
+            if (msg.is_bot) {
+              return bots.find((bot) => bot.bot_id === msg.created_by_bot);
+            }
+            return true;
+          });
+          const formattedMessages = validMessages.map((msg) => {
+            const bot = bots.find((bot) => bot.bot_id === msg.created_by_bot);
+            return {
+              _id: msg.message_id,
+              text: msg.message,
+              createdAt: new Date(msg.created_at),
+              user: {
+                _id: msg.is_bot && bot ? bot.bot_id : 1,
+                name: msg.is_bot && bot ? bot.bot_name : "User",
+                avatar: msg.is_bot && bot ? bot.profile_picture : null,
+              },
+            };
+          });
+          setMessages(formattedMessages);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
+      };
+      fetchMessages();
+    }, [group_chat_id, bots])
+  );
 
   const onSend = useCallback(
     (messages = []) => {

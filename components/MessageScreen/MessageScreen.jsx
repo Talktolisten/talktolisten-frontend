@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useLayoutEffect } from "react"
 import { View, SafeAreaView, StyleSheet, Image, Text, ImageBackground } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import { useRoute, useNavigation } from "@react-navigation/native";
-
+import { useFocusEffect } from "@react-navigation/native";
 import { getIcon } from "../Icons";
 import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
@@ -66,32 +66,34 @@ const MessageScreen = () => {
     }
   }, [bot_id]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (!botInfo) return;
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchMessages = async () => {
+        if (!botInfo) return;
 
-      try {
-        const fetchedMessages = await fetchAllMessages(chat_id);
-        const formattedMessages = fetchedMessages.map((msg) => ({
-          _id: msg.message_id,
-          text: msg.message,
-          createdAt: new Date(msg.created_at),
-          user: {
-            _id: msg.is_bot ? 2 : 1,
-            name: msg.is_bot ? botInfo.bot_name : "User",
-            avatar: msg.is_bot ? botInfo.profile_picture : null,
-          },
-        }));
-        setMessages(formattedMessages);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
+        try {
+          const fetchedMessages = await fetchAllMessages(chat_id);
+          const formattedMessages = fetchedMessages.map((msg) => ({
+            _id: msg.message_id,
+            text: msg.message,
+            createdAt: new Date(msg.created_at),
+            user: {
+              _id: msg.is_bot ? 2 : 1,
+              name: msg.is_bot ? botInfo.bot_name : "User",
+              avatar: msg.is_bot ? botInfo.profile_picture : null,
+            },
+          }));
+          setMessages(formattedMessages);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
+      };
+
+      if (botInfo) {
+        fetchMessages();
       }
-    };
-
-    if (botInfo) {
-      fetchMessages();
-    }
-  }, [chat_id, botInfo]);
+    }, [chat_id, botInfo])
+  );
 
   const onSend = useCallback(
     (messages = []) => {
