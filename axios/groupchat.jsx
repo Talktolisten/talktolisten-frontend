@@ -9,6 +9,15 @@ export const get_all_group_chats = async (userId) => {
     });
 };
 
+export const get_group_chat_by_id = async (group_chat_id) => {
+    return await Api({
+        method: "GET",
+        url: `api/v1/groupchat/get_chat_by_id/${group_chat_id}`,
+    }).then((res) => {
+        return res.data;
+    });
+};
+
 export const delete_group_chat = async (group_chat_id) => {
     return await Api({
         method: "DELETE",

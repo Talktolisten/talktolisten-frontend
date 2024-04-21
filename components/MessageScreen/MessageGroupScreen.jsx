@@ -22,13 +22,16 @@ import {
   renderTime,
   renderDay
 } from "./MessageBubble";
-import { sendMessageToBackend, fetchAllMessages } from "./MessageSendRequest";
+import { sendMessageToBackend_GroupChat, fetchAllMessages_GroupChat } from "./MessageSendRequest";
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 import { get_bot_info } from "../../axios/bots";
+import { get_group_chat_by_id } from "../../axios/groupchat";
 
 const MessageGroup = () => {
   const route = useRoute();
-  const { bot_id, chat_id } = route.params;
+  const { group_bots, group_chat_id } = route.params;
+  const [groupChatInfo, setGroupChatInfo] = useState(null);
+  const [bots, setBots] = useState(group_bots);
   const [botInfo, setBotInfo] = useState(null);
   const [messages, setMessages] = useState([]);
   const [isSending, setIsSending] = useState(false);
@@ -36,66 +39,85 @@ const MessageGroup = () => {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    if (botInfo && botInfo.bot_name) {
+    if (groupChatInfo && groupChatInfo.group_chat_name) {
       navigation.setOptions({
         headerTitle: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              source={{ uri: botInfo.profile_picture }}
+              source={{ uri: groupChatInfo.group_chat_profile_picture }}
               style={styles.headerImage}
             />
-            <Text style={styles.headerTitleText}>{botInfo.bot_name}</Text>
+            <Text style={styles.headerTitleText}>{groupChatInfo.group_chat_name}</Text>
           </View>
         ),
       });
     }
-  }, [botInfo, navigation]);
+  }, [groupChatInfo, navigation]);
+
+  // useEffect(() => {
+  //   const fetchBotInfo = async () => {
+  //     try {
+  //       const jsonData = await get_bot_info(bot_id);
+  //       setBotInfo(jsonData);
+  //     } catch (error) {
+  //       console.error("Error fetching bot info:", error);
+  //     }
+  //   };
+
+  //   if (bot_id) {
+  //     fetchBotInfo();
+  //   }
+  // }, [bot_id]);
 
   useEffect(() => {
-    const fetchBotInfo = async () => {
+    const fetchChatInfo = async () => {
       try {
-        const jsonData = await get_bot_info(bot_id);
-        setBotInfo(jsonData);
+        const jsonData = await get_group_chat_by_id(group_chat_id);
+        setGroupChatInfo(jsonData);
       } catch (error) {
         console.error("Error fetching bot info:", error);
       }
     };
 
-    if (bot_id) {
-      fetchBotInfo();
+    if (group_chat_id) {
+      fetchChatInfo();
     }
-  }, [bot_id]);
+  }, [group_chat_id]);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      if (!botInfo) return;
-
       try {
-        const fetchedMessages = await fetchAllMessages(chat_id);
-        const formattedMessages = fetchedMessages.map((msg) => ({
-          _id: msg.message_id,
-          text: msg.message,
-          createdAt: new Date(msg.created_at),
-          user: {
-            _id: msg.is_bot ? 2 : 1,
-            name: msg.is_bot ? botInfo.bot_name : "User",
-            avatar: msg.is_bot ? botInfo.profile_picture : null,
-          },
-        }));
+        const fetchedMessages = await fetchAllMessages_GroupChat(group_chat_id);
+        const validMessages = fetchedMessages.filter((msg) => {
+          if (msg.is_bot) {
+            return bots.find((bot) => bot.bot_id === msg.created_by_bot);
+          }
+          return true;
+        });
+        const formattedMessages = validMessages.map((msg) => {
+          const bot = bots.find((bot) => bot.bot_id === msg.created_by_bot);
+          return {
+            _id: msg.message_id,
+            text: msg.message,
+            createdAt: new Date(msg.created_at),
+            user: {
+              _id: msg.is_bot && bot ? bot.bot_id : 1,
+              name: msg.is_bot && bot ? bot.bot_name : "User",
+              avatar: msg.is_bot && bot ? bot.profile_picture : null,
+            },
+          };
+        });
         setMessages(formattedMessages);
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
     };
-
-    if (botInfo) {
-      fetchMessages();
-    }
-  }, [chat_id, botInfo]);
+    fetchMessages();
+  }, [group_chat_id, bots]);
 
   const onSend = useCallback(
     (messages = []) => {
-      if (!botInfo || isSending) return;
+      if (isSending) return;
 
       setIsSending(true);
 
@@ -105,19 +127,19 @@ const MessageGroup = () => {
 
       const sendMessage = async () => {
         try {
-          const response = await sendMessageToBackend(
+          const response = await sendMessageToBackend_GroupChat(
             messages[0].text,
-            chat_id
+            group_chat_id
           );
-          if (response && response.message_id && botInfo) {
+          if (response && response.message_id && response.message) {
             const botMessage = {
               _id: response.message_id,
               text: response.message,
               createdAt: new Date(response.created_at),
               user: {
                 _id: 2,
-                name: botInfo.bot_name,
-                avatar: botInfo.profile_picture,
+                name: response.bot_name,
+                avatar: bots.find((bot) => bot.bot_id === response.bot_id).profile_picture,
               },
             };
 
@@ -134,58 +156,58 @@ const MessageGroup = () => {
 
       sendMessage();
     },
-    [botInfo, chat_id, isSending]
+    [group_chat_id, bots, isSending]
   );
 
   const scrollToBottomComponent = () => {
     return getIcon("icon-park:down", 35, "#2e64e5");
   };
 
+  const onPressAvatar = (user) => {
+    setBotInfo(bots.find((bot) => bot.bot_id === user._id));
+    toggleModal();
+  }
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
   return (
-    <ImageBackground
-      source={botInfo?.profile_picture ? { uri: botInfo?.profile_picture } : null}
-      style={{ flex: 1, backgroundColor: botInfo?.profile_picture ? 'transparent' : COLORS.white }}
-    >
-      <SafeAreaView style={styles.container}>
-        <GiftedChat
-          messages={messages}
-          onSend={(messages) => onSend(messages)}
-          user={{
-            _id: 1,
-          }}
-          minInputToolbarHeight={60}
-          renderBubble={renderBubble}
-          renderSystemMessage={renderSystemMessage}
-          renderMessage={renderMessage}
-          renderMessageText={renderMessageText}
-          // renderCustomView={renderCustomView}
-          isCustomViewBottom
-          renderAvatarOnTop
-          renderAvatar={renderAvatar}
-          onPressAvatar={toggleModal}
-          alwaysShowSend
-          renderSend={(props) => renderSend({ ...props, isSending })}
-          renderInputToolbar={renderInputToolbar}
-          renderComposer={renderComposer}
-          renderActions={(props) => renderActions(props, botInfo, chat_id)}
-          renderTime={renderTime}
-          renderDay={renderDay}
-          scrollToBottom
-          scrollToBottomComponent={scrollToBottomComponent}
-          messagesContainerStyle={styles.messageContainer}
-        />
-        <CharacterProfileModal
-          isModalVisible={isModalVisible}
-          toggleModal={toggleModal}
-          selectedBotInfo={botInfo}
-          navigation={navigation}
-        />
-      </SafeAreaView>
-    </ImageBackground>
+    <SafeAreaView style={styles.container}>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+        minInputToolbarHeight={60}
+        renderBubble={renderBubble}
+        renderSystemMessage={renderSystemMessage}
+        renderMessage={renderMessage}
+        renderMessageText={renderMessageText}
+        // renderCustomView={renderCustomView}
+        isCustomViewBottom
+        renderAvatarOnTop
+        renderAvatar={renderAvatar}
+        onPressAvatar={onPressAvatar}
+        alwaysShowSend
+        renderSend={(props) => renderSend({ ...props, isSending })}
+        renderInputToolbar={renderInputToolbar}
+        renderComposer={renderComposer}
+        // renderActions={(props) => renderActions(props, botInfo, chat_id)}
+        renderTime={renderTime}
+        renderDay={renderDay}
+        scrollToBottom
+        scrollToBottomComponent={scrollToBottomComponent}
+        messagesContainerStyle={styles.messageContainer}
+      />
+      <CharacterProfileModal
+        isModalVisible={isModalVisible}
+        toggleModal={toggleModal}
+        selectedBotInfo={botInfo}
+        navigation={navigation}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -194,10 +216,10 @@ export default MessageGroup;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: COLORS.white,
   },
   messageContainer: {
-    backgroundColor: "transparent",
+    backgroundColor: COLORS.white,
   },
   headerTitleText: {
     fontSize: FONTSIZE.small,
