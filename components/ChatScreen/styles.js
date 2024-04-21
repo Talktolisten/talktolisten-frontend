@@ -6,6 +6,13 @@ export default styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight + 16,
     backgroundColor: COLORS.white,
   },
+  fab: {
+    position: 'absolute',
+    margin: 24,
+    right: 0,
+    bottom: 0,
+    backgroundColor: COLORS.light_black,
+  },
   searchBar: {
     marginBottom: 12.5,
   },

@@ -1,14 +1,17 @@
 import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { ScrollView, View, SafeAreaView, Animated, TouchableOpacity, Text } from "react-native";
-import { RadioButton } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { useFocusEffect } from "@react-navigation/native";
 import { Swipeable } from 'react-native-gesture-handler';
+import { useNavigation } from "@react-navigation/native";
 
 import DynamicSearchBar from "./SearchBar";
 import "./styles";
 import Chat from "./Chat";
 import GroupChat from "./GroupChat";
+import { SCREEN_NAMES } from "../../util/constants";
+import { COLORS } from "../../styles";
 import { get_all_chats, delete_chat } from "../../axios/chat";
 import { get_all_group_chats, delete_group_chat } from "../../axios/groupchat";
 
@@ -16,6 +19,7 @@ const ChatScreen = () => {
   const [mode, setMode] = useState("chat");
   const [chats, setChats] = useState([]);
   const [groupchats, setGroupChats] = useState([]);
+  const navigation = useNavigation();
   const userId = useSelector((state) => state.user.userID);
 
   const fetchChats = async () => {
@@ -113,6 +117,19 @@ const ChatScreen = () => {
             ))
           )}
         </ScrollView>
+        <FAB
+          style={styles.fab}
+          icon="account-multiple-plus"
+          size="medium"
+          color={COLORS.white}
+          onPress={() => {
+            if (mode === 'chat') {
+              navigation.navigate(SCREEN_NAMES.CREATE_GROUP_CHAT);
+            } else {
+              navigation.navigate(SCREEN_NAMES.CREATE_GROUP_CHAT);
+            }
+          }}
+        />
       </View>
     </SafeAreaView>
   );
