@@ -66,8 +66,13 @@ const Voice = () => {
         }
         // Set audio mode to allow recording and playing in silent mode
         await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
+          allowsRecordingIOS: false,
+          interruptionModeIOS: 1,
           playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          interruptionModeAndroid: 1,
+          playThroughEarpieceAndroid: false,
+          staysActiveInBackground: true,
         });
       }
       catch (error) {
