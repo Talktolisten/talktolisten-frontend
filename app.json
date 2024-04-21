@@ -31,7 +31,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.hieu65.talktolisten",
-      "versionCode": 600,
+      "versionCode": 602,
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ]
