@@ -143,7 +143,7 @@ const VoiceGroup = () => {
       setUserText('');
       setCaption(response.message);
       setBotTalking(response.bot_id);
-      await playBase64Audio(response.audio);
+      await playAudio(response.audio);
     }
   };
 
@@ -197,15 +197,9 @@ const VoiceGroup = () => {
     return connection;
   };
 
-  const playBase64Audio = async (base64String) => {
-    const fileUri = `${FileSystem.cacheDirectory}audio.mp3`;
-
+  const playAudio = async (audioURL) => {
     try {
-      await FileSystem.writeAsStringAsync(fileUri, base64String, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      const { sound: soundObject } = await Audio.Sound.createAsync({ uri: fileUri });
+      const { sound: soundObject } = await Audio.Sound.createAsync({ uri: audioURL });
       setSound(soundObject);
       console.log('Playing audio..');
       await soundObject.setVolumeAsync(1.0);

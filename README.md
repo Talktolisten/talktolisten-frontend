@@ -32,5 +32,5 @@ npx eas submit --platform android
 
 ## Update
 ```bash
-npx eas update --branch main --message "Update to latest version"
+git checkout production && git merge main && npx eas update --branch production --message "Update to latest version"
 ```
