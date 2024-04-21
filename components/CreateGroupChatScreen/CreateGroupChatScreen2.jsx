@@ -5,167 +5,139 @@ import {
     TouchableOpacity,
     Image,
     View,
-    FlatList,
     StyleSheet,
     SafeAreaView,
+    TextInput,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Alert
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import Modal from "react-native-modal";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { RadioButton } from 'react-native-paper';
 
-import DynamicSearchBar from "../ExploreScreen/SearchBar";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { SCREEN_NAMES } from "../../util/constants";
+import { create_group_chat } from "../../axios/groupchat";
 import { StatusBar } from "react-native";
-import { get_created_bot } from "../../axios/bots";
-
-import {
-    explore_get_bots_categories,
-    explore_get_bots_search,
-} from "../ExploreScreen/ExploreRequest";
 
 const CreateGroupChat2 = () => {
     const navigation = useNavigation();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [mode, setMode] = useState("explore");
-    const [activeType, setActiveType] = useState("Featured");
-    const [newBots, setNewBots] = useState([]);
-    const [groupchatBots, setGroupchatBots] = useState([]);
-    const [groupchatLength, setGroupchatLength] = useState(groupchatBots.length);
+    const route = useRoute();
+    const { group_bots } = route.params;
+    const [name, setName] = useState("");
+    const [isNameFocused, setIsNameFocused] = useState(false);
+    const [privacy, setPrivacy] = useState('public');
+    const [newBots, setNewBots] = useState(group_bots || []);
 
-    const scrollViewRef = useRef();
-
-    useEffect(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-        setGroupchatLength(groupchatBots.length);
-    }, [groupchatBots]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            let botInfo;
-            if (mode == "explore") {
-                if (searchTerm) {
-                    botInfo = await explore_get_bots_search(searchTerm);
-                } else {
-                    botInfo = await explore_get_bots_categories(activeType);
-                }
-            } else {
-                botInfo = await get_created_bot();
-            }
-
-            try {
-                setNewBots(botInfo);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
-    }, [searchTerm, activeType, mode]);
-
-
-    const handleChangeText = (text) => {
-        setSearchTerm(text);
-    };
-
-    const handleClearPress = () => {
-        setSearchTerm("");
-        setActiveType("Featured");
-    }
-
-    const handlePressBot = async (bot) => {
-        if (groupchatBots.find((b) => b.bot_id === bot.bot_id) || groupchatBots.length >= 10) {
+    const handleCreateGroupChat = async () => {
+        if (name.length === 0) {
+            Alert.alert("", "Please enter a name for your group chat");
             return;
         }
-        try {
-            setGroupchatBots([...groupchatBots, bot]);
-        } catch (error) {
-            console.error("Failed to add bot to group chat:", error);
-        }
-    };
+        const group_bots = newBots.map((bot) => bot.bot_id);
+        const response = await create_group_chat(name, group_bots);
+        navigation.reset({
+            index: 0,
+            routes: [{ name: SCREEN_NAMES.MESSAGE_GROUP, params: { group_chat_id: response.group_chat_id, group_bots: response.group_bots } }],
+        });
+    }
 
     return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
-            <SafeAreaView style={styles.container}>
-                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', padding: 10 }}>
-                    <Text style={{ fontSize: FONTSIZE.small, fontWeight: FONT_WEIGHT.regular, marginBottom: 10 }}>Group Chat ({groupchatLength}/10)</Text>
-                    <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', backgroundColor: COLORS.white, paddingVertical: 10, paddingHorizontal: 5, borderRadius: 10 }} style={{ minHeight: 100, maxHeight: 125, width: "100%" }}>
-                        {groupchatBots.map((bot) => {
-                            return (
-                                <View key={bot.bot_id} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 5, borderColor: COLORS.light_black, borderWidth: .5, padding: 5, borderRadius: 20 }}>
-                                    <Image
-                                        source={{ uri: bot.profile_picture }}
-                                        style={{ width: 30, height: 30, borderRadius: 25 }}
-                                    />
-                                    <Text style={{ fontSize: FONTSIZE.xSmall, marginHorizontal: 5 }}>{bot.bot_name}</Text>
-                                    <TouchableOpacity onPress={() => setGroupchatBots(groupchatBots.filter((b) => b.bot_id !== bot.bot_id))}>
-                                        <Feather name="x" size={16} color={COLORS.red} />
-                                    </TouchableOpacity>
-                                </View>
-                            );
-                        })}
-                    </ScrollView>
-                </View>
-                <View style={styles.radioButtonContainer}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <TouchableOpacity style={[styles.radioButton, mode === 'explore' ? styles.radioButtonSelected : {}]} onPress={() => setMode('explore')}>
-                            <Text style={[styles.radioButtonLabel, mode === 'explore' ? styles.radioButtonLabelSelected : {}]}>Explore</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.radioButton, mode === 'your-bot' ? styles.radioButtonSelected : {}]} onPress={() => setMode('your-bot')}>
-                            <Text style={[styles.radioButtonLabel, mode === 'your-bot' ? styles.radioButtonLabelSelected : {}]}>Your Characters</Text>
-                        </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+                <SafeAreaView style={styles.container}>
+                    <View style={styles.subheadingContainer}>
+                        <Text style={styles.subheading}>A name for your group chat</Text>
+                        <View
+                            style={isNameFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                        >
+                            <TextInput
+                                style={styles.input}
+                                placeholderTextColor={COLORS.cool_grey}
+                                maxLength={50}
+                                value={name}
+                                onChangeText={(text) => setName(text)}
+                                onFocus={() => setIsNameFocused(true)}
+                                onBlur={() => setIsNameFocused(false)}
+                                placeholder="Discussion"
+                            />
+                        </View>
                     </View>
-                </View>
-                {mode == "explore" ? (<DynamicSearchBar onChangeText={handleChangeText} onClearPress={handleClearPress} />) : null}
-                <View style={styles.listSection}>
-                    <ScrollView style={styles.elementPallet}>
-                        {newBots.map((bot) => {
-                            return (
-                                <TouchableOpacity
-                                    style={styles.element}
-                                    key={bot.bot_id}
-                                    activeOpacity={0.8}
-                                    onPress={handlePressBot.bind(this, bot)}
-                                >
-                                    <View style={styles.infoArea}>
-                                        <Text style={styles.infoTitle}>{bot.bot_name}</Text>
-                                        <Text style={styles.infoSub}>{bot.short_description}</Text>
-                                        <View style={styles.inforMoreContainer}>
-                                            <View style={styles.infoChat}>
-                                                <Ionicons
-                                                    name="chatbubble-ellipses-outline"
-                                                    size={FONTSIZE.xSmall}
-                                                    color={COLORS.black}
-                                                    style={styles.infoIcon}
-                                                />
-                                                <Text>{bot.num_chats}</Text>
-                                            </View>
-                                            <View style={styles.infoLikes}>
-                                                <Ionicons
-                                                    name="heart"
-                                                    size={FONTSIZE.xSmall}
-                                                    color={COLORS.pink}
-                                                    style={styles.infoIcon}
-                                                />
-                                                <Text>{bot.likes}</Text>
+                    <View style={styles.radioButtonContainer}>
+                        <View style={styles.subheadingContainer}>
+                            <Text style={styles.subheading}>Privacy</Text>
+                        </View>
+                        <RadioButton.Group onValueChange={value => setPrivacy(value)} value={privacy}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                                <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('public')}>
+                                    <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => setPrivacy('private')}>
+                                    <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </RadioButton.Group>
+                        <Text style={styles.privacyDescription}>
+                            {privacy === 'public' ? 'Other people can join the group chat' : 'Only you can invite people to the group chat'}
+                        </Text>
+                    </View>
+                    <View style={styles.listSection}>
+                        <ScrollView style={styles.elementPallet}>
+                            {newBots.map((bot) => {
+                                return (
+                                    <TouchableOpacity
+                                        style={styles.element}
+                                        key={bot.bot_id}
+                                        activeOpacity={0.8}
+                                    >
+                                        <View style={styles.infoArea}>
+                                            <Text style={styles.infoTitle}>{bot.bot_name}</Text>
+                                            <Text style={styles.infoSub}>{bot.short_description}</Text>
+                                            <View style={styles.inforMoreContainer}>
+                                                <View style={styles.infoChat}>
+                                                    <Ionicons
+                                                        name="chatbubble-ellipses-outline"
+                                                        size={FONTSIZE.xSmall}
+                                                        color={COLORS.black}
+                                                        style={styles.infoIcon}
+                                                    />
+                                                    <Text>{bot.num_chats}</Text>
+                                                </View>
+                                                <View style={styles.infoLikes}>
+                                                    <Ionicons
+                                                        name="heart"
+                                                        size={FONTSIZE.xSmall}
+                                                        color={COLORS.pink}
+                                                        style={styles.infoIcon}
+                                                    />
+                                                    <Text>{bot.likes}</Text>
+                                                </View>
                                             </View>
                                         </View>
-                                    </View>
-                                    <View style={styles.imageArea}>
-                                        <Image
-                                            source={{ uri: bot.profile_picture }}
-                                            resizeMode="cover"
-                                            style={styles.botImage}
-                                        />
-                                    </View>
-                                </TouchableOpacity>
-                            );
-                        })}
-                    </ScrollView>
-                </View>
-
-            </SafeAreaView >
-        </View >
+                                        <View style={styles.imageArea}>
+                                            <Image
+                                                source={{ uri: bot.profile_picture }}
+                                                resizeMode="cover"
+                                                style={styles.botImage}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </ScrollView>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={handleCreateGroupChat}
+                        >
+                            <Text style={styles.buttonText}>New Chat 💬</Text>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView >
+            </View >
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -174,27 +146,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight + 16,
         backgroundColor: COLORS.grey,
-    },
-    searchBar: {
-        marginBottom: 12.5,
-    },
-    tabsContainer: {
         width: "100%",
-        marginTop: SIZES.medium,
-        marginLeft: SIZES.xSmall,
-        paddingHorizontal: SIZES.small,
     },
-    tab: (activeType, item) => ({
-        paddingVertical: SIZES.small / 2,
-        paddingHorizontal: SIZES.small,
-        borderRadius: SIZES.medium,
-        borderWidth: 1,
-        backgroundColor: activeType === item ? COLORS.light_black : COLORS.white,
-        borderColor: activeType === item ? COLORS.black : COLORS.black,
-    }),
-    tabText: (activeType, item) => ({
-        color: activeType === item ? COLORS.white : COLORS.black,
-    }),
     listSection: {
         flex: 1,
     },
@@ -252,36 +205,93 @@ const styles = StyleSheet.create({
         height: "100%",
         borderRadius: 10,
     },
-    radioButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 10,
+    subheadingContainer: {
+        alignSelf: "center",
+        marginBottom: SIZES.small,
+        width: "100%",
+        padding: 10,
         borderRadius: 5,
+    },
+    subheading: {
+        fontSize: FONTSIZE.small,
+    },
+    input: {
+        borderRadius: 5,
+    },
+    inputSmallContainer: {
+        backgroundColor: COLORS.bright_grey,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginVertical: 5,
         marginTop: 10,
-        marginBottom: 10,
+        width: "100%",
+    },
+    inputContainerFocused: {
+        borderColor: COLORS.light_black,
+        borderWidth: 1.25,
+    },
+    inputContainer: {
+        alignItems: "left",
+        alignSelf: "center",
+        display: "flex",
+        flexDirection: "column",
+        marginVertical: 10,
+        width: "100%",
+    },
+    radioButtonContainer: {
+        marginBottom: SIZES.xLarge,
+        width: "100%",
     },
     radioButton: {
+        flex: 1,
+        borderColor: COLORS.blue,
+        borderWidth: 1,
+        backgroundColor: COLORS.white,
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 10,
-        width: "47.5%",
+        marginHorizontal: 5,
         borderRadius: 5,
-        borderColor: COLORS.cool_grey,
-        borderWidth: .5,
     },
     radioButtonSelected: {
-        borderColor: COLORS.light_black,
-        borderWidth: 1,
+        backgroundColor: COLORS.blue,
+    },
+    radioButtonLabelSelected: {
+        color: COLORS.white,
     },
     radioButtonLabel: {
         fontSize: FONTSIZE.xSmall,
-        color: COLORS.light_black,
         textAlign: 'center',
-        fontWeight: FONT_WEIGHT.medium,
     },
-    radioButtonLabelSelected: {
-        color: COLORS.black,
-        fontWeight: FONT_WEIGHT.bold,
-    }
+    privacyDescription: {
+        textAlign: 'center',
+        fontSize: FONTSIZE.xSmall,
+        marginTop: SIZES.small,
+    },
+    buttonContainer: {
+        width: '40%',
+        position: 'absolute',
+        bottom: "5%",
+        right: 10,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: 'transparent',
+    },
+    button: {
+        width: '100%',
+        padding: 10,
+        backgroundColor: COLORS.light_black,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: COLORS.white,
+        fontSize: FONTSIZE.small,
+        fontWeight: FONT_WEIGHT.medium
+    },
 });
 
 const modalStyles = StyleSheet.create({

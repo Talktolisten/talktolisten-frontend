@@ -8,6 +8,7 @@ import {
     FlatList,
     StyleSheet,
     SafeAreaView,
+    Alert
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -163,7 +164,22 @@ const CreateGroupChat = () => {
                         })}
                     </ScrollView>
                 </View>
-
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            if (groupchatBots.length < 2) {
+                                Alert.alert("", "Please select at least 2 characters to create a group chat.");
+                                return;
+                            }
+                            navigation.navigate(SCREEN_NAMES.CREATE_GROUP_CHAT_2, {
+                                group_bots: groupchatBots
+                            })
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Create</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView >
         </View >
     );
@@ -174,6 +190,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: StatusBar.currentHeight + 16,
         backgroundColor: COLORS.grey,
+        width: "100%",
     },
     searchBar: {
         marginBottom: 12.5,
@@ -281,7 +298,30 @@ const styles = StyleSheet.create({
     radioButtonLabelSelected: {
         color: COLORS.black,
         fontWeight: FONT_WEIGHT.bold,
-    }
+    },
+    buttonContainer: {
+        width: '30%',
+        position: 'absolute',
+        bottom: "5%",
+        right: 10,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: 'transparent',
+    },
+    button: {
+        width: '100%',
+        padding: 10,
+        backgroundColor: COLORS.blue,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: COLORS.white,
+        fontSize: FONTSIZE.small,
+        fontWeight: FONT_WEIGHT.medium
+    },
 });
 
 const botsHolderStyles = StyleSheet.create({
