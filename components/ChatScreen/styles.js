@@ -9,6 +9,32 @@ export default styles = StyleSheet.create({
   searchBar: {
     marginBottom: 12.5,
   },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  radioButton: {
+    padding: 10,
+    width: "47.5%",
+    borderRadius: 25,
+  },
+  radioButtonSelected: {
+    backgroundColor: COLORS.bright_grey,
+  },
+  radioButtonLabel: {
+    fontSize: FONTSIZE.xSmall,
+    color: COLORS.light_black,
+    textAlign: 'center',
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  radioButtonLabelSelected: {
+    color: COLORS.black,
+    fontWeight: FONT_WEIGHT.bold,
+  },
   tabsContainer: {
     width: "100%",
     marginTop: SIZES.medium,
@@ -26,11 +52,9 @@ export default styles = StyleSheet.create({
     color: activeType === item ? COLORS.white : COLORS.black,
   }),
   listSection: {
-    marginTop: SIZES.medium,
     flex: 1,
   },
   elementPallet: {
-    marginTop: 10,
     marginHorizontal: SIZES.small
   },
   element: {

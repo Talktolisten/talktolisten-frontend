@@ -30,7 +30,9 @@ export const SCREEN_NAMES = {
 
   CHAT: "Chat",
   MESSAGE: "Message",
+  MESSAGE_GROUP: "Message Group",
   VOICE: "Voice",
+  VOICE_GROUP: "Voice Group",
 
   RANDOM: "Surprised me",
 
