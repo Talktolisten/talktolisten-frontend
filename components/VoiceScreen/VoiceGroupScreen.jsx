@@ -1,12 +1,11 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio } from "expo-av";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
-import { useAnimation } from "./hook";
-import { voice_talk } from "./VoiceTalk";
+import { voice_talk_group } from "./VoiceTalk";
 import voiceStart from "../../assets/voiceStart.png";
 import voiceEnd from "../../assets/voiceEnd.png";
 import * as FileSystem from "expo-file-system";
@@ -17,13 +16,11 @@ import { createDeepgramConnection } from "./setup/deepgram";
 import { LiveTranscriptionEvents, LiveTranscriptionEvent, LiveClient, createClient } from "@deepgram/sdk";
 
 
-const Voice = () => {
-  const scaleValue1 = useRef(new Animated.Value(0)).current;
-  const scaleValue2 = useRef(new Animated.Value(0)).current;
+const VoiceGroup = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { botInfo, chat_id } = route.params;
+  const { group_bots, group_chat_id, group_chat_info } = route.params;
   const userId = useSelector((state) => state.user.userID);
   const [userInfo, setUserInfo] = useState({});
 
@@ -33,6 +30,7 @@ const Voice = () => {
 
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [isBotTalking, setIsBotTalking] = useState(false);
+  const [botTalking, setBotTalking] = useState(null);
   const [caption, setCaption] = useState('Let\'s talk!');
   const [userText, setUserText] = useState('');
 
@@ -43,8 +41,6 @@ const Voice = () => {
   const [connection, setConnection] = useState(LiveClient | null);
   const [connectionReady, setConnectionReady] = useState(false);
 
-  useAnimation(isBotTalking, scaleValue1, scaleValue2);
-
   const fetchUserInfo = async () => {
     try {
       const fetchedUserInfo = await get_user_info(userId);
@@ -53,7 +49,6 @@ const Voice = () => {
       console.error("Failed to fetch user info:", error);
     }
   };
-
 
   useEffect(() => {
     fetchUserInfo();
@@ -84,13 +79,13 @@ const Voice = () => {
   }, [permissionResponse]);
 
   useLayoutEffect(() => {
-    if (botInfo && botInfo.bot_name) {
+    if (group_chat_info && group_chat_info.group_chat_name) {
       navigation.setOptions({
-        headerTitle: botInfo.bot_name,
+        headerTitle: group_chat_info.group_chat_name,
         tabBarVisible: false,
       });
     }
-  }, [botInfo, navigation]);
+  }, [group_chat_info, navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -121,7 +116,7 @@ const Voice = () => {
     } else if (isBotTalking) {
       setTimeout(() => {
         setCaption("");
-      }, 3000);
+      }, 10000);
     }
   }, [isUserTalking, isBotTalking, userText]);
 
@@ -144,9 +139,11 @@ const Voice = () => {
     if (text && text.length > 0 && !processingRef.current) {
       console.log("Processing text..");
       processingRef.current = true;
-      const audio = await voice_talk(chat_id, botInfo.bot_id, text);
+      const response = await voice_talk_group(group_chat_id, text);
       setUserText('');
-      await playBase64Audio(audio);
+      setCaption(response.message);
+      setBotTalking(response.bot_id);
+      await playBase64Audio(response.audio);
     }
   };
 
@@ -220,6 +217,7 @@ const Voice = () => {
           setIsUserTalking(true);
           setTimeout(() => {
             processingRef.current = false;
+            setBotTalking(null);
           }, 3000);
         }
       });
@@ -281,33 +279,13 @@ const Voice = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: FONTSIZE.medium, paddingHorizontal: 20, marginTop: 15, marginBottom: 70 }}>
-        {botInfo.short_description}
-      </Text>
-      <View style={styles.imageArea}>
-        <Animated.View
-          style={[
-            styles.circle,
-            {
-              width: 340,
-              height: 340,
-              borderRadius: 170,
-              transform: [{ scale: scaleValue1 }],
-            },
-          ]}
-        />
-        <Animated.View
-          style={[
-            styles.circle,
-            {
-              width: 320,
-              height: 320,
-              borderRadius: 160,
-              transform: [{ scale: scaleValue2 }],
-            },
-          ]}
-        />
-        <Image source={{ uri: botInfo.profile_picture }} style={styles.imageItem} />
+      <View style={styles.botsContainer}>
+        {group_bots.map((bot) => (
+          <View key={bot.bot_id} style={[styles.botContainer, bot.bot_id === botTalking ? styles.talkingBot : {}]}>
+            <Image source={{ uri: bot.profile_picture }} style={styles.botImage} />
+            <Text style={styles.botName}>{bot.bot_name}</Text>
+          </View>
+        ))}
       </View>
       <View style={styles.captionContainer}>
         <Text style={styles.caption}>{caption}</Text>
@@ -333,19 +311,35 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  imageArea: {
+  botsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    justifyContent: 'center',
+  },
+  botContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    backgroundColor: COLORS.grey,
+    borderRadius: 10,
+    width: '25%',
   },
-  imageItem: {
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+  talkingBot: {
+    borderColor: COLORS.light_black,
+    borderWidth: 1.5,
   },
-  circle: {
-    borderColor: 'blue',
-    borderWidth: 5,
-    position: 'absolute',
+  botImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  botName: {
+    marginTop: 10,
+    fontSize: FONTSIZE.xSmall,
+    fontWeight: FONT_WEIGHT.medium,
   },
   buttonRecordingContainer: {
     flexDirection: 'column',
@@ -367,7 +361,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 50,
-    marginBottom: 30,
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
   caption: {
     fontSize: FONTSIZE.small,
@@ -376,4 +371,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Voice;
+export default VoiceGroup;

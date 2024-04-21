@@ -21,3 +21,24 @@ export const voice_talk = async (chat_id, bot_id, question) => {
         throw error;
     }
 };
+
+export const voice_talk_group = async (group_chat_id, question) => {
+    const payload = {
+        group_chat_id: group_chat_id,
+        text: question,
+    };
+
+    const config = {
+        method: "POST",
+        url: `/api/v1/groupchat/process_audio/${group_chat_id}`,
+        data: payload,
+    };
+    try {
+        const response = await Api(config);
+        console.log('receive response');
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading audio:", error);
+        throw error;
+    }
+};

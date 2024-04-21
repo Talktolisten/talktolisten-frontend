@@ -8,7 +8,7 @@ import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
 
 import {
   renderInputToolbar,
-  renderActions,
+  renderActions_GroupChat,
   renderComposer,
   renderSend,
 } from "./MessageInput";
@@ -54,20 +54,6 @@ const MessageGroup = () => {
     }
   }, [groupChatInfo, navigation]);
 
-  // useEffect(() => {
-  //   const fetchBotInfo = async () => {
-  //     try {
-  //       const jsonData = await get_bot_info(bot_id);
-  //       setBotInfo(jsonData);
-  //     } catch (error) {
-  //       console.error("Error fetching bot info:", error);
-  //     }
-  //   };
-
-  //   if (bot_id) {
-  //     fetchBotInfo();
-  //   }
-  // }, [bot_id]);
 
   useEffect(() => {
     const fetchChatInfo = async () => {
@@ -194,7 +180,7 @@ const MessageGroup = () => {
         renderSend={(props) => renderSend({ ...props, isSending })}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
-        // renderActions={(props) => renderActions(props, botInfo, chat_id)}
+        renderActions={(props) => renderActions_GroupChat(props, bots, group_chat_id, groupChatInfo)}
         renderTime={renderTime}
         renderDay={renderDay}
         scrollToBottom

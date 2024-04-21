@@ -6,6 +6,7 @@ import { CreateGroupChatScreen, CreateGroupChatScreen2 } from "../screens/Create
 import MessageScreen from "../screens/Message";
 import MessageGroupScreen from "../screens/MessageGroup";
 import VoiceScreen from "../screens/Voice";
+import VoiceGroupScreen from "../screens/VoiceGroup";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
@@ -111,6 +112,10 @@ const ChatStack = () => {
       />
       <Stack.Screen name={SCREEN_NAMES.VOICE}
         component={VoiceScreen}
+        options={{ headerShown: true, headerRight: () => null }}
+      />
+      <Stack.Screen name={SCREEN_NAMES.VOICE_GROUP}
+        component={VoiceGroupScreen}
         options={{ headerShown: true, headerRight: () => null }}
       />
     </Stack.Navigator>

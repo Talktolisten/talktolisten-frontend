@@ -45,6 +45,32 @@ export const renderActions = (props, botInfo, chat_id) => {
   );
 };
 
+export const renderActions_GroupChat = (props, group_bots, group_chat_id, group_chat_info) => {
+  const navigation = useNavigation();
+
+  return (
+    <Actions
+      {...props}
+      onPressActionButton={() => navigation.navigate(SCREEN_NAMES.VOICE_GROUP, { group_bots, group_chat_id, group_chat_info })}
+      containerStyle={{
+        width: 44,
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 4,
+        marginRight: 4,
+        marginBottom: 0,
+      }}
+      icon={() => (
+        <Image
+          style={{ width: 32, height: 32 }}
+          source={headset}
+        />
+      )}
+    />
+  );
+};
+
 export const renderComposer = (props) => (
   <Composer
     {...props}
