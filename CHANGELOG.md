@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.1.0] - 2024-04-22
+### Method
+- Expo Update
+
+### Added
+- User can see the groups in explore screen
+- User can see more voices and has filter when create a bot
+
 ## [7.0.1] - 2024-04-21
 ### Method
 - Expo Update
