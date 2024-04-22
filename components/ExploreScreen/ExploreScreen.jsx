@@ -21,13 +21,15 @@ import { StatusBar } from "react-native";
 import {
   explore_get_bots_categories,
   explore_get_bots_search,
+  explore_group_chat
 } from "./ExploreRequest";
 import { get_bot_info } from "../../axios/bots";
-
+import { create_group_chat } from "../../axios/groupchat";
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 
 const types = [
   "Featured",
+  "Groups",
   "Realistic",
   "Anime Characters",
   "Game Characters",
@@ -45,20 +47,25 @@ const Explore = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeType, setActiveType] = useState("Featured");
   const [newBots, setNewBots] = useState([]);
+  const [groupChats, setGroupChats] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedBotInfo, setSelectedBotInfo] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
-      let botInfo = "";
-
-      if (searchTerm) {
-        botInfo = await explore_get_bots_search(searchTerm);
-      } else {
-        botInfo = await explore_get_bots_categories(activeType);
-      }
-
       try {
+        let botInfo = "";
+
+        if (searchTerm) {
+          botInfo = await explore_get_bots_search(searchTerm);
+        } else {
+          if (activeType === "Groups") {
+            const groupchats = await explore_group_chat();
+            setGroupChats(groupchats);
+            return;
+          }
+          botInfo = await explore_get_bots_categories(activeType);
+        }
         setNewBots(botInfo);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -99,6 +106,16 @@ const Explore = () => {
     }
   };
 
+  const handlePressGroupChat = async (groupChatObject) => {
+    try {
+      const group_bots_ids = groupChatObject.group_bots.map((bot) => bot.bot_id);
+      const response = await create_group_chat(groupChatObject.group_chat_name, group_bots_ids, 'private');
+      navigation.navigate(SCREEN_NAMES.MESSAGE_GROUP, { group_chat_id: response.group_chat_id, group_bots: response.group_bots });
+    } catch (error) {
+      console.error("Failed to create group chat:", error);
+    }
+  }
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
       <SafeAreaView style={styles.container}>
@@ -125,48 +142,82 @@ const Explore = () => {
 
         <View style={styles.listSection}>
           <ScrollView style={styles.elementPallet}>
-            {newBots.map((bot) => {
-              return (
-                <TouchableOpacity
-                  style={styles.element}
-                  key={bot.bot_id}
-                  activeOpacity={0.8}
-                  onPress={handlePressBot.bind(this, bot.bot_id)}
-                >
-                  <View style={styles.infoArea}>
-                    <Text style={styles.infoTitle}>{bot.bot_name}</Text>
-                    <Text style={styles.infoSub}>{bot.short_description}</Text>
-                    <View style={styles.inforMoreContainer}>
-                      <View style={styles.infoChat}>
-                        <Ionicons
-                          name="chatbubble-ellipses-outline"
-                          size={FONTSIZE.xSmall}
-                          color={COLORS.black}
-                          style={styles.infoIcon}
-                        />
-                        <Text>{bot.num_chats}</Text>
+            {activeType == "Groups" ?
+              groupChats.map((group) => {
+                const groupBots = group.group_bots;
+                const displayName = groupBots.map(bot => bot.bot_name).join(', ');
+                return (
+                  <TouchableOpacity
+                    style={styles.element}
+                    key={group.group_chat_id}
+                    activeOpacity={0.8}
+                    onPress={handlePressGroupChat.bind(this, group)}
+                  >
+                    <View style={{ flexDirection: 'column' }}>
+                      <View style={[styles.infoArea, { marginBottom: 15 }]}>
+                        <Text style={styles.infoTitle}>{group.group_chat_name}</Text>
+                        <Text style={styles.infoSub}>{displayName}</Text>
                       </View>
-                      <View style={styles.infoLikes}>
-                        <Ionicons
-                          name="heart"
-                          size={FONTSIZE.xSmall}
-                          color={COLORS.pink}
-                          style={styles.infoIcon}
-                        />
-                        <Text>{bot.likes}</Text>
+                      <View style={{ alignItems: 'center' }}>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                          {groupBots.map((bot, index) => (
+                            <Image
+                              key={index}
+                              source={{ uri: bot.profile_picture }}
+                              resizeMode="cover"
+                              style={{ width: 50, height: 50, borderRadius: 10, marginRight: 5 }}
+                            />
+                          ))}
+                        </ScrollView>
                       </View>
                     </View>
-                  </View>
-                  <View style={styles.imageArea}>
-                    <Image
-                      source={{ uri: bot.profile_picture }}
-                      resizeMode="cover"
-                      style={styles.botImage}
-                    />
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+                  </TouchableOpacity>
+                );
+              })
+              :
+              newBots.map((bot) => {
+                return (
+                  <TouchableOpacity
+                    style={styles.element}
+                    key={bot.bot_id}
+                    activeOpacity={0.8}
+                    onPress={handlePressBot.bind(this, bot.bot_id)}
+                  >
+                    <View style={styles.infoArea}>
+                      <Text style={styles.infoTitle}>{bot.bot_name}</Text>
+                      <Text style={styles.infoSub}>{bot.short_description}</Text>
+                      <View style={styles.inforMoreContainer}>
+                        <View style={styles.infoChat}>
+                          <Ionicons
+                            name="chatbubble-ellipses-outline"
+                            size={FONTSIZE.xSmall}
+                            color={COLORS.black}
+                            style={styles.infoIcon}
+                          />
+                          <Text>{bot.num_chats}</Text>
+                        </View>
+                        <View style={styles.infoLikes}>
+                          <Ionicons
+                            name="heart"
+                            size={FONTSIZE.xSmall}
+                            color={COLORS.pink}
+                            style={styles.infoIcon}
+                          />
+                          <Text>{bot.likes}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={styles.imageArea}>
+                      <Image
+                        source={{ uri: bot.profile_picture }}
+                        resizeMode="cover"
+                        style={styles.botImage}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                );
+              })
+            }
           </ScrollView>
         </View>
 

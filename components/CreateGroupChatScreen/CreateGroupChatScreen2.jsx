@@ -36,7 +36,7 @@ const CreateGroupChat2 = () => {
             return;
         }
         const group_bots = newBots.map((bot) => bot.bot_id);
-        const response = await create_group_chat(name, group_bots);
+        const response = await create_group_chat(name, group_bots, privacy);
         navigation.reset({
             index: 0,
             routes: [{ name: SCREEN_NAMES.MESSAGE_GROUP, params: { group_chat_id: response.group_chat_id, group_bots: response.group_bots } }],

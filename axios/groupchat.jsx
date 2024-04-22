@@ -18,13 +18,14 @@ export const get_group_chat_by_id = async (group_chat_id) => {
     });
 };
 
-export const create_group_chat = async (group_chat_name, group_bots) => {
+export const create_group_chat = async (group_chat_name, group_bots, privacy) => {
     return await Api({
         method: "POST",
         url: `api/v1/groupchat/create`,
         data: {
             group_chat_name,
             group_bots,
+            privacy
         },
     }).then((res) => {
         return res.data;

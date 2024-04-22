@@ -37,3 +37,12 @@ export const create_new_chat = async (bot_id) => {
         return res.data.chat_id;
     });
 };
+
+export const explore_group_chat = async () => {
+    return await Api({
+        method: 'GET',
+        url: 'api/v1/explore/groupchat',
+    }).then(res => {
+        return res.data;
+    });
+}
