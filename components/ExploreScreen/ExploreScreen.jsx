@@ -145,7 +145,10 @@ const Explore = () => {
             {activeType == "Groups" ?
               groupChats.map((group) => {
                 const groupBots = group.group_bots;
-                const displayName = groupBots.map(bot => bot.bot_name).join(', ');
+                let displayName = groupBots.map(bot => bot.bot_name).join(', ');
+                if (displayName.length > 30) {
+                  displayName = displayName.substring(0, 50) + '...';
+                }
                 return (
                   <TouchableOpacity
                     style={styles.element}
@@ -158,7 +161,7 @@ const Explore = () => {
                         <Text style={styles.infoTitle}>{group.group_chat_name}</Text>
                         <Text style={styles.infoSub}>{displayName}</Text>
                       </View>
-                      <View style={{ alignItems: 'center' }}>
+                      <View style={{ alignItems: 'flex-start' }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                           {groupBots.map((bot, index) => (
                             <Image

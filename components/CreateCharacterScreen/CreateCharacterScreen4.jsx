@@ -20,6 +20,7 @@ const CreateCharacter4 = () => {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSamplePlaying, setIsSamplePlaying] = useState(false);
   const [sound, setSound] = useState(new Audio.Sound());
+  const [genderMode, setGenderMode] = useState('male');
 
   useEffect(() => {
     const setAudioMode = async () => {
@@ -118,14 +119,16 @@ const CreateCharacter4 = () => {
     getVoices();
   }, []);
 
-  const voiceData = voices.map((voice) => {
-    return {
-      id: voice.voice_id,
-      title: voice.voice_name,
-      description: voice.voice_description,
-      sample_url: voice.sample_url,
-    }
-  });
+  const voiceData = voices
+    .filter(voice => voice.gender === genderMode)
+    .map((voice) => {
+      return {
+        id: voice.voice_id,
+        title: voice.voice_name,
+        description: voice.voice_description,
+        sample_url: voice.sample_url,
+      }
+    });
 
   const Item = ({ id, title, description, sample_url }) => {
     const isSelected = selectedVoice?.id === id;
@@ -163,6 +166,17 @@ const CreateCharacter4 = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.radioButtonContainer}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <TouchableOpacity style={[styles.radioButton, genderMode === 'male' ? styles.radioButtonSelected : {}]} onPress={() => setGenderMode('male')}>
+            <Text style={[styles.radioButtonLabel, genderMode === 'male' ? styles.radioButtonLabelSelected : {}]}>Male</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.radioButton, genderMode === 'female' ? styles.radioButtonSelected : {}]} onPress={() => setGenderMode('female')}>
+            <Text style={[styles.radioButtonLabel, genderMode === 'female' ? styles.radioButtonLabelSelected : {}]}>Female</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <View style={styles.listContainer}>
         <FlatList
           data={voiceData}
@@ -277,6 +291,32 @@ const styles = StyleSheet.create({
   selectedItem: {
     borderColor: COLORS.black,
     borderWidth: 1,
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  radioButton: {
+    padding: 10,
+    width: "47.5%",
+    borderRadius: 5,
+  },
+  radioButtonSelected: {
+    backgroundColor: COLORS.bright_grey,
+  },
+  radioButtonLabel: {
+    fontSize: FONTSIZE.small,
+    color: COLORS.light_black,
+    textAlign: 'center',
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  radioButtonLabelSelected: {
+    color: COLORS.black,
+    fontWeight: FONT_WEIGHT.bold,
   },
 });
 
