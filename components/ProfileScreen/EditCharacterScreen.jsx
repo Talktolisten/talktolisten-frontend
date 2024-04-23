@@ -10,7 +10,7 @@ import {
   StyleSheet
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RadioButton } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker";
@@ -18,9 +18,11 @@ import * as FileSystem from "expo-file-system";
 import { COLORS, FONTSIZE, SIZES, FONT_WEIGHT } from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { get_bot_info_toEdit, update_bot } from "../../axios/bots.jsx";
-import { set } from "firebase/database";
+import { get_voice } from "../../axios/voice.jsx";
+import { SCREEN_NAMES } from "../../util/constants.js";
 
 const EditCharacter = () => {
+  const navigation = useNavigation();
   const [refresh, setRefresh] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [isAvatarChanged, setIsAvatarChanged] = useState(false);
@@ -36,8 +38,18 @@ const EditCharacter = () => {
       setDescription(fetchedBotInfo.description);
       setGreeting(fetchedBotInfo.greeting);
       setPrivacy(fetchedBotInfo.privacy);
+      fetchVoiceInfo(fetchedBotInfo.voice_id);
     } catch (error) {
       console.error("Failed to fetch bot info:", error);
+    }
+  };
+
+  const fetchVoiceInfo = async (voice_id) => {
+    try {
+      const voiceInfo = await get_voice(voice_id);
+      setVoice(voiceInfo);
+    } catch (error) {
+      console.error("Failed to fetch voice info:", error);
     }
   };
 
@@ -51,6 +63,7 @@ const EditCharacter = () => {
   const [description, setDescription] = useState(null);
   const [greeting, setGreeting] = useState(null);
   const [privacy, setPrivacy] = useState(null);
+  const [voice, setVoice] = useState(null);
 
   const handleImageSelection = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -185,6 +198,36 @@ const EditCharacter = () => {
                   multiline
                 />
               </View>
+            </View>
+
+            <View
+              style={styles.infoChildContainer}
+            >
+              <Text style={styles.heading}>Voice</Text>
+              <View
+                style={styles.inputContainer}
+              >
+                <Text style={styles.input}>{voice ? voice.voice_name : 'Select Voice'}</Text>
+              </View>
+              <TouchableOpacity
+                style={{ alignItems: "center", paddingVertical: 10, backgroundColor: COLORS.black, borderRadius: 5, marginTop: 10 }}
+                onPress={() => {
+                  navigation.navigate(SCREEN_NAMES.SELECT_VOICE, {
+                    onGoBack: (voiceObject) => {
+                      if (voiceObject !== null) {
+                        setVoice(voiceObject);
+                        setIsChanged(true);
+                      }
+                    },
+                  });
+                }}
+              >
+                <Text
+                  style={{ fontSize: FONTSIZE.xSmall, color: COLORS.white, fontWeight: FONT_WEIGHT.medium }}
+                >
+                  Select Voice
+                </Text>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.infoChildContainer}>
