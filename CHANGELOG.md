@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.2.0] - 2024-04-22
+### Method
+- Expo Update
+
+### Added
+- Users can change voice for the character they created
+
 ## [7.1.0] - 2024-04-22
 ### Method
 - Expo Update
