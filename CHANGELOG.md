@@ -1,7 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [7.3.0] - 2024-04-22
+## [7.3.1] - 2024-04-29
+### Method
+- Expo Update
+
+### Fixed
+- Fix the URL server of android
+
+## [7.3.0] - 2024-04-28
 ### Method
 - Expo Build
 
