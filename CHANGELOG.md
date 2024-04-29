@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.3.0] - 2024-04-22
+### Method
+- Expo Build
+
+### Test
+- Test a build on Android if the app is working
+
 ## [7.2.0] - 2024-04-22
 ### Method
 - Expo Update
