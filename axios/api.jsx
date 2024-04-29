@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getTokens } from "../util/tokenUtils";
+import { Platform } from "react-native";
 
-export const URL = process.env.EXPO_PUBLIC_API_URL;
+export const URL = Platform.OS === "ios" ? process.env.EXPO_PUBLIC_API_URL : process.env.EXPO_PUBLIC_API_URL_ANDROID;
 
 axios.interceptors.response.use(
   (response) => {
