@@ -17,7 +17,7 @@ const About = () => {
                 </View>
             </View>
 
-            <View style={styles.infoContainer}>
+            {/* <View style={styles.infoContainer}>
                 <Text style={styles.paragraph}>
                     This project is created by the team at Talk to Listen and is a collaboration with Association for Computing Machinery (ACM) at the University of South Florida
                 </Text>
@@ -29,7 +29,7 @@ const About = () => {
                         <Text style={styles.linkText}>Instagram</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
         </SafeAreaView >
     );
 };
