@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from "expo-file-system";
+import { send_feedback_report } from "../../axios/user";
 
 const Report = () => {
     const [feedback, setFeedback] = useState('');
@@ -33,7 +35,7 @@ const Report = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (feedback.length === 0) {
             alert("Please enter a your report.");
             return;
@@ -41,6 +43,16 @@ const Report = () => {
         else {
             console.log(feedback);
             console.log(images);
+            let image_list = [];
+            if (images) {
+                for (let i = 0; i < images.length - 1; i++) {
+                    let newDecodedImage = await FileSystem.readAsStringAsync(images[i], {
+                        encoding: FileSystem.EncodingType.Base64,
+                    });
+                    image_list.push(newDecodedImage);
+                }
+            }
+            send_feedback_report(null, feedback, image_list.length > 0 ? image_list : null);
             setFeedback('');
             setImages([null]);
             setIsSubmitted(true);

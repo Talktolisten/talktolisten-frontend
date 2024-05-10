@@ -126,3 +126,17 @@ export const checkUserByID = async (user_id) => {
     return res.data;
   });
 };
+
+export const send_feedback_report = async (feedback, report, pictures) => {
+  return await Api({
+    method: "POST",
+    url: "api/v1/user/feedback_report",
+    data: {
+      feedback: feedback,
+      report: report,
+      pictures: pictures,
+    },
+  }).then((res) => {
+    return res.data;
+  });
+}
