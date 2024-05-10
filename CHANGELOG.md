@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.4.0] - 2024-05-10
+### Method
+- Expo Update
+
+### Fixed
+- Add user feedback and report
+
 ## [7.3.1] - 2024-04-29
 ### Method
 - Expo Update
