@@ -81,15 +81,21 @@ const ChatStack = () => {
           headerShown: true,
           headerTitle: "Message",
           headerRight: () => null,
-          headerLeft: () => (
-            <AntDesign
-              name="arrowleft"
-              size={24}
-              color={COLORS.black}
-              onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}
-              containerStyle={{ marginLeft: 5 }}
-            />
-          ),
+          headerLeft: () => {
+            if (Platform.OS === 'android') {
+              return null; // Return null for Android platform
+            } else {
+              return (
+                <AntDesign
+                  name="arrowleft"
+                  size={24}
+                  color={COLORS.black}
+                  onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}
+                  containerStyle={{ marginLeft: 5 }}
+                />
+              );
+            }
+          },
         })}
       />
       <Stack.Screen
@@ -99,15 +105,21 @@ const ChatStack = () => {
           headerShown: true,
           headerTitle: "Group Chat",
           headerRight: () => null,
-          headerLeft: () => (
-            <AntDesign
-              name="arrowleft"
-              size={24}
-              color={COLORS.black}
-              onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}
-              containerStyle={{ marginLeft: 5 }}
-            />
-          ),
+          headerLeft: () => {
+            if (Platform.OS === 'android') {
+              return null; // Return null for Android platform
+            } else {
+              return (
+                <AntDesign
+                  name="arrowleft"
+                  size={24}
+                  color={COLORS.black}
+                  onPress={() => navigation.navigate(SCREEN_NAMES.CHAT)}
+                  containerStyle={{ marginLeft: 5 }}
+                />
+              );
+            }
+          },
         })}
       />
       <Stack.Screen name={SCREEN_NAMES.VOICE}

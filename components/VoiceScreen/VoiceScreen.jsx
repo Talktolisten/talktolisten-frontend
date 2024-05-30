@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, StatusBar, Platform } from "react-native";
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
@@ -320,7 +320,7 @@ const Voice = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight + SIZES.xLarge + 20,
+    marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + SIZES.xLarge + 20 : null,
     backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
