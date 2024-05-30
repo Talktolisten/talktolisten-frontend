@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [7.4.1] - 2024-05-30
+### Method
+- Expo Update
+
+### Fixed
+- Fix android UI in message and message screens
+
 ## [7.4.0] - 2024-05-10
 ### Method
 - Expo Update
