@@ -1,67 +1,104 @@
 # Change Log
+
 All notable changes to this project will be documented in this file.
 
-## [7.4.1] - 2024-05-30
+## [7.5.0] - 2024-11-24
+
 ### Method
+
 - Expo Update
 
 ### Fixed
+
+- Remove temporaryly theme and notification in profile screen
+
+## [7.4.1] - 2024-05-30
+
+### Method
+
+- Expo Update
+
+### Fixed
+
 - Fix android UI in message and message screens
 
 ## [7.4.0] - 2024-05-10
+
 ### Method
+
 - Expo Update
 
 ### Fixed
+
 - Add user feedback and report
 
 ## [7.3.1] - 2024-04-29
+
 ### Method
+
 - Expo Update
 
 ### Fixed
+
 - Fix the URL server of android
 
 ## [7.3.0] - 2024-04-28
+
 ### Method
+
 - Expo Build
 
 ### Test
+
 - Test a build on Android if the app is working
 
 ## [7.2.0] - 2024-04-22
+
 ### Method
+
 - Expo Update
 
 ### Added
+
 - Users can change voice for the character they created
 
 ## [7.1.0] - 2024-04-22
+
 ### Method
+
 - Expo Update
 
 ### Added
+
 - User can see the groups in explore screen
 - User can see more voices and has filter when create a bot
 
 ## [7.0.1] - 2024-04-21
+
 ### Method
+
 - Expo Update
 
 ### Fixed
+
 - The message screen is reset when in focus
 
 ### Changed
+
 - Audio is fetched from storage, not decoded from base64 anymore
 
 ## [7.0.0] - 2024-04-21
+
 ### Method
+
 - Expo Update
 
 ### Fixed
+
 - User cannot record on iOS
 
 ### Add
+
 - User can create a group chat
 - User can see the group chat list
 - User can talk in a group chat
@@ -69,107 +106,129 @@ All notable changes to this project will be documented in this file.
 ## [6.0.2] - 2024-04-20
 
 ### Method
+
 - Expo Update
 
 ### Fixed
+
 - Fix character privacy cannot be changed in the profile screen.
 - Fix the audio mode in the voice screen. The audio volume is too low.
 
 ## [6.0.1] - 2024-04-15
 
 ### Fixed
+
 - Fix expo update error in App.js
 
 ## [6.0.0] - 2024-04-14
 
 ### Add
+
 - User can see their created and liked bot and edit.
 - Update UI for the profile screen, message, explore, random.
 - Add expo updates for the app.
 
 ### Fixed
+
 - UI of the random character screen not scrollable.
 
 ## [5.0.0] - 2024-04-10
 
 ### Added
+
 - User can create a new bot, generate AI images for avatar, choose a voice
 - User can like a bot, see their liked characters, and created characters
 - User can choose a random character to chat with
 - User can delete a chat
 
 ### Changed
+
 - Change the UI of the explore screen, and character profile.
 
 ## [4.0.2] - 2024-03-10
 
 ### Add
+
 - Add version code for Android
 
 ## [4.0.2] - 2024-03-07
 
 ### Change
+
 - Change Welcome screen UI
 
 ### Fix
+
 - User will not hear sound when going out of the voice screen.
 - Animation in Voice screen only happen when bot is talking.
 
 ## [4.0.1] - 2024-03-05
 
 ### Change
+
 - Change app logo because of Apple Copycat
 
 ## [4.0.0] - 2024-03-05
 
 ### Add
+
 - User can log in with guest mode
 
 ## [3.0.1] - 2024-03-01
 
 ### Fix
+
 - Fix log out by adding to the profile stack
 
 ## [3.0.0] - 2024-03-01
 
 ### Added
+
 - Add Welcome Screen, terms and conditions, checkusername function
 - Add report and feedback screen
 
 ### Fixed
+
 - fix Login screen by add welcome screen.
 
 ## [2.0.0] - 2024-02-28
 
 ### Added
+
 - Add user delete account, login UI, reset passwords
 - Add microphone permission to eas.json
 
 ## [1.1.1] - 2024-02-26
 
 ### Added
+
 - Update Profile functions: Theme, Notification, About.
 
 ## [1.1.0] - 2024-02-26
 
 ### Added
+
 - Update UI for explore, sign up/login, message, chat, voice screen.
 - Add search functionality for explore page.
 
 ## [1.0.3] - 2024-02-24
 
 ### Fixed
+
 - Fix error by installing react-native-svg and react-native-screen, react-native-saft-area-view
 
 ## [1.0.2] - 2024-02-24
 
 ### Added
+
 - Add debug error to fix the onboarding process of iPad
 
 ## [1.0.1] - 2024-02-23
+
 Release again on App Store and First Release on Android
 
 ### Info
+
 - Commit: 636415d
 - Build ID: dd369fa5-28c1-4c1f-aeba-ef8303fd4d0a
 
@@ -192,9 +251,9 @@ First release of the app.
 ### Needed fixed
 
 1. IOS Beta Test Flight
-   
-- Specifically, your app failed to load any content at launch. 
-- Device type: iPad Air (5th generation) 
+
+- Specifically, your app failed to load any content at launch.
+- Device type: iPad Air (5th generation)
 - OS version: iOS 17.3.1
 - Issue [HERE](https://appstoreconnect.apple.com/apps/6478241209/distribution/reviewsubmissions/threads/60a47e94-5892-3da8-b816-54d3c4d0a41f)
 
