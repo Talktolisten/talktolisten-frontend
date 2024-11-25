@@ -168,14 +168,14 @@ const Profile = () => {
             navigation.navigate(SCREEN_NAMES.CREATED_CHARACTERS);
           }}
         />
-        <SettingItem
+        {/* <SettingItem
           type="MaterialCommunityIcons"
           icon="theme-light-dark"
           text="Theme"
           onPress={() => {
             navigation.navigate(SCREEN_NAMES.THEME_SETTING);
           }}
-        />
+        /> */}
         {/* <SettingItem
           type="MaterialIcons"
           icon="language"
@@ -183,14 +183,14 @@ const Profile = () => {
           onPress={() => {
           }}
         /> */}
-        <SettingItem
+        {/* <SettingItem
           type="MaterialIcons"
           icon="notifications-on"
           text="Notifications"
           onPress={() => {
             navigation.navigate(SCREEN_NAMES.NOTIFICATION);
           }}
-        />
+        /> */}
         <SettingItem
           type="MaterialIcons"
           icon="feedback"
