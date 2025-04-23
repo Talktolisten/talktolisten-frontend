@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [7.5.0] - 2024-04-23
+
+### Method
+
+- Expo Update
+
+### Changed
+
+- Change backend URL in environment variables
+
 ## [7.5.0] - 2024-11-24
 
 ### Method
