@@ -1,7 +1,23 @@
-import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
-import { View, SafeAreaView, StyleSheet, Image, Text, ImageBackground } from "react-native";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  Text,
+  ImageBackground,
+} from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
-import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/native";
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/native";
 
 import { getIcon } from "../Icons";
 import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles";
@@ -20,9 +36,12 @@ import {
   renderMessageText,
   renderCustomView,
   renderTime,
-  renderDay
+  renderDay,
 } from "./MessageBubble";
-import { sendMessageToBackend_GroupChat, fetchAllMessages_GroupChat } from "./MessageSendRequest";
+import {
+  sendMessageToBackend_GroupChat,
+  fetchAllMessages_GroupChat,
+} from "./MessageSendRequest";
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
 import { get_bot_info } from "../../axios/bots";
 import { get_group_chat_by_id } from "../../axios/groupchat";
@@ -42,18 +61,19 @@ const MessageGroup = () => {
     if (groupChatInfo && groupChatInfo.group_chat_name) {
       navigation.setOptions({
         headerTitle: () => (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               source={{ uri: groupChatInfo.group_chat_profile_picture }}
               style={styles.headerImage}
             />
-            <Text style={styles.headerTitleText}>{groupChatInfo.group_chat_name}</Text>
+            <Text style={styles.headerTitleText}>
+              {groupChatInfo.group_chat_name}
+            </Text>
           </View>
         ),
       });
     }
   }, [groupChatInfo, navigation]);
-
 
   useEffect(() => {
     const fetchChatInfo = async () => {
@@ -74,7 +94,8 @@ const MessageGroup = () => {
     React.useCallback(() => {
       const fetchMessages = async () => {
         try {
-          const fetchedMessages = await fetchAllMessages_GroupChat(group_chat_id);
+          const fetchedMessages =
+            await fetchAllMessages_GroupChat(group_chat_id);
           const validMessages = fetchedMessages.filter((msg) => {
             if (msg.is_bot) {
               return bots.find((bot) => bot.bot_id === msg.created_by_bot);
@@ -100,7 +121,7 @@ const MessageGroup = () => {
         }
       };
       fetchMessages();
-    }, [group_chat_id, bots])
+    }, [group_chat_id, bots]),
   );
 
   const onSend = useCallback(
@@ -110,14 +131,14 @@ const MessageGroup = () => {
       setIsSending(true);
 
       setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
+        GiftedChat.append(previousMessages, messages),
       );
 
       const sendMessage = async () => {
         try {
           const response = await sendMessageToBackend_GroupChat(
             messages[0].text,
-            group_chat_id
+            group_chat_id,
           );
           if (response && response.message_id && response.message) {
             const botMessage = {
@@ -127,12 +148,13 @@ const MessageGroup = () => {
               user: {
                 _id: 2,
                 name: response.bot_name,
-                avatar: bots.find((bot) => bot.bot_id === response.bot_id).profile_picture,
+                avatar: bots.find((bot) => bot.bot_id === response.bot_id)
+                  .profile_picture,
               },
             };
 
             setMessages((previousMessages) =>
-              GiftedChat.append(previousMessages, [botMessage])
+              GiftedChat.append(previousMessages, [botMessage]),
             );
           }
         } catch (error) {
@@ -144,7 +166,7 @@ const MessageGroup = () => {
 
       sendMessage();
     },
-    [group_chat_id, bots, isSending]
+    [group_chat_id, bots, isSending],
   );
 
   const scrollToBottomComponent = () => {
@@ -154,7 +176,7 @@ const MessageGroup = () => {
   const onPressAvatar = (user) => {
     setBotInfo(bots.find((bot) => bot.bot_id === user._id));
     toggleModal();
-  }
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -182,7 +204,9 @@ const MessageGroup = () => {
         renderSend={(props) => renderSend({ ...props, isSending })}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
-        renderActions={(props) => renderActions_GroupChat(props, bots, group_chat_id, groupChatInfo)}
+        renderActions={(props) =>
+          renderActions_GroupChat(props, bots, group_chat_id, groupChatInfo)
+        }
         renderTime={renderTime}
         renderDay={renderDay}
         scrollToBottom
@@ -219,5 +243,5 @@ const styles = StyleSheet.create({
     height: 40,
     marginRight: 10,
     borderRadius: 40,
-  }
+  },
 });

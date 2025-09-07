@@ -60,7 +60,8 @@ const RandomStack = () => {
         component={MessageScreen}
         options={{ headerShown: true, headerTitle: "Message" }}
       />
-      <Stack.Screen name={SCREEN_NAMES.VOICE}
+      <Stack.Screen
+        name={SCREEN_NAMES.VOICE}
         component={VoiceScreen}
         options={{ headerShown: true }}
       />

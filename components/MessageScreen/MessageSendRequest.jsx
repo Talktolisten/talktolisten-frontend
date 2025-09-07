@@ -15,7 +15,10 @@ export const create_new_message = async (messageText, chat_id) => {
   });
 };
 
-export const create_new_message_GroupChat = async (messageText, group_chat_id) => {
+export const create_new_message_GroupChat = async (
+  messageText,
+  group_chat_id,
+) => {
   return await Api({
     method: "POST",
     url: `/api/v1/groupchat/${group_chat_id}/message`,
@@ -55,7 +58,6 @@ export const fetchAllMessages = async (chat_id) => {
     return res.data;
   });
 };
-
 
 export const fetchAllMessages_GroupChat = async (group_chat_id) => {
   return await Api({

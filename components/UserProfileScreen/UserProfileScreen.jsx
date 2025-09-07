@@ -48,8 +48,9 @@ const UserProfile = () => {
             <Text style={styles.name}>{userInfo.first_name}</Text>
             <Text style={styles.username}>@{userInfo.username}</Text>
           </View>
-          <Text style={styles.bio}>{userInfo.bio === null ? defaultBio[6] : userInfo.bio}</Text>
-
+          <Text style={styles.bio}>
+            {userInfo.bio === null ? defaultBio[6] : userInfo.bio}
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.xSmall,
     marginBottom: SIZES.xLarge,
     textAlign: "left",
-    marginHorizontal: 15
-  }
+    marginHorizontal: 15,
+  },
 });
 
 export default UserProfile;

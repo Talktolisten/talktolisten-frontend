@@ -1,5 +1,17 @@
-import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
-import { View, SafeAreaView, StyleSheet, Image, Text, ImageBackground } from "react-native";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  Text,
+  ImageBackground,
+} from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -20,7 +32,7 @@ import {
   renderMessageText,
   renderCustomView,
   renderTime,
-  renderDay
+  renderDay,
 } from "./MessageBubble";
 import { sendMessageToBackend, fetchAllMessages } from "./MessageSendRequest";
 import CharacterProfileModal from "../CharacterProfileScreen/CharacterProfileModal";
@@ -39,7 +51,7 @@ const MessageScreen = () => {
     if (botInfo && botInfo.bot_name) {
       navigation.setOptions({
         headerTitle: () => (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               source={{ uri: botInfo.profile_picture }}
               style={styles.headerImage}
@@ -92,7 +104,7 @@ const MessageScreen = () => {
       if (botInfo) {
         fetchMessages();
       }
-    }, [chat_id, botInfo])
+    }, [chat_id, botInfo]),
   );
 
   const onSend = useCallback(
@@ -102,14 +114,14 @@ const MessageScreen = () => {
       setIsSending(true);
 
       setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
+        GiftedChat.append(previousMessages, messages),
       );
 
       const sendMessage = async () => {
         try {
           const response = await sendMessageToBackend(
             messages[0].text,
-            chat_id
+            chat_id,
           );
           if (response && response.message_id && botInfo) {
             const botMessage = {
@@ -124,7 +136,7 @@ const MessageScreen = () => {
             };
 
             setMessages((previousMessages) =>
-              GiftedChat.append(previousMessages, [botMessage])
+              GiftedChat.append(previousMessages, [botMessage]),
             );
           }
         } catch (error) {
@@ -136,7 +148,7 @@ const MessageScreen = () => {
 
       sendMessage();
     },
-    [botInfo, chat_id, isSending]
+    [botInfo, chat_id, isSending],
   );
 
   const scrollToBottomComponent = () => {
@@ -149,8 +161,15 @@ const MessageScreen = () => {
 
   return (
     <ImageBackground
-      source={botInfo?.profile_picture ? { uri: botInfo?.profile_picture } : null}
-      style={{ flex: 1, backgroundColor: botInfo?.profile_picture ? 'transparent' : COLORS.white }}
+      source={
+        botInfo?.profile_picture ? { uri: botInfo?.profile_picture } : null
+      }
+      style={{
+        flex: 1,
+        backgroundColor: botInfo?.profile_picture
+          ? "transparent"
+          : COLORS.white,
+      }}
     >
       <SafeAreaView style={styles.container}>
         <GiftedChat
@@ -211,5 +230,5 @@ const styles = StyleSheet.create({
     height: 40,
     marginRight: 10,
     borderRadius: 40,
-  }
+  },
 });

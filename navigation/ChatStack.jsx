@@ -2,7 +2,10 @@ import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
 import ChatScreen from "../screens/Chat";
-import { CreateGroupChatScreen, CreateGroupChatScreen2 } from "../screens/CreateGroupChat";
+import {
+  CreateGroupChatScreen,
+  CreateGroupChatScreen2,
+} from "../screens/CreateGroupChat";
 import MessageScreen from "../screens/Message";
 import MessageGroupScreen from "../screens/MessageGroup";
 import VoiceScreen from "../screens/Voice";
@@ -45,10 +48,12 @@ const ChatStack = () => {
         name="close"
         size={24}
         color={COLORS.black}
-        onPress={() => navigation.reset({
-          index: 0,
-          routes: [{ name: SCREEN_NAMES.CHAT_TAB }],
-        })}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: SCREEN_NAMES.CHAT_TAB }],
+          })
+        }
         containerStyle={{ marginRight: 5 }}
       />
     ),
@@ -67,12 +72,20 @@ const ChatStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_GROUP_CHAT}
         component={CreateGroupChatScreen}
-        options={{ headerShown: true, headerTitle: "Create Group Chat", headerRight: () => null }}
+        options={{
+          headerShown: true,
+          headerTitle: "Create Group Chat",
+          headerRight: () => null,
+        }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_GROUP_CHAT_2}
         component={CreateGroupChatScreen2}
-        options={{ headerShown: true, headerTitle: "Group Chat's Setting", headerRight: () => null }}
+        options={{
+          headerShown: true,
+          headerTitle: "Group Chat's Setting",
+          headerRight: () => null,
+        }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.MESSAGE}
@@ -82,7 +95,7 @@ const ChatStack = () => {
           headerTitle: "Message",
           headerRight: () => null,
           headerLeft: () => {
-            if (Platform.OS === 'android') {
+            if (Platform.OS === "android") {
               return null; // Return null for Android platform
             } else {
               return (
@@ -106,7 +119,7 @@ const ChatStack = () => {
           headerTitle: "Group Chat",
           headerRight: () => null,
           headerLeft: () => {
-            if (Platform.OS === 'android') {
+            if (Platform.OS === "android") {
               return null; // Return null for Android platform
             } else {
               return (
@@ -122,11 +135,13 @@ const ChatStack = () => {
           },
         })}
       />
-      <Stack.Screen name={SCREEN_NAMES.VOICE}
+      <Stack.Screen
+        name={SCREEN_NAMES.VOICE}
         component={VoiceScreen}
         options={{ headerShown: true, headerRight: () => null }}
       />
-      <Stack.Screen name={SCREEN_NAMES.VOICE_GROUP}
+      <Stack.Screen
+        name={SCREEN_NAMES.VOICE_GROUP}
         component={VoiceGroupScreen}
         options={{ headerShown: true, headerRight: () => null }}
       />

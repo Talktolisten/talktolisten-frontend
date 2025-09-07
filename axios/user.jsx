@@ -24,7 +24,7 @@ export const create_user = async (
   last_name,
   profile_picture,
   bio,
-  dob
+  dob,
 ) => {
   if (profile_picture === "") {
     profile_picture = getRandomElement(defaultAvatarURL);
@@ -62,7 +62,7 @@ export const update_user = async (
   bio,
   profile_picture,
   status,
-  theme
+  theme,
 ) => {
   return await Api({
     method: "PATCH",
@@ -82,7 +82,7 @@ export const update_user = async (
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const delete_user = async (user_id) => {
   return await Api({
@@ -97,15 +97,14 @@ export const deleteAccount = async (user_id) => {
   try {
     const auth = getAuth();
     await deleteUser(auth.currentUser).then(() => {
-      console.log('Successfully deleted user from Firebase');
+      console.log("Successfully deleted user from Firebase");
     });
 
     await delete_user(user_id).then(() => {
-      console.log('Successfully deleted user from backend');
+      console.log("Successfully deleted user from backend");
     });
-
   } catch (error) {
-    console.error('Error deleting user:', error);
+    console.error("Error deleting user:", error);
   }
 };
 
@@ -139,4 +138,4 @@ export const send_feedback_report = async (feedback, report, pictures) => {
   }).then((res) => {
     return res.data;
   });
-}
+};

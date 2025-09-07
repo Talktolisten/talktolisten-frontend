@@ -13,7 +13,10 @@ const GroupChat = ({ groupchat }) => {
       onPress={() =>
         navigation.navigate(SCREEN_NAMES.CHAT_TAB, {
           screen: SCREEN_NAMES.MESSAGE_GROUP,
-          params: { group_bots: groupchat.group_bots, group_chat_id: groupchat.group_chat_id },
+          params: {
+            group_bots: groupchat.group_bots,
+            group_chat_id: groupchat.group_chat_id,
+          },
         })
       }
     >

@@ -1,7 +1,13 @@
 import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AntDesign } from "@expo/vector-icons";
-import { CreateCharacterScreen, CreateCharacterScreen2, CreateCharacterScreen3, CreateCharacterScreen4, CreateCharacterScreen5 } from "../screens/CreateCharacter";
+import {
+  CreateCharacterScreen,
+  CreateCharacterScreen2,
+  CreateCharacterScreen3,
+  CreateCharacterScreen4,
+  CreateCharacterScreen5,
+} from "../screens/CreateCharacter";
 import ProfileScreen from "../screens/Profile";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
@@ -41,10 +47,12 @@ const CreateCharacterStack = () => {
         name="close"
         size={24}
         color={COLORS.black}
-        onPress={() => navigation.reset({
-          index: 0,
-          routes: [{ name: SCREEN_NAMES.HOME }],
-        })}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: SCREEN_NAMES.HOME }],
+          })
+        }
         containerStyle={{ marginRight: 5 }}
       />
     ),
@@ -58,7 +66,11 @@ const CreateCharacterStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER}
         component={CreateCharacterScreen}
-        options={{ headerShown: true, headerTitle: "Create your character", headerLeft: () => null }}
+        options={{
+          headerShown: true,
+          headerTitle: "Create your character",
+          headerLeft: () => null,
+        }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.PROFILE}
@@ -73,7 +85,10 @@ const CreateCharacterStack = () => {
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER_3}
         component={CreateCharacterScreen3}
-        options={{ headerShown: true, headerTitle: "Generate character avatar" }}
+        options={{
+          headerShown: true,
+          headerTitle: "Generate character avatar",
+        }}
       />
       <Stack.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER_4}

@@ -21,7 +21,7 @@ import { StatusBar } from "react-native";
 import {
   explore_get_bots_categories,
   explore_get_bots_search,
-  explore_group_chat
+  explore_group_chat,
 } from "./ExploreRequest";
 import { get_bot_info } from "../../axios/bots";
 import { create_group_chat } from "../../axios/groupchat";
@@ -90,7 +90,7 @@ const Explore = () => {
   const handleClearPress = () => {
     setSearchTerm("");
     setActiveType("Featured");
-  }
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -108,18 +108,37 @@ const Explore = () => {
 
   const handlePressGroupChat = async (groupChatObject) => {
     try {
-      const group_bots_ids = groupChatObject.group_bots.map((bot) => bot.bot_id);
-      const response = await create_group_chat(groupChatObject.group_chat_name, group_bots_ids, 'private');
-      navigation.navigate(SCREEN_NAMES.MESSAGE_GROUP, { group_chat_id: response.group_chat_id, group_bots: response.group_bots });
+      const group_bots_ids = groupChatObject.group_bots.map(
+        (bot) => bot.bot_id,
+      );
+      const response = await create_group_chat(
+        groupChatObject.group_chat_name,
+        group_bots_ids,
+        "private",
+      );
+      navigation.navigate(SCREEN_NAMES.MESSAGE_GROUP, {
+        group_chat_id: response.group_chat_id,
+        group_bots: response.group_bots,
+      });
     } catch (error) {
       console.error("Failed to create group chat:", error);
     }
-  }
+  };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: COLORS.grey,
+      }}
+    >
       <SafeAreaView style={styles.container}>
-        <DynamicSearchBar onChangeText={handleChangeText} onClearPress={handleClearPress} />
+        <DynamicSearchBar
+          onChangeText={handleChangeText}
+          onClearPress={handleClearPress}
+        />
         <View style={styles.tabsContainer}>
           <FlatList
             data={types}
@@ -142,96 +161,108 @@ const Explore = () => {
 
         <View style={styles.listSection}>
           <ScrollView style={styles.elementPallet}>
-            {activeType == "Groups" ?
-              groupChats.map((group) => {
-                const groupBots = group.group_bots;
-                let displayName = groupBots.map(bot => bot.bot_name).join(', ');
-                if (displayName.length > 30) {
-                  displayName = displayName.substring(0, 50) + '...';
-                }
-                return (
-                  <TouchableOpacity
-                    style={styles.element}
-                    key={group.group_chat_id}
-                    activeOpacity={0.8}
-                    onPress={handlePressGroupChat.bind(this, group)}
-                  >
-                    <View style={{ flexDirection: 'column' }}>
-                      <View style={[styles.infoArea, { marginBottom: 15 }]}>
-                        <Text style={styles.infoTitle}>{group.group_chat_name}</Text>
-                        <Text style={styles.infoSub}>{displayName}</Text>
+            {activeType == "Groups"
+              ? groupChats.map((group) => {
+                  const groupBots = group.group_bots;
+                  let displayName = groupBots
+                    .map((bot) => bot.bot_name)
+                    .join(", ");
+                  if (displayName.length > 30) {
+                    displayName = displayName.substring(0, 50) + "...";
+                  }
+                  return (
+                    <TouchableOpacity
+                      style={styles.element}
+                      key={group.group_chat_id}
+                      activeOpacity={0.8}
+                      onPress={handlePressGroupChat.bind(this, group)}
+                    >
+                      <View style={{ flexDirection: "column" }}>
+                        <View style={[styles.infoArea, { marginBottom: 15 }]}>
+                          <Text style={styles.infoTitle}>
+                            {group.group_chat_name}
+                          </Text>
+                          <Text style={styles.infoSub}>{displayName}</Text>
+                        </View>
+                        <View style={{ alignItems: "flex-start" }}>
+                          <ScrollView
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                          >
+                            {groupBots.map((bot, index) => (
+                              <Image
+                                key={index}
+                                source={{ uri: bot.profile_picture }}
+                                resizeMode="cover"
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 10,
+                                  marginRight: 5,
+                                }}
+                              />
+                            ))}
+                          </ScrollView>
+                        </View>
                       </View>
-                      <View style={{ alignItems: 'flex-start' }}>
-                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                          {groupBots.map((bot, index) => (
-                            <Image
-                              key={index}
-                              source={{ uri: bot.profile_picture }}
-                              resizeMode="cover"
-                              style={{ width: 50, height: 50, borderRadius: 10, marginRight: 5 }}
+                    </TouchableOpacity>
+                  );
+                })
+              : newBots.map((bot) => {
+                  return (
+                    <TouchableOpacity
+                      style={styles.element}
+                      key={bot.bot_id}
+                      activeOpacity={0.8}
+                      onPress={handlePressBot.bind(this, bot.bot_id)}
+                    >
+                      <View style={styles.infoArea}>
+                        <Text style={styles.infoTitle}>{bot.bot_name}</Text>
+                        <Text style={styles.infoSub}>
+                          {bot.short_description}
+                        </Text>
+                        <View style={styles.inforMoreContainer}>
+                          <View style={styles.infoChat}>
+                            <Ionicons
+                              name="chatbubble-ellipses-outline"
+                              size={FONTSIZE.xSmall}
+                              color={COLORS.black}
+                              style={styles.infoIcon}
                             />
-                          ))}
-                        </ScrollView>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })
-              :
-              newBots.map((bot) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.element}
-                    key={bot.bot_id}
-                    activeOpacity={0.8}
-                    onPress={handlePressBot.bind(this, bot.bot_id)}
-                  >
-                    <View style={styles.infoArea}>
-                      <Text style={styles.infoTitle}>{bot.bot_name}</Text>
-                      <Text style={styles.infoSub}>{bot.short_description}</Text>
-                      <View style={styles.inforMoreContainer}>
-                        <View style={styles.infoChat}>
-                          <Ionicons
-                            name="chatbubble-ellipses-outline"
-                            size={FONTSIZE.xSmall}
-                            color={COLORS.black}
-                            style={styles.infoIcon}
-                          />
-                          <Text>{bot.num_chats}</Text>
-                        </View>
-                        <View style={styles.infoLikes}>
-                          <Ionicons
-                            name="heart"
-                            size={FONTSIZE.xSmall}
-                            color={COLORS.pink}
-                            style={styles.infoIcon}
-                          />
-                          <Text>{bot.likes}</Text>
+                            <Text>{bot.num_chats}</Text>
+                          </View>
+                          <View style={styles.infoLikes}>
+                            <Ionicons
+                              name="heart"
+                              size={FONTSIZE.xSmall}
+                              color={COLORS.pink}
+                              style={styles.infoIcon}
+                            />
+                            <Text>{bot.likes}</Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                    <View style={styles.imageArea}>
-                      <Image
-                        source={{ uri: bot.profile_picture }}
-                        resizeMode="cover"
-                        style={styles.botImage}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                );
-              })
-            }
+                      <View style={styles.imageArea}>
+                        <Image
+                          source={{ uri: bot.profile_picture }}
+                          resizeMode="cover"
+                          style={styles.botImage}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
           </ScrollView>
         </View>
 
-        {isModalVisible ?
+        {isModalVisible ? (
           <CharacterProfileModal
             isModalVisible={isModalVisible}
             toggleModal={toggleModal}
             selectedBotInfo={selectedBotInfo}
             navigation={navigation}
           />
-          : null}
+        ) : null}
       </SafeAreaView>
     </View>
   );
@@ -287,7 +318,7 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: FONTSIZE.medium,
     fontWeight: FONT_WEIGHT.bold,
-    marginBottom: 5
+    marginBottom: 5,
   },
   infoSub: {
     fontSize: FONTSIZE.xSmall,
@@ -324,15 +355,15 @@ const styles = StyleSheet.create({
 
 const modalStyles = StyleSheet.create({
   modalContainer: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "flex-end",
     width: "100%",
     margin: 5,
   },
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: COLORS.white,
     height: "80%",
     width: "100%",

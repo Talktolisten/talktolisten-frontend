@@ -41,7 +41,11 @@ const Introduction = ({ setViewedOnboarding }) => {
         await AsyncStorage.setItem("@viewedOnboarding", "true");
         setViewedOnboarding(true);
       } catch (err) {
-        Alert.alert("Error", "Please restart the application. Cannot onboard", err);
+        Alert.alert(
+          "Error",
+          "Please restart the application. Cannot onboard",
+          err,
+        );
       }
     }
   };
@@ -62,7 +66,7 @@ const Introduction = ({ setViewedOnboarding }) => {
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               {
                 useNativeDriver: false,
-              }
+              },
             )}
             scrollEventThrottle={32}
             onViewableItemsChanged={viewableItemsChanged}

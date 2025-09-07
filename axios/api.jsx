@@ -2,7 +2,10 @@ import axios from "axios";
 import { getTokens } from "../util/tokenUtils";
 import { Platform } from "react-native";
 
-export const URL = Platform.OS === "ios" ? process.env.EXPO_PUBLIC_API_URL : process.env.EXPO_PUBLIC_API_URL_ANDROID;
+export const URL =
+  Platform.OS === "ios"
+    ? process.env.EXPO_PUBLIC_API_URL
+    : process.env.EXPO_PUBLIC_API_URL_ANDROID;
 
 axios.interceptors.response.use(
   (response) => {
@@ -19,11 +22,14 @@ axios.interceptors.response.use(
       console.log("Unauthorized: Your session has expired");
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 const Api = async (config) => {
-  if (config.url.startsWith("api/v1/user/check_username") || config.url.startsWith("api/v1/user/signup")) {
+  if (
+    config.url.startsWith("api/v1/user/check_username") ||
+    config.url.startsWith("api/v1/user/signup")
+  ) {
     config.baseURL = URL;
     return axios(config);
   }

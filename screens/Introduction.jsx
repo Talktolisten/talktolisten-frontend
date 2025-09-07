@@ -1,4 +1,4 @@
-import Introduction from '../components/IntroductionScreen/Introduction';
+import Introduction from "../components/IntroductionScreen/Introduction";
 
 const IntroductionScreen = () => <Introduction />;
 

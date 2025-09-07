@@ -4,14 +4,14 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  Animated
+  Animated,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
 import styles from "./styles.js";
 import { COLORS, FONTSIZE, FONT_WEIGHT } from "../../styles/index.js";
@@ -44,12 +44,16 @@ const Welcome = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: COLORS.grey,
+      }}
+    >
       <View style={styles.BackgroundContainer}>
-        <ImageBackground
-          source={WelcomeBackground}
-          style={styles.Background}
-        >
+        <ImageBackground source={WelcomeBackground} style={styles.Background}>
           <View style={styles.headingContainer}>
             <Text style={styles.heading}>Welcome to Talk To Listen</Text>
           </View>
@@ -58,70 +62,76 @@ const Welcome = () => {
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
-                await AsyncStorage.setItem('@GuestMode', 'TRUE');
-                handleGuestPress(dispatch, navigation)
+                await AsyncStorage.setItem("@GuestMode", "TRUE");
+                handleGuestPress(dispatch, navigation);
               }}
             >
               <LinearGradient
-                colors={[
-                  'rgba(233,202,171,255)',
-                  'rgba(237,196,130,255)',
-                ]}
+                colors={["rgba(233,202,171,255)", "rgba(237,196,130,255)"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   left: 0,
                   right: 0,
                   top: 0,
                   bottom: 0,
                 }}
               />
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.buttonText}>
-                  Let's Talk
-                </Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.buttonText}>Let's Talk</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: COLORS.white }]}
               onPress={async () => {
-                await AsyncStorage.setItem('@GuestMode', 'FALSE');
-                navigation.navigate(SCREEN_NAMES.LOGIN)
+                await AsyncStorage.setItem("@GuestMode", "FALSE");
+                navigation.navigate(SCREEN_NAMES.LOGIN);
               }}
             >
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.buttonText}>
-                  Log in
-                </Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.buttonText}>Log in</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
-                await AsyncStorage.setItem('@GuestMode', 'FALSE');
-                navigation.navigate(SCREEN_NAMES.SIGNUP)
+                await AsyncStorage.setItem("@GuestMode", "FALSE");
+                navigation.navigate(SCREEN_NAMES.SIGNUP);
               }}
             >
               <LinearGradient
-                colors={[
-                  'rgba(176,162,187,255)',
-                  'rgba(157,146,190,255)',
-                ]}
+                colors={["rgba(176,162,187,255)", "rgba(157,146,190,255)"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   left: 0,
                   right: 0,
                   top: 0,
                   bottom: 0,
                 }}
               />
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.buttonText}>
-                  Sign up
-                </Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.buttonText}>Sign up</Text>
               </View>
             </TouchableOpacity>
           </SafeAreaView>
@@ -136,7 +146,7 @@ const Welcome = () => {
           />
         </ImageBackground>
       </View>
-    </View >
+    </View>
   );
 };
 

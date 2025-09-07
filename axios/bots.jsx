@@ -25,8 +25,7 @@ export const get_random_bot = async () => {
   }).then((res) => {
     return res.data;
   });
-}
-
+};
 
 export const get_liked_bot = async () => {
   return await Api({
@@ -35,8 +34,7 @@ export const get_liked_bot = async () => {
   }).then((res) => {
     return res.data;
   });
-}
-
+};
 
 export const get_created_bot = async () => {
   return await Api({
@@ -45,7 +43,7 @@ export const get_created_bot = async () => {
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const create_new_bot = async (
   bot_name,
@@ -57,7 +55,7 @@ export const create_new_bot = async (
   voice_id,
   privacy,
   gender,
-  created_by
+  created_by,
 ) => {
   return await Api({
     method: "POST",
@@ -77,7 +75,7 @@ export const create_new_bot = async (
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const update_bot = async (
   bot_id,
@@ -88,7 +86,7 @@ export const update_bot = async (
   voice_id,
   greeting,
   privacy,
-  gender
+  gender,
 ) => {
   return await Api({
     method: "PATCH",
@@ -101,12 +99,12 @@ export const update_bot = async (
       voice_id,
       greeting,
       privacy,
-      gender
+      gender,
     },
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const delete_bot = async (bot_id) => {
   return await Api({
@@ -115,20 +113,19 @@ export const delete_bot = async (bot_id) => {
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const generate_avatar = async (image_prompt) => {
   return await Api({
     method: "POST",
     url: `api/v1/bot/create_bot/generate_image`,
     data: {
-      image_prompt
-    }
+      image_prompt,
+    },
   }).then((res) => {
     return res.data;
   });
-}
-
+};
 
 export const generate_greeting_description = async (bot_name, description) => {
   return await Api({
@@ -141,7 +138,7 @@ export const generate_greeting_description = async (bot_name, description) => {
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const optimize_description = async (bot_name, description) => {
   return await Api({
@@ -154,7 +151,7 @@ export const optimize_description = async (bot_name, description) => {
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const generate_image_prompt = async (bot_name, description) => {
   return await Api({
@@ -167,42 +164,40 @@ export const generate_image_prompt = async (bot_name, description) => {
   }).then((res) => {
     return res.data;
   });
-}
-
+};
 
 export const optimize_image_prompt = async (image_prompt) => {
   return await Api({
     method: "POST",
     url: `api/v1/bot/create_bot/optimize_img_prompt`,
     data: {
-      image_prompt
+      image_prompt,
     },
   }).then((res) => {
     return res.data;
   });
-}
+};
 
 export const user_likes_bot = async (bot_id) => {
   return await Api({
     method: "POST",
     url: `api/v1/bot/like/${bot_id}`,
     data: {
-      bot_id
+      bot_id,
     },
   }).then((res) => {
     return res.data;
   });
-}
-
+};
 
 export const user_unlikes_bot = async (bot_id) => {
   return await Api({
     method: "DELETE",
     url: `api/v1/bot/unlike/${bot_id}`,
     data: {
-      bot_id
+      bot_id,
     },
   }).then((res) => {
     return res.data;
   });
-}
+};

@@ -14,4 +14,10 @@ const CreateCharacterScreen4 = () => <CreateCharacter4 />;
 
 const CreateCharacterScreen5 = () => <CreateCharacter5 />;
 
-export { CreateCharacterScreen, CreateCharacterScreen2, CreateCharacterScreen3, CreateCharacterScreen4, CreateCharacterScreen5 };
+export {
+  CreateCharacterScreen,
+  CreateCharacterScreen2,
+  CreateCharacterScreen3,
+  CreateCharacterScreen4,
+  CreateCharacterScreen5,
+};

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FONTS, COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from '../../styles';
+import { FONTS, COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Settings = ({ navigation }) => {
@@ -153,13 +153,25 @@ const Settings = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <Text style={{ fontSize: FONTSIZE.large, fontWeight: FONT_WEIGHT.bold }}>Settings</Text>
+        <Text
+          style={{ fontSize: FONTSIZE.large, fontWeight: FONT_WEIGHT.bold }}
+        >
+          Settings
+        </Text>
       </View>
 
       <ScrollView style={{ marginHorizontal: 12 }}>
         {/* Account Settings */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontSize: FONTSIZE.medium, fontWeight: FONT_WEIGHT.bold, marginVertical: 10 }}>Account</Text>
+          <Text
+            style={{
+              fontSize: FONTSIZE.medium,
+              fontWeight: FONT_WEIGHT.bold,
+              marginVertical: 10,
+            }}
+          >
+            Account
+          </Text>
           <View
             style={{
               borderRadius: 12,
@@ -177,7 +189,13 @@ const Settings = ({ navigation }) => {
         {/* Support and About settings */}
 
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontSize: FONTSIZE.medium, fontWeight: FONT_WEIGHT.bold, marginVertical: 10 }}>
+          <Text
+            style={{
+              fontSize: FONTSIZE.medium,
+              fontWeight: FONT_WEIGHT.bold,
+              marginVertical: 10,
+            }}
+          >
             Support & About{" "}
           </Text>
           <View
@@ -196,7 +214,13 @@ const Settings = ({ navigation }) => {
 
         {/* Cache & Cellular */}
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontSize: FONTSIZE.medium, fontWeight: FONT_WEIGHT.bold, marginVertical: 10 }}>
+          <Text
+            style={{
+              fontSize: FONTSIZE.medium,
+              fontWeight: FONT_WEIGHT.bold,
+              marginVertical: 10,
+            }}
+          >
             Cache & Cellular{" "}
           </Text>
           <View
@@ -216,7 +240,15 @@ const Settings = ({ navigation }) => {
         {/* Actions Settings */}
 
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ fontSize: FONTSIZE.medium, fontWeight: FONT_WEIGHT.bold, marginVertical: 10 }}>Actions</Text>
+          <Text
+            style={{
+              fontSize: FONTSIZE.medium,
+              fontWeight: FONT_WEIGHT.bold,
+              marginVertical: 10,
+            }}
+          >
+            Actions
+          </Text>
           <View
             style={{
               borderRadius: 12,

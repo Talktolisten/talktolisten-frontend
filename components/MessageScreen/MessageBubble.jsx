@@ -1,15 +1,22 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Avatar, Bubble, SystemMessage, Message, MessageText, Day } from 'react-native-gifted-chat';
-import { COLORS, FONT_WEIGHT } from '../../styles';
+import React from "react";
+import { View, Text } from "react-native";
+import {
+  Avatar,
+  Bubble,
+  SystemMessage,
+  Message,
+  MessageText,
+  Day,
+} from "react-native-gifted-chat";
+import { COLORS, FONT_WEIGHT } from "../../styles";
 
 export const renderAvatar = (props) => (
   <Avatar
     {...props}
     containerStyle={{
-      left: { alignItems: 'center', justifyContent: 'center' },
-      right: {}
+      left: { alignItems: "center", justifyContent: "center" },
+      right: {},
     }}
     imageStyle={{ left: {}, right: {} }}
   />
@@ -30,13 +37,13 @@ export const renderBubble = (props) => (
       left: {},
       right: {},
     }}
-    usernameStyle={{ color: 'tomato', fontWeight: '100' }}
+    usernameStyle={{ color: "tomato", fontWeight: "100" }}
     containerToNextStyle={{
-      left: { borderColor: 'red', borderWidth: 4 },
+      left: { borderColor: "red", borderWidth: 4 },
       right: {},
     }}
     containerToPreviousStyle={{
-      left: { borderColor: 'black', borderWidth: 4 },
+      left: { borderColor: "black", borderWidth: 4 },
       right: {},
     }}
   />
@@ -45,9 +52,9 @@ export const renderBubble = (props) => (
 export const renderSystemMessage = (props) => (
   <SystemMessage
     {...props}
-    containerStyle={{ backgroundColor: 'pink' }}
-    wrapperStyle={{ borderWidth: 10, borderColor: 'white' }}
-    textStyle={{ color: 'red', fontWeight: FONT_WEIGHT.medium }}
+    containerStyle={{ backgroundColor: "pink" }}
+    wrapperStyle={{ borderWidth: 10, borderColor: "white" }}
+    textStyle={{ color: "red", fontWeight: FONT_WEIGHT.medium }}
   />
 );
 
@@ -76,7 +83,7 @@ export const renderMessageText = (props) => (
   />
 );
 
-export const renderTime = (props) => null
+export const renderTime = (props) => null;
 
 export const renderDay = (props) => (
   <Day
@@ -91,7 +98,7 @@ export const renderCustomView = ({ currentMessage, user }) => {
   }
 
   return (
-    <View style={{ minHeight: 20, alignItems: 'center' }}>
+    <View style={{ minHeight: 20, alignItems: "center" }}>
       <Text>
         Current user:
         {currentMessage.user.name}

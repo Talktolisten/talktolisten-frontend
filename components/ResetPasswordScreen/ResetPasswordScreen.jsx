@@ -90,11 +90,10 @@ const ResetPassword = () => {
                 <Text style={styles.buttonText}>Back To Login</Text>
               </TouchableOpacity>
             )}
-
           </View>
         )}
       </Formik>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 

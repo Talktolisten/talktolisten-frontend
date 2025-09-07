@@ -77,7 +77,7 @@ export const defaultAvatarURL = [
   "https://bots-ttl.s3.amazonaws.com/default_avatar/male2.webp",
   "https://bots-ttl.s3.amazonaws.com/default_avatar/female1.webp",
   "https://bots-ttl.s3.amazonaws.com/default_avatar/female2.webp",
-]
+];
 
 export const defaultBio = [
   "Adventurer exploring the world one step at a time. 🌍",
@@ -90,7 +90,7 @@ export const defaultBio = [
   "Fitness fanatic on a journey to health and wellness. 🏋️‍♂️",
   "Foodie exploring flavors from around the globe. 🍜",
   "Animal lover with a heart full of compassion. 🐾",
-]
+];
 
 export const errorCode = {
   invalidEmail: "auth/invalid-email",
@@ -99,12 +99,12 @@ export const errorCode = {
   emailExists: "auth/email-already-in-use",
   missingPassword: "auth/missing-password",
   requiresRecentLogin: "auth/requires-recent-login",
-}
+};
 
 export const LINKS = {
-  TTLWebsite: 'https://talktolisten.com',
-  acmWebsite: 'https://bullsconnect.usf.edu/acm/home/',
-  acmInstagram: 'https://www.instagram.com/usfacm/',
-  TTL_Terms_of_Use: 'https://talktolisten.com/terms-of-use',
-  TTL_Privacy_Policy: 'https://talktolisten.com/privacy-policy',
+  TTLWebsite: "https://talktolisten.com",
+  acmWebsite: "https://bullsconnect.usf.edu/acm/home/",
+  acmInstagram: "https://www.instagram.com/usfacm/",
+  TTL_Terms_of_Use: "https://talktolisten.com/terms-of-use",
+  TTL_Privacy_Policy: "https://talktolisten.com/privacy-policy",
 };

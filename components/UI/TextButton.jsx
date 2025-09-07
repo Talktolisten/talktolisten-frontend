@@ -4,9 +4,9 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import { COLORS, FONT_NUNITO } from '../../styles';
+import { COLORS, FONT_NUNITO } from "../../styles";
 
 const TextButton = ({
   onPress,
@@ -41,10 +41,10 @@ export default TextButton;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
     backgroundColor: COLORS.black,
     borderRadius: 15,
     padding: 10,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: FONT_NUNITO.bold,
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     color: COLORS.white,
   },
 });

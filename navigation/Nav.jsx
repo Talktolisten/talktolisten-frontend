@@ -4,7 +4,11 @@ import { useDispatch } from "react-redux";
 import { View, ActivityIndicator, Alert } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import { storeTokens, storeUserID, removeUserIDInStore } from "../util/tokenUtils";
+import {
+  storeTokens,
+  storeUserID,
+  removeUserIDInStore,
+} from "../util/tokenUtils";
 import { setUserID, removeUserID } from "../redux/actions/userActions";
 import AuthStack from "./AuthStack";
 import TabNavigator from "./TabNavigator";
@@ -39,10 +43,9 @@ const Nav = () => {
   };
 
   const checkSignUpCompletion = async () => {
-    const signUpProcess = await AsyncStorage.getItem('@SignUpProcess');
-    return signUpProcess === 'COMPLETE';
+    const signUpProcess = await AsyncStorage.getItem("@SignUpProcess");
+    return signUpProcess === "COMPLETE";
   };
-
 
   useEffect(() => {
     checkOnboarding();
@@ -69,7 +72,6 @@ const Nav = () => {
     });
     return () => unsubscribe();
   }, []);
-
 
   return (
     <NavigationContainer>

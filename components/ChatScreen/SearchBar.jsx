@@ -10,7 +10,7 @@ const DynamicSearchBar = () => {
       cancelIconColor={COLORS.black}
       backgroundColor={COLORS.white}
       placeholder="Search Character ..."
-    // onChangeText={console.log("SearchBar onChangeText")}
+      // onChangeText={console.log("SearchBar onChangeText")}
     />
   );
 };

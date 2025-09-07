@@ -57,15 +57,18 @@ const HomeStack = () => {
         component={ChatScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name={SCREEN_NAMES.MESSAGE}
+      <Stack.Screen
+        name={SCREEN_NAMES.MESSAGE}
         component={MessageScreen}
         options={{ headerShown: true, headerTitle: "Message" }}
       />
-      <Stack.Screen name={SCREEN_NAMES.MESSAGE_GROUP}
+      <Stack.Screen
+        name={SCREEN_NAMES.MESSAGE_GROUP}
         component={MessageGroupScreen}
         options={{ headerShown: true, headerTitle: "Group Message" }}
       />
-      <Stack.Screen name={SCREEN_NAMES.VOICE}
+      <Stack.Screen
+        name={SCREEN_NAMES.VOICE}
         component={VoiceScreen}
         options={{ headerShown: true }}
       />

@@ -1,4 +1,12 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -51,8 +59,8 @@ const Profile = () => {
 
   useEffect(() => {
     async function checkGuestMode() {
-      const isGuest = await AsyncStorage.getItem('@GuestMode');
-      setGuestMode(isGuest === 'TRUE' ? true : false);
+      const isGuest = await AsyncStorage.getItem("@GuestMode");
+      setGuestMode(isGuest === "TRUE" ? true : false);
     }
 
     checkGuestMode();
@@ -90,7 +98,7 @@ const Profile = () => {
   useFocusEffect(
     React.useCallback(() => {
       fetchUserInfo();
-    }, [])
+    }, []),
   );
 
   return (
@@ -105,12 +113,15 @@ const Profile = () => {
             style={styles.avatar}
           />
 
-          <TouchableOpacity style={styles.info}
+          <TouchableOpacity
+            style={styles.info}
             onPress={() => {
               navigation.navigate(SCREEN_NAMES.USER_PROFILE);
             }}
           >
-            <Text style={styles.name}>{userInfo.first_name} {userInfo.last_name}</Text>
+            <Text style={styles.name}>
+              {userInfo.first_name} {userInfo.last_name}
+            </Text>
             <Text style={styles.username}>@{userInfo.username}</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -128,7 +139,10 @@ const Profile = () => {
         </View>
       </View>
 
-      <ScrollView style={styles.settingList} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.settingList}
+        showsVerticalScrollIndicator={false}
+      >
         {/* <SettingItem
           type="Feather"
           icon="play-circle"
@@ -216,59 +230,84 @@ const Profile = () => {
           }}
         />
         <View style={styles.buttonContainer}>
-          {guest_mode ?
+          {guest_mode ? (
             <TouchableOpacity
-              style={[styles.button, { borderColor: COLORS.black, backgroundColor: COLORS.black, overflow: 'hidden' }]}
+              style={[
+                styles.button,
+                {
+                  borderColor: COLORS.black,
+                  backgroundColor: COLORS.black,
+                  overflow: "hidden",
+                },
+              ]}
               onPress={async () => {
                 await deleteAccount(userId);
-                await AsyncStorage.setItem('@GuestMode', "FALSE");
+                await AsyncStorage.setItem("@GuestMode", "FALSE");
                 logout();
               }}
             >
-              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to get start</Text>
-            </TouchableOpacity> : (
-              <View>
-                <TouchableOpacity
-                  style={[styles.button, { borderColor: COLORS.black }]}
-                  onPress={async () => {
-                    logout();
-                  }}
-                >
-                  <Text style={styles.buttonText}>Log Out</Text>
-                </TouchableOpacity>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { color: COLORS.white, fontWeight: FONT_WEIGHT.regular },
+                ]}
+              >
+                Sign up to get start
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View>
+              <TouchableOpacity
+                style={[styles.button, { borderColor: COLORS.black }]}
+                onPress={async () => {
+                  logout();
+                }}
+              >
+                <Text style={styles.buttonText}>Log Out</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={[styles.button, { borderColor: COLORS.red, backgroundColor: COLORS.red }]}
-                  onPress={() => {
-                    Alert.alert(
-                      "Delete Account",
-                      "Are you sure you want to delete your account? This action cannot be undone.",
-                      [
-                        {
-                          text: "No",
-                          onPress: () => console.log("Cancel Pressed"),
-                          style: "cancel"
-                        },
-                        {
-                          text: "Yes",
-                          onPress: async () => {
-                            try {
-                              await deleteAccount(userId);
-                              logout();
-                            } catch (error) {
-                              console.error(error);
-                            }
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  { borderColor: COLORS.red, backgroundColor: COLORS.red },
+                ]}
+                onPress={() => {
+                  Alert.alert(
+                    "Delete Account",
+                    "Are you sure you want to delete your account? This action cannot be undone.",
+                    [
+                      {
+                        text: "No",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel",
+                      },
+                      {
+                        text: "Yes",
+                        onPress: async () => {
+                          try {
+                            await deleteAccount(userId);
+                            logout();
+                          } catch (error) {
+                            console.error(error);
                           }
-                        }
-                      ],
-                      { cancelable: false }
-                    );
-                  }}
+                        },
+                      },
+                    ],
+                    { cancelable: false },
+                  );
+                }}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    { color: COLORS.white, fontWeight: FONT_WEIGHT.bold },
+                  ]}
                 >
-                  <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Delete Account</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+                  Delete Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

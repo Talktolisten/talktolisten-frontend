@@ -1,19 +1,41 @@
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, FlatList, ActivityIndicator, Alert, ScrollView, TextInput } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import Modal from "react-native-modal";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
-import { RadioButton } from 'react-native-paper';
+import { RadioButton } from "react-native-paper";
 import { SCREEN_NAMES } from "../../util/constants";
 import { generate_avatar, optimize_image_prompt } from "../../axios/bots";
 
 const CreateCharacter3 = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { name, description, greeting, short_description, gender, privacy, imagePrompt_ai } = route.params;
+  const {
+    name,
+    description,
+    greeting,
+    short_description,
+    gender,
+    privacy,
+    imagePrompt_ai,
+  } = route.params;
 
   const [loading, setLoading] = useState(false);
   const [isPromptFocused, setIsPromptFocused] = useState(false);
@@ -24,26 +46,80 @@ const CreateCharacter3 = () => {
 
   const [imagePrompt, setImagePrompt] = useState(imagePrompt_ai || "");
 
-  const botDefaultAvatar = "https://ttl.blob.core.windows.net/default-avatar/botdefault.webp";
+  const botDefaultAvatar =
+    "https://ttl.blob.core.windows.net/default-avatar/botdefault.webp";
 
   const [images, setImages] = useState([botDefaultAvatar]);
 
-  const [imageMode, setImageMode] = useState('ai-generated' || 'upload');
+  const [imageMode, setImageMode] = useState("ai-generated" || "upload");
 
   const addOnStyles = [
     {
-      id: '0', name: 'Style', options: ['Anime', 'Realism', 'Cartoon', 'Fantasy',
-        'Cyberpunk', 'Steampunk', 'Gothic', 'Retro',
-        'Watercolor', 'Pixel Art', 'Chibi', 'Manga', 'Sketch',
-        'Pop Art', 'Photorealism', 'Concept Art', 'Graffiti']
+      id: "0",
+      name: "Style",
+      options: [
+        "Anime",
+        "Realism",
+        "Cartoon",
+        "Fantasy",
+        "Cyberpunk",
+        "Steampunk",
+        "Gothic",
+        "Retro",
+        "Watercolor",
+        "Pixel Art",
+        "Chibi",
+        "Manga",
+        "Sketch",
+        "Pop Art",
+        "Photorealism",
+        "Concept Art",
+        "Graffiti",
+      ],
     },
-    { id: '1', name: 'Accessories', options: ['Glasses', 'Hat', 'Jewelry', 'Scarf', 'Tie'] },
-    { id: '2', name: 'Eyes Color', options: ['Blue', 'Brown', 'Black'] },
-    { id: '3', name: 'Background', options: ['City', 'Nature', 'Abstract', 'Indoors', 'Space'] },
-    { id: '5', name: 'Hair Style', options: ['Short', 'Long', 'Ponytail', 'Bun', 'Bald', 'Blonde', 'Brown', 'Black', 'Red', 'Grey', 'Pink'] },
-    { id: '6', name: 'Outfit', options: ['Casual', 'Formal', 'Sporty', 'Fantasy', 'Traditional'] },
-    { id: '7', name: 'Skin Tone', options: ['Fair', 'Medium', 'Olive', 'Tan', 'Dark'] },
-    { id: '11', name: 'Body Shape', options: ['Slim', 'Athletic', 'Average', 'Curvy', 'Muscular'] },
+    {
+      id: "1",
+      name: "Accessories",
+      options: ["Glasses", "Hat", "Jewelry", "Scarf", "Tie"],
+    },
+    { id: "2", name: "Eyes Color", options: ["Blue", "Brown", "Black"] },
+    {
+      id: "3",
+      name: "Background",
+      options: ["City", "Nature", "Abstract", "Indoors", "Space"],
+    },
+    {
+      id: "5",
+      name: "Hair Style",
+      options: [
+        "Short",
+        "Long",
+        "Ponytail",
+        "Bun",
+        "Bald",
+        "Blonde",
+        "Brown",
+        "Black",
+        "Red",
+        "Grey",
+        "Pink",
+      ],
+    },
+    {
+      id: "6",
+      name: "Outfit",
+      options: ["Casual", "Formal", "Sporty", "Fantasy", "Traditional"],
+    },
+    {
+      id: "7",
+      name: "Skin Tone",
+      options: ["Fair", "Medium", "Olive", "Tan", "Dark"],
+    },
+    {
+      id: "11",
+      name: "Body Shape",
+      options: ["Slim", "Athletic", "Average", "Curvy", "Muscular"],
+    },
   ];
 
   const handleAddOnPress = (addOn) => {
@@ -52,7 +128,7 @@ const CreateCharacter3 = () => {
   };
 
   const handleOptionSelect = (option, name) => {
-    setSelectedOptions(prevOptions => {
+    setSelectedOptions((prevOptions) => {
       const categoryOptions = prevOptions[name] || {};
 
       const isOptionSelected = categoryOptions[option];
@@ -75,7 +151,6 @@ const CreateCharacter3 = () => {
     });
   };
 
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -92,7 +167,9 @@ const CreateCharacter3 = () => {
     try {
       const ai_img_url = await generate_avatar(ImagePrompt);
       if (ai_img_url === null) {
-        Alert.alert("The image prompt might contain harmful or inappropriate content, such as sexual content, hate speech, self-harm, and violence. Proceed with caution.");
+        Alert.alert(
+          "The image prompt might contain harmful or inappropriate content, such as sexual content, hate speech, self-harm, and violence. Proceed with caution.",
+        );
         setLoading(false);
         return;
       }
@@ -111,9 +188,12 @@ const CreateCharacter3 = () => {
   };
 
   const handleImageArrow = (direction) => {
-    if (direction === 'left' && imageIndexSelected - 1 >= 0) {
+    if (direction === "left" && imageIndexSelected - 1 >= 0) {
       setImageIndexSelected(imageIndexSelected - 1);
-    } else if (direction === 'right' && imageIndexSelected + 1 < images.length) {
+    } else if (
+      direction === "right" &&
+      imageIndexSelected + 1 < images.length
+    ) {
       setImageIndexSelected(imageIndexSelected + 1);
     }
   };
@@ -134,50 +214,101 @@ const CreateCharacter3 = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: "20%" }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ marginBottom: "20%" }}
+        >
           <View style={styles.controlImageContainer}>
-            <TouchableOpacity onPress={() => handleImageArrow("left")} style={styles.arrowButton}>
+            <TouchableOpacity
+              onPress={() => handleImageArrow("left")}
+              style={styles.arrowButton}
+            >
               <AntDesign name="left" size={28} color="black" />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-
               <Image
                 key={images[imageIndexSelected]}
                 source={
-                  typeof images[imageIndexSelected] === 'string'
+                  typeof images[imageIndexSelected] === "string"
                     ? { uri: images[imageIndexSelected] }
                     : images[imageIndexSelected]
                 }
                 style={styles.image}
               />
-
             </View>
-            <TouchableOpacity onPress={() => handleImageArrow("right")} style={styles.arrowButton}>
+            <TouchableOpacity
+              onPress={() => handleImageArrow("right")}
+              style={styles.arrowButton}
+            >
               <AntDesign name="right" size={28} color="black" />
             </TouchableOpacity>
           </View>
 
           <View style={styles.radioButtonContainer}>
-            <RadioButton.Group onValueChange={value => setImageMode(value)} value={imageMode}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <TouchableOpacity style={[styles.radioButton, imageMode === 'upload' ? styles.radioButtonSelected : {}]} onPress={() => {
-                  setImageMode('upload');
-                  pickImage();
-                }}>
-                  <Text style={[styles.radioButtonLabel, imageMode === 'upload' ? styles.radioButtonLabelSelected : {}]}>Upload your Avatar</Text>
+            <RadioButton.Group
+              onValueChange={(value) => setImageMode(value)}
+              value={imageMode}
+            >
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.radioButton,
+                    imageMode === "upload" ? styles.radioButtonSelected : {},
+                  ]}
+                  onPress={() => {
+                    setImageMode("upload");
+                    pickImage();
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.radioButtonLabel,
+                      imageMode === "upload"
+                        ? styles.radioButtonLabelSelected
+                        : {},
+                    ]}
+                  >
+                    Upload your Avatar
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.radioButton, imageMode === 'ai-generated' ? styles.radioButtonSelected : {}]} onPress={() => setImageMode('ai-generated')}>
-                  <Text style={[styles.radioButtonLabel, imageMode === 'ai-generated' ? styles.radioButtonLabelSelected : {}]}>AI-generated image</Text>
+                <TouchableOpacity
+                  style={[
+                    styles.radioButton,
+                    imageMode === "ai-generated"
+                      ? styles.radioButtonSelected
+                      : {},
+                  ]}
+                  onPress={() => setImageMode("ai-generated")}
+                >
+                  <Text
+                    style={[
+                      styles.radioButtonLabel,
+                      imageMode === "ai-generated"
+                        ? styles.radioButtonLabelSelected
+                        : {},
+                    ]}
+                  >
+                    AI-generated image
+                  </Text>
                 </TouchableOpacity>
               </View>
             </RadioButton.Group>
           </View>
 
-          {imageMode === 'ai-generated' && (
+          {imageMode === "ai-generated" && (
             <View>
               <View style={styles.inputContainer}>
                 <View
-                  style={isPromptFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                  style={
+                    isPromptFocused
+                      ? [
+                          styles.inputSmallContainer,
+                          styles.inputContainerFocused,
+                        ]
+                      : styles.inputSmallContainer
+                  }
                 >
                   <TextInput
                     style={[styles.input, { minHeight: 150 }]}
@@ -201,7 +332,6 @@ const CreateCharacter3 = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-
               </View>
 
               <Modal
@@ -214,23 +344,34 @@ const CreateCharacter3 = () => {
                 swipeDirection={["down"]}
                 onSwipeComplete={toggleModal}
                 style={modalStyles.modalContainerScreen}
-                key={selectedAddOn ? selectedAddOn.id : 'modal'}
+                key={selectedAddOn ? selectedAddOn.id : "modal"}
               >
                 <View style={modalStyles.modalContainer}>
-                  <Text style={modalStyles.modalHeading}>{selectedAddOn?.name}</Text>
+                  <Text style={modalStyles.modalHeading}>
+                    {selectedAddOn?.name}
+                  </Text>
                   <View style={modalStyles.modalContent}>
-                    {selectedAddOn && selectedAddOn.options && selectedAddOn.options.map((option) => (
-                      <TouchableOpacity
-                        key={option}
-                        style={[
-                          modalStyles.optionButton,
-                          selectedOptions[selectedAddOn.name] && selectedOptions[selectedAddOn.name][option] ? modalStyles.selectedOption : {}
-                        ]}
-                        onPress={() => handleOptionSelect(option, selectedAddOn.name)}
-                      >
-                        <Text style={modalStyles.optionButtonText}>{option}</Text>
-                      </TouchableOpacity>
-                    ))}
+                    {selectedAddOn &&
+                      selectedAddOn.options &&
+                      selectedAddOn.options.map((option) => (
+                        <TouchableOpacity
+                          key={option}
+                          style={[
+                            modalStyles.optionButton,
+                            selectedOptions[selectedAddOn.name] &&
+                            selectedOptions[selectedAddOn.name][option]
+                              ? modalStyles.selectedOption
+                              : {},
+                          ]}
+                          onPress={() =>
+                            handleOptionSelect(option, selectedAddOn.name)
+                          }
+                        >
+                          <Text style={modalStyles.optionButtonText}>
+                            {option}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
                   </View>
                 </View>
               </Modal>
@@ -250,7 +391,6 @@ const CreateCharacter3 = () => {
               </View>
             </View>
           )}
-
         </ScrollView>
         {loading ? (
           <ActivityIndicator
@@ -263,62 +403,84 @@ const CreateCharacter3 = () => {
             color={"rgba(237, 196, 132, 255)"}
           />
         ) : (
-          <View style={[styles.buttonContainer, imageMode === 'ai-generated' ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }]}>
-            {imageMode === 'ai-generated' && (
+          <View
+            style={[
+              styles.buttonContainer,
+              imageMode === "ai-generated"
+                ? { flexDirection: "row" }
+                : { flexDirection: "row-reverse" },
+            ]}
+          >
+            {imageMode === "ai-generated" && (
               <TouchableOpacity
                 onPress={generate_ai_image}
-                style={[styles.button, {
-                  width: "55%", overflow: "hidden", borderRadius: 5
-                }]}
+                style={[
+                  styles.button,
+                  {
+                    width: "55%",
+                    overflow: "hidden",
+                    borderRadius: 5,
+                  },
+                ]}
               >
                 <LinearGradient
-                  colors={[
-                    'rgba(208, 179, 200, 255)',
-                    'rgba(237,196,132,255)'
-                  ]}
+                  colors={["rgba(208, 179, 200, 255)", "rgba(237,196,132,255)"]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
                   }}
                 />
-                <Text style={{
-                  color: COLORS.black,
-                  fontWeight: FONT_WEIGHT.bold,
-                  fontSize: FONTSIZE.xSmall,
-                }}>Generate</Text>
-              </TouchableOpacity>)}
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    fontWeight: FONT_WEIGHT.bold,
+                    fontSize: FONTSIZE.xSmall,
+                  }}
+                >
+                  Generate
+                </Text>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
-              onPress={() => navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
-                name,
-                description,
-                greeting,
-                short_description,
-                gender,
-                privacy,
-                profile_picture: images[imageIndexSelected],
-              })}
+              onPress={() =>
+                navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_4, {
+                  name,
+                  description,
+                  greeting,
+                  short_description,
+                  gender,
+                  privacy,
+                  profile_picture: images[imageIndexSelected],
+                })
+              }
               style={[styles.button, { backgroundColor: COLORS.blue }]}
             >
-              <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.bold }]}>Next</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { color: COLORS.white, fontWeight: FONT_WEIGHT.bold },
+                ]}
+              >
+                Next
+              </Text>
             </TouchableOpacity>
-
           </View>
         )}
       </SafeAreaView>
-    </TouchableWithoutFeedback >
-  )
+    </TouchableWithoutFeedback>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   topheadingContainer: {
     marginBottom: SIZES.xSmall,
@@ -349,11 +511,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   controlImageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignSelf: 'center',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignSelf: "center",
+    alignItems: "center",
+    width: "100%",
   },
   arrowButton: {
     borderRadius: 5,
@@ -383,8 +545,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.blue,
     borderWidth: 1,
     backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10,
     marginHorizontal: 5,
     borderRadius: 5,
@@ -398,7 +560,7 @@ const styles = StyleSheet.create({
   },
   radioButtonLabel: {
     fontSize: FONTSIZE.xSmall,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     borderRadius: 5,
@@ -422,7 +584,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    marginBottom: SIZES.xSmall
+    marginBottom: SIZES.xSmall,
   },
   helperButtonContainer: {
     alignItems: "flex-start",
@@ -436,40 +598,40 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
     borderColor: COLORS.black,
     backgroundColor: COLORS.white,
     borderWidth: 1,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   imagePlaceholder: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   imagePlaceholderText: {
-    color: 'gray',
+    color: "gray",
   },
   addOnContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   addOnButton: {
     margin: 5,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.black,
@@ -479,21 +641,21 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xSmall,
     fontWeight: FONT_WEIGHT.medium,
     color: COLORS.black,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 
 const modalStyles = StyleSheet.create({
   modalContainerScreen: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "flex-end",
     width: "100%",
     margin: 5,
   },
   modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: COLORS.white,
     height: "auto",
     width: "100%",

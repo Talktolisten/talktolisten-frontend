@@ -7,13 +7,13 @@ import {
   Keyboard,
 } from "react-native";
 import React, { useState } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { TextInput } from 'react-native-paper';
+import { TextInput } from "react-native-paper";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
-import { storeTokens, storeUserID } from "../../util/tokenUtils.js"
+import { storeTokens, storeUserID } from "../../util/tokenUtils.js";
 import { setUserID } from "../../redux/actions/userActions";
 
 import { SCREEN_NAMES } from "../../util/constants";
@@ -24,7 +24,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { errorHandle } from "./errorHandle";
 
-const loginwithemail = async (email, password, navigation, setError, dispatch) => {
+const loginwithemail = async (
+  email,
+  password,
+  navigation,
+  setError,
+  dispatch,
+) => {
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
@@ -33,14 +39,14 @@ const loginwithemail = async (email, password, navigation, setError, dispatch) =
       await storeTokens(accessToken);
       await storeUserID(user.uid);
       dispatch(setUserID(user.uid));
-      await AsyncStorage.setItem('@SignUpProcess', 'COMPLETE');
-      await AsyncStorage.setItem('@GuestMode', 'FALSE');
+      await AsyncStorage.setItem("@SignUpProcess", "COMPLETE");
+      await AsyncStorage.setItem("@GuestMode", "FALSE");
     })
     .then(() =>
       navigation.reset({
         index: 0,
         routes: [{ name: SCREEN_NAMES.NAV_TAB }],
-      })
+      }),
     )
     .catch((error) => {
       const errorCode = error.code;
@@ -57,13 +63,26 @@ const Login = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: COLORS.grey,
+        }}
+      >
         <SafeAreaView style={styles.container}>
           <Text style={styles.heading}>Login</Text>
           <Formik
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
-              loginwithemail(values.email, values.password, navigation, setError, dispatch);
+              loginwithemail(
+                values.email,
+                values.password,
+                navigation,
+                setError,
+                dispatch,
+              );
             }}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -115,13 +134,15 @@ const Login = () => {
                     justifyContent: "center",
                     textAlign: "center",
                   }}
-                  onPress={() => navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)}
+                  onPress={() =>
+                    navigation.navigate(SCREEN_NAMES.RESET_PASSWORD)
+                  }
                 >
                   <Text
                     style={{
                       textAlign: "right",
                       fontSize: FONTSIZE.xSmall,
-                      fontWeight: FONT_WEIGHT.regular
+                      fontWeight: FONT_WEIGHT.regular,
                     }}
                   >
                     Forgot password?
@@ -134,18 +155,16 @@ const Login = () => {
                   </View>
                 )}
 
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styles.button}
-                >
+                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                   <LinearGradient
                     colors={[
-                      'rgba(208, 179, 184, 255)',
-                      'rgba(237,196,132,255)']}
+                      "rgba(208, 179, 184, 255)",
+                      "rgba(237,196,132,255)",
+                    ]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={{
-                      position: 'absolute',
+                      position: "absolute",
                       left: 0,
                       right: 0,
                       top: 0,
@@ -177,11 +196,13 @@ const Login = () => {
             }}
             onPress={() => navigation.navigate(SCREEN_NAMES.SIGNUP)}
           >
-            <Text style={{
-              textAlign: "center",
-              fontWeight: FONT_WEIGHT.medium,
-              fontSize: FONTSIZE.small
-            }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontWeight: FONT_WEIGHT.medium,
+                fontSize: FONTSIZE.small,
+              }}
+            >
               Don't have an account? Sign up
             </Text>
           </TouchableOpacity>

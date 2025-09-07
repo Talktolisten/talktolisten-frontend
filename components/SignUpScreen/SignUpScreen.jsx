@@ -6,20 +6,25 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Linking
+  Linking,
 } from "react-native";
 
 import styles from "./styles";
-import Checkbox from 'expo-checkbox';
-import { TextInput } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
+import Checkbox from "expo-checkbox";
+import { TextInput } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import auth from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getIdToken, getAuth, sendEmailVerification, signOut } from "firebase/auth";
+import {
+  getIdToken,
+  getAuth,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
 import { errorHandle } from "../LoginScreen/errorHandle";
 import { COLORS } from "../../styles";
 import { SCREEN_NAMES, LINKS } from "../../util/constants";
@@ -29,7 +34,8 @@ const SignUp = () => {
   const navigation = useNavigation();
   const [error, setError] = useState(null);
   const [isChecked, setChecked] = useState(false);
-  const [waitingEmailVerification, setWaitingEmailVerification] = useState(false);
+  const [waitingEmailVerification, setWaitingEmailVerification] =
+    useState(false);
 
   async function fetchToken(auth) {
     const token = await getIdToken(auth.currentUser);
@@ -44,11 +50,16 @@ const SignUp = () => {
       return;
     }
 
-    await AsyncStorage.setItem('@SignUpProcess', 'INCOMPLETE');
+    await AsyncStorage.setItem("@SignUpProcess", "INCOMPLETE");
 
-    createUserWithEmailAndPassword(auth, email, password, emailVerified = true)
+    createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+      (emailVerified = true),
+    )
       .then(async (userCredential) => {
-        await AsyncStorage.setItem('@GuestMode', 'FALSE');
+        await AsyncStorage.setItem("@GuestMode", "FALSE");
         const uid = userCredential.user.uid;
         const token = await fetchToken(auth);
         return { uid, token };
@@ -70,7 +81,14 @@ const SignUp = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.grey }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: COLORS.grey,
+        }}
+      >
         <SafeAreaView style={styles.container}>
           <Text style={styles.heading}>Sign Up</Text>
           <Text style={styles.subheading}>Create an account to start</Text>
@@ -140,28 +158,34 @@ const SignUp = () => {
                   />
                   <Text style={styles.label}>
                     I agree to the
-                    <Text onPress={() => Linking.openURL(LINKS.TTL_Terms_of_Use)} style={styles.link}>
-                      {" "}Terms of Use{" "}
+                    <Text
+                      onPress={() => Linking.openURL(LINKS.TTL_Terms_of_Use)}
+                      style={styles.link}
+                    >
+                      {" "}
+                      Terms of Use{" "}
                     </Text>
                     and
-                    <Text onPress={() => Linking.openURL(LINKS.TTL_Privacy_Policy)} style={styles.link}>
-                      {" "}Privacy Policy{" "}
+                    <Text
+                      onPress={() => Linking.openURL(LINKS.TTL_Privacy_Policy)}
+                      style={styles.link}
+                    >
+                      {" "}
+                      Privacy Policy{" "}
                     </Text>
                   </Text>
                 </View>
 
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styles.button}
-                >
+                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                   <LinearGradient
                     colors={[
-                      'rgba(208, 179, 184, 255)',
-                      'rgba(237,196,132,255)']}
+                      "rgba(208, 179, 184, 255)",
+                      "rgba(237,196,132,255)",
+                    ]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={{
-                      position: 'absolute',
+                      position: "absolute",
                       left: 0,
                       right: 0,
                       top: 0,
@@ -174,7 +198,7 @@ const SignUp = () => {
             )}
           </Formik>
         </SafeAreaView>
-      </View >
+      </View>
     </TouchableWithoutFeedback>
   );
 };

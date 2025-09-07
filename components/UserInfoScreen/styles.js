@@ -42,7 +42,7 @@ export default StyleSheet.create({
     color: COLORS.red,
     fontSize: FONTSIZE.small,
     textAlign: "center",
-    marginBottom: SIZES.small
+    marginBottom: SIZES.small,
   },
   input: {
     height: 50,

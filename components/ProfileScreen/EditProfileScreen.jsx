@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -64,11 +64,10 @@ const EditProfile = () => {
     }
   };
 
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
               alignItems: "center",
@@ -105,13 +104,9 @@ const EditProfile = () => {
           </View>
 
           <View style={styles.infoContainer}>
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Username</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={username}
                   onChangeText={(value) => {
@@ -124,13 +119,9 @@ const EditProfile = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Bio</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={bio}
                   onChangeText={(value) => {
@@ -153,9 +144,7 @@ const EditProfile = () => {
             >
               <View style={{ width: "45%", marginHorizontal: 2.5 }}>
                 <Text style={styles.heading}>First Name</Text>
-                <View
-                  style={styles.inputContainer}
-                >
+                <View style={styles.inputContainer}>
                   <TextInput
                     value={fname}
                     onChangeText={(value) => {
@@ -168,9 +157,7 @@ const EditProfile = () => {
               </View>
               <View style={{ width: "45%", marginHorizontal: 2.5 }}>
                 <Text style={styles.heading}>Last Name</Text>
-                <View
-                  style={styles.inputContainer}
-                >
+                <View style={styles.inputContainer}>
                   <TextInput
                     value={lname}
                     onChangeText={(value) => {
@@ -183,13 +170,9 @@ const EditProfile = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Gmail</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={gmail}
                   onChangeText={(value) => {
@@ -201,45 +184,54 @@ const EditProfile = () => {
                 />
               </View>
             </View>
-
           </View>
 
           <TouchableOpacity
-            style={isChanged ? styles.buttonContainer : [styles.buttonContainer, { backgroundColor: COLORS.light_black }]}
-            onPress={isChanged ? async () => {
-              try {
-                let profile_picture = null;
-                if (isAvatarChanged) {
-                  profile_picture = await FileSystem.readAsStringAsync(selectedImage, {
-                    encoding: FileSystem.EncodingType.Base64,
-                  });
-                }
-                await update_user(
-                  userId,
-                  username,
-                  gmail,
-                  fname,
-                  lname,
-                  null,
-                  null,
-                  bio,
-                  profile_picture,
-                  null,
-                  null
-                );
-                setIsChanged(false);
-                setIsAvatarChanged(false);
-                setRefresh(!refresh);
-              } catch (error) {
-                console.error("Failed to update user info:", error);
-              }
-            } : null}
+            style={
+              isChanged
+                ? styles.buttonContainer
+                : [
+                    styles.buttonContainer,
+                    { backgroundColor: COLORS.light_black },
+                  ]
+            }
+            onPress={
+              isChanged
+                ? async () => {
+                    try {
+                      let profile_picture = null;
+                      if (isAvatarChanged) {
+                        profile_picture = await FileSystem.readAsStringAsync(
+                          selectedImage,
+                          {
+                            encoding: FileSystem.EncodingType.Base64,
+                          },
+                        );
+                      }
+                      await update_user(
+                        userId,
+                        username,
+                        gmail,
+                        fname,
+                        lname,
+                        null,
+                        null,
+                        bio,
+                        profile_picture,
+                        null,
+                        null,
+                      );
+                      setIsChanged(false);
+                      setIsAvatarChanged(false);
+                      setRefresh(!refresh);
+                    } catch (error) {
+                      console.error("Failed to update user info:", error);
+                    }
+                  }
+                : null
+            }
           >
-            <Text
-              style={styles.buttonText}
-            >
-              Save Change
-            </Text>
+            <Text style={styles.buttonText}>Save Change</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -253,7 +245,7 @@ const styles = {
   container: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: SIZES.xLarge
+    paddingVertical: SIZES.xLarge,
   },
   infoContainer: {
     marginBottom: SIZES.xLarge,
@@ -267,9 +259,7 @@ const styles = {
   heading: {
     fontSize: FONTSIZE.small,
   },
-  input: {
-
-  },
+  input: {},
   inputContainer: {
     borderColor: COLORS.black,
     borderRadius: 5,
@@ -290,5 +280,5 @@ const styles = {
   buttonText: {
     fontSize: FONTSIZE.small,
     color: COLORS.white,
-  }
+  },
 };

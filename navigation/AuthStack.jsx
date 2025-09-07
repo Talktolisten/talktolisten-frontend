@@ -11,7 +11,6 @@ import TabNavigator from "./TabNavigator";
 import { SCREEN_NAMES } from "../util/constants";
 import { COLORS } from "../styles";
 
-
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -55,22 +54,13 @@ const AuthStack = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name={SCREEN_NAMES.LOGIN}
-        component={LoginScreen}
-      />
-      <Stack.Screen
-        name={SCREEN_NAMES.SIGNUP}
-        component={SignUpScreen}
-      />
+      <Stack.Screen name={SCREEN_NAMES.LOGIN} component={LoginScreen} />
+      <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={SignUpScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.RESET_PASSWORD}
         component={ResetPasswordScreen}
       />
-      <Stack.Screen
-        name={SCREEN_NAMES.USER_INFO}
-        component={UserInfoScreen}
-      />
+      <Stack.Screen name={SCREEN_NAMES.USER_INFO} component={UserInfoScreen} />
       <Stack.Screen
         name={SCREEN_NAMES.NAV_TAB}
         component={TabNavigator}

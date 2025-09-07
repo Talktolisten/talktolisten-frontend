@@ -56,7 +56,7 @@ export default StyleSheet.create({
     borderRadius: 50,
   },
   button: {
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderRadius: 50,
     width: "80%",
     height: 45,

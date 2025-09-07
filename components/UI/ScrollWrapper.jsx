@@ -5,7 +5,7 @@ import {
   Platform,
   StatusBar,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 
 const ScrollWrapper = ({ children }) => {
   return (
@@ -22,8 +22,8 @@ export default ScrollWrapper;
 const styles = StyleSheet.create({
   androidSafeArea: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    backgroundColor: "white",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,

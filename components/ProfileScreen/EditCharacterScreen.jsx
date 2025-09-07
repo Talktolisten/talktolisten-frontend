@@ -7,12 +7,12 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RadioButton } from 'react-native-paper';
+import { RadioButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { COLORS, FONTSIZE, SIZES, FONT_WEIGHT } from "../../styles";
@@ -80,11 +80,10 @@ const EditCharacter = () => {
     }
   };
 
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
               alignItems: "center",
@@ -121,13 +120,9 @@ const EditCharacter = () => {
           </View>
 
           <View style={styles.infoContainer}>
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Name</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={name}
                   onChangeText={(value) => {
@@ -140,13 +135,9 @@ const EditCharacter = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Character Definition</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={description}
                   onChangeText={(value) => {
@@ -160,13 +151,9 @@ const EditCharacter = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Greeting</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={greeting}
                   onChangeText={(value) => {
@@ -180,13 +167,9 @@ const EditCharacter = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Short Description</Text>
-              <View
-                style={styles.inputContainer}
-              >
+              <View style={styles.inputContainer}>
                 <TextInput
                   value={shortDescription}
                   onChangeText={(value) => {
@@ -200,17 +183,21 @@ const EditCharacter = () => {
               </View>
             </View>
 
-            <View
-              style={styles.infoChildContainer}
-            >
+            <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Voice</Text>
-              <View
-                style={styles.inputContainer}
-              >
-                <Text style={styles.input}>{voice ? voice.voice_name : 'Select Voice'}</Text>
+              <View style={styles.inputContainer}>
+                <Text style={styles.input}>
+                  {voice ? voice.voice_name : "Select Voice"}
+                </Text>
               </View>
               <TouchableOpacity
-                style={{ alignItems: "center", paddingVertical: 10, backgroundColor: COLORS.black, borderRadius: 5, marginTop: 10 }}
+                style={{
+                  alignItems: "center",
+                  paddingVertical: 10,
+                  backgroundColor: COLORS.black,
+                  borderRadius: 5,
+                  marginTop: 10,
+                }}
                 onPress={() => {
                   navigation.navigate(SCREEN_NAMES.SELECT_VOICE, {
                     onGoBack: (voiceObject) => {
@@ -223,7 +210,11 @@ const EditCharacter = () => {
                 }}
               >
                 <Text
-                  style={{ fontSize: FONTSIZE.xSmall, color: COLORS.white, fontWeight: FONT_WEIGHT.medium }}
+                  style={{
+                    fontSize: FONTSIZE.xSmall,
+                    color: COLORS.white,
+                    fontWeight: FONT_WEIGHT.medium,
+                  }}
                 >
                   Select Voice
                 </Text>
@@ -232,67 +223,115 @@ const EditCharacter = () => {
 
             <View style={styles.infoChildContainer}>
               <Text style={styles.heading}>Privacy</Text>
-              <RadioButton.Group onValueChange={value => {
-                setPrivacy(value);
-                setIsChanged(true);
-              }}
-                value={privacy}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                  <TouchableOpacity style={[styles.radioButton, privacy === 'public' ? styles.radioButtonSelected : {}]} onPress={() => {
-                    setPrivacy('public');
-                    setIsChanged(true);
-                  }}>
-                    <Text style={[styles.radioButtonLabel, privacy === 'public' ? styles.radioButtonLabelSelected : {}]}>Public</Text>
+              <RadioButton.Group
+                onValueChange={(value) => {
+                  setPrivacy(value);
+                  setIsChanged(true);
+                }}
+                value={privacy}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={[
+                      styles.radioButton,
+                      privacy === "public" ? styles.radioButtonSelected : {},
+                    ]}
+                    onPress={() => {
+                      setPrivacy("public");
+                      setIsChanged(true);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.radioButtonLabel,
+                        privacy === "public"
+                          ? styles.radioButtonLabelSelected
+                          : {},
+                      ]}
+                    >
+                      Public
+                    </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.radioButton, privacy === 'private' ? styles.radioButtonSelected : {}]} onPress={() => {
-                    setPrivacy('private');
-                    setIsChanged(true);
-                  }}>
-                    <Text style={[styles.radioButtonLabel, privacy === 'private' ? styles.radioButtonLabelSelected : {}]}>Private</Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.radioButton,
+                      privacy === "private" ? styles.radioButtonSelected : {},
+                    ]}
+                    onPress={() => {
+                      setPrivacy("private");
+                      setIsChanged(true);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.radioButtonLabel,
+                        privacy === "private"
+                          ? styles.radioButtonLabelSelected
+                          : {},
+                      ]}
+                    >
+                      Private
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </RadioButton.Group>
               <Text style={styles.privacyDescription}>
-                {privacy === 'public' ? 'Other people can talk to your character' : 'Only you can talk to the character'}
+                {privacy === "public"
+                  ? "Other people can talk to your character"
+                  : "Only you can talk to the character"}
               </Text>
             </View>
-
           </View>
 
           <TouchableOpacity
-            style={isChanged ? styles.buttonContainer : [styles.buttonContainer, { backgroundColor: COLORS.light_black }]}
-            onPress={isChanged ? async () => {
-              try {
-                let profile_picture = null;
-                if (isAvatarChanged) {
-                  profile_picture = await FileSystem.readAsStringAsync(selectedImage, {
-                    encoding: FileSystem.EncodingType.Base64,
-                  });
-                }
-                await update_bot(
-                  botId,
-                  name,
-                  shortDescription,
-                  description,
-                  profile_picture,
-                  null,
-                  greeting,
-                  privacy,
-                  null
-                );
-                setIsChanged(false);
-                setIsAvatarChanged(false);
-                setRefresh(!refresh);
-              } catch (error) {
-                console.error("Failed to update user info:", error);
-              }
-            } : null}
+            style={
+              isChanged
+                ? styles.buttonContainer
+                : [
+                    styles.buttonContainer,
+                    { backgroundColor: COLORS.light_black },
+                  ]
+            }
+            onPress={
+              isChanged
+                ? async () => {
+                    try {
+                      let profile_picture = null;
+                      if (isAvatarChanged) {
+                        profile_picture = await FileSystem.readAsStringAsync(
+                          selectedImage,
+                          {
+                            encoding: FileSystem.EncodingType.Base64,
+                          },
+                        );
+                      }
+                      await update_bot(
+                        botId,
+                        name,
+                        shortDescription,
+                        description,
+                        profile_picture,
+                        null,
+                        greeting,
+                        privacy,
+                        null,
+                      );
+                      setIsChanged(false);
+                      setIsAvatarChanged(false);
+                      setRefresh(!refresh);
+                    } catch (error) {
+                      console.error("Failed to update user info:", error);
+                    }
+                  }
+                : null
+            }
           >
-            <Text
-              style={styles.buttonText}
-            >
-              Save Change
-            </Text>
+            <Text style={styles.buttonText}>Save Change</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -306,7 +345,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: SIZES.xLarge
+    paddingVertical: SIZES.xLarge,
   },
   infoContainer: {
     marginBottom: SIZES.xLarge,
@@ -350,13 +389,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.blue,
     borderWidth: 1,
     backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10,
     marginHorizontal: 5,
     borderRadius: 5,
     marginVertical: 5,
-    marginTop: 10
+    marginTop: 10,
   },
   radioButtonSelected: {
     backgroundColor: COLORS.blue,
@@ -367,10 +406,10 @@ const styles = StyleSheet.create({
   },
   radioButtonLabel: {
     fontSize: FONTSIZE.xSmall,
-    textAlign: 'center',
+    textAlign: "center",
   },
   privacyDescription: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: FONTSIZE.xSmall,
     marginTop: SIZES.small,
   },

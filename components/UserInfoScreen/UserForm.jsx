@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { TextInput } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
+import { TextInput } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../../styles";
 import { checkUsername } from "../../axios/user";
 import styles from "./styles";
@@ -65,20 +65,28 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
       <View style={styles.inputContainer}>
         <TextInput
           onChangeText={(value) => {
-            const numericValue = value.replace(/[^0-9]/g, '');
+            const numericValue = value.replace(/[^0-9]/g, "");
             let formattedValue = numericValue;
 
             if (numericValue.length <= 2) {
               formattedValue = numericValue;
             } else if (numericValue.length <= 4) {
-              formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2);
+              formattedValue =
+                numericValue.substring(0, 2) +
+                " / " +
+                numericValue.substring(2);
             } else {
-              formattedValue = numericValue.substring(0, 2) + ' / ' + numericValue.substring(2, 4) + ' / ' + numericValue.substring(4);
+              formattedValue =
+                numericValue.substring(0, 2) +
+                " / " +
+                numericValue.substring(2, 4) +
+                " / " +
+                numericValue.substring(4);
             }
 
-            handleChange('dob')(formattedValue);
+            handleChange("dob")(formattedValue);
           }}
-          onBlur={handleBlur('dob')}
+          onBlur={handleBlur("dob")}
           value={values.dob}
           placeholder="MM / DD / YYYY (Optional)"
           style={styles.input}
@@ -95,13 +103,11 @@ const UserForm = ({ values, handleChange, handleBlur, handleSubmit }) => {
         style={[styles.button, { backgroundColor: COLORS.blue }]}
       >
         <LinearGradient
-          colors={[
-            'rgba(208, 179, 184, 255)',
-            'rgba(237,196,132,255)']}
+          colors={["rgba(208, 179, 184, 255)", "rgba(237,196,132,255)"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{
-            position: 'absolute',
+            position: "absolute",
             left: 0,
             right: 0,
             top: 0,

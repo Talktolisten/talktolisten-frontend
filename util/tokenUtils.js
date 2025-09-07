@@ -1,18 +1,17 @@
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
 export const storeUserID = async (userID) => {
   try {
     const userString = JSON.stringify(userID);
-    await SecureStore.setItemAsync('user_id', userString);
+    await SecureStore.setItemAsync("user_id", userString);
   } catch (error) {
-    console.error('Error storing the user:', error);
+    console.error("Error storing the user:", error);
   }
 };
 
-
 export const getUserID = async () => {
   try {
-    const userString = await SecureStore.getItemAsync('user_id');
+    const userString = await SecureStore.getItemAsync("user_id");
     if (userString) {
       return JSON.parse(userString);
     } else {
@@ -25,20 +24,18 @@ export const getUserID = async () => {
   }
 };
 
-
 export const storeTokens = async (accessToken) => {
   try {
     const tokens = JSON.stringify({ accessToken });
-    await SecureStore.setItemAsync('firebaseTokens', tokens);
+    await SecureStore.setItemAsync("firebaseTokens", tokens);
   } catch (error) {
-    console.error('Error storing the tokens:', error);
+    console.error("Error storing the tokens:", error);
   }
 };
 
-
 export const getTokens = async () => {
   try {
-    const tokenString = await SecureStore.getItemAsync('firebaseTokens');
+    const tokenString = await SecureStore.getItemAsync("firebaseTokens");
     if (tokenString) {
       return JSON.parse(tokenString);
     } else {
@@ -51,10 +48,9 @@ export const getTokens = async () => {
   }
 };
 
-
 export const removeTokens = async () => {
   try {
-    await SecureStore.deleteItemAsync('firebaseTokens');
+    await SecureStore.deleteItemAsync("firebaseTokens");
   } catch (error) {
     console.error("Error removing the tokens:", error);
   }
@@ -62,7 +58,7 @@ export const removeTokens = async () => {
 
 export const removeUserIDInStore = async () => {
   try {
-    await SecureStore.deleteItemAsync('user_id');
+    await SecureStore.deleteItemAsync("user_id");
   } catch (error) {
     console.error("Error removing the user:", error);
   }

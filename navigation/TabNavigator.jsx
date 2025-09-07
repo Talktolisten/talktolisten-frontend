@@ -61,7 +61,7 @@ const TabNavigator = () => {
             getIcon(
               focused ? "ic:round-explore" : "ic:outline-explore",
               28,
-              color
+              color,
             ),
         }}
       />
@@ -71,21 +71,23 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: "Chat",
           tabBarIcon: ({ focused, color, size }) =>
-            getIcon(focused ? "bi:chat-fill" : "bi:chat",
-              25,
-              color),
+            getIcon(focused ? "bi:chat-fill" : "bi:chat", 25, color),
         }}
       />
       <Tab.Screen
         name={SCREEN_NAMES.CREATE_CHARACTER_TAB}
         component={CreateCharacterStack}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: "",
           tabBarLabelStyle: {},
           tabBarIcon: ({ focused, color, size }) =>
-            getIcon(focused ? "material-symbols:add-circle" : "material-symbols:add-circle-outline",
+            getIcon(
+              focused
+                ? "material-symbols:add-circle"
+                : "material-symbols:add-circle-outline",
               35,
-              color),
+              color,
+            ),
         }}
       />
       <Tab.Screen
@@ -94,9 +96,13 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: "Surprised",
           tabBarIcon: ({ focused, color, size }) =>
-            getIcon(focused ? "streamline:ai-generate-variation-spark-solid" : "streamline:ai-generate-variation-spark",
+            getIcon(
+              focused
+                ? "streamline:ai-generate-variation-spark-solid"
+                : "streamline:ai-generate-variation-spark",
               23,
-              color),
+              color,
+            ),
         }}
       />
       <Tab.Screen
@@ -107,7 +113,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ focused, color, size }) =>
             getIcon(
               focused ? "mdi:user-circle" : "mdi:user-circle-outline",
-              size = 28,
+              (size = 28),
               color,
             ),
         }}

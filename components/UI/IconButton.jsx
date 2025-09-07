@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from "react-native";
 
-import { getIcon } from '../Icons';
+import { getIcon } from "../Icons";
 
 const IconButton = ({
   iconName,

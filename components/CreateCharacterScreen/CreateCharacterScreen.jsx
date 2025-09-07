@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ActivityIndicator, ScrollView, TextInput } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, SIZES, FONTSIZE, FONT_WEIGHT } from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { TextInput } from 'react-native-paper';
 import { SCREEN_NAMES } from "../../util/constants";
-import { generate_greeting_description, optimize_description } from "../../axios/bots";
+import {
+  generate_greeting_description,
+  optimize_description,
+} from "../../axios/bots";
 
 const CreateCharacter = () => {
   const navigation = useNavigation();
@@ -21,8 +35,8 @@ const CreateCharacter = () => {
 
   useEffect(() => {
     async function checkGuestMode() {
-      const isGuest = await AsyncStorage.getItem('@GuestMode');
-      setGuestMode(isGuest === 'TRUE' ? true : false);
+      const isGuest = await AsyncStorage.getItem("@GuestMode");
+      setGuestMode(isGuest === "TRUE" ? true : false);
     }
 
     checkGuestMode();
@@ -31,37 +45,63 @@ const CreateCharacter = () => {
   const generateCharacter = async () => {
     setLoading(true);
     try {
-      const { greeting, short_description } = await generate_greeting_description(name, description);
-      navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_2, { name: name, description: description, greeting_ai: greeting, short_description_ai: short_description });
+      const { greeting, short_description } =
+        await generate_greeting_description(name, description);
+      navigation.navigate(SCREEN_NAMES.CREATE_CHARACTER_2, {
+        name: name,
+        description: description,
+        greeting_ai: greeting,
+        short_description_ai: short_description,
+      });
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
-  }
+  };
 
   const optimizeDescription = async () => {
     setLoading(true);
     const optimized_description = await optimize_description(name, description);
     setDescription(optimized_description);
     setLoading(false);
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       {guest_mode ? (
-        <View style={{ flex: 1, justifyContent: "center", alignSelf: "center" }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignSelf: "center" }}
+        >
           <TouchableOpacity
-            style={[styles.button, { width: "80%", borderColor: COLORS.black, backgroundColor: COLORS.light_black, overflow: 'hidden' }]}
+            style={[
+              styles.button,
+              {
+                width: "80%",
+                borderColor: COLORS.black,
+                backgroundColor: COLORS.light_black,
+                overflow: "hidden",
+              },
+            ]}
             onPress={async () => {
               navigation.navigate(SCREEN_NAMES.PROFILE);
             }}
           >
-            <Text style={[styles.buttonText, { color: COLORS.white, fontWeight: FONT_WEIGHT.regular }]}>Sign up to create your own character</Text>
+            <Text
+              style={[
+                styles.buttonText,
+                { color: COLORS.white, fontWeight: FONT_WEIGHT.regular },
+              ]}
+            >
+              Sign up to create your own character
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
         <SafeAreaView style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: "25%" }}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ marginBottom: "25%" }}
+          >
             <View style={styles.inputContainer}>
               <View style={styles.topheadingContainer}>
                 <Text style={styles.topheading}>Name</Text>
@@ -70,7 +110,14 @@ const CreateCharacter = () => {
               <View style={styles.subheadingContainer}>
                 <Text style={styles.subheading}>Name your character</Text>
                 <View
-                  style={isNameFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                  style={
+                    isNameFocused
+                      ? [
+                          styles.inputSmallContainer,
+                          styles.inputContainerFocused,
+                        ]
+                      : styles.inputSmallContainer
+                  }
                 >
                   <TextInput
                     style={styles.input}
@@ -92,9 +139,19 @@ const CreateCharacter = () => {
               </View>
 
               <View style={styles.subheadingContainer}>
-                <Text style={styles.subheading}>Define your character's unique personality traits. The more detailed you are, the more realistic your character will be.</Text>
+                <Text style={styles.subheading}>
+                  Define your character's unique personality traits. The more
+                  detailed you are, the more realistic your character will be.
+                </Text>
                 <View
-                  style={isDescriptionFocused ? [styles.inputSmallContainer, styles.inputContainerFocused] : styles.inputSmallContainer}
+                  style={
+                    isDescriptionFocused
+                      ? [
+                          styles.inputSmallContainer,
+                          styles.inputContainerFocused,
+                        ]
+                      : styles.inputSmallContainer
+                  }
                 >
                   <TextInput
                     placeholder="A cute cat with a big heart"
@@ -134,9 +191,10 @@ const CreateCharacter = () => {
               </TouchableOpacity>
             )}
           </View>
-        </SafeAreaView>)}
+        </SafeAreaView>
+      )}
     </TouchableWithoutFeedback>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

@@ -7,7 +7,7 @@ export default styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   fab: {
-    position: 'absolute',
+    position: "absolute",
     margin: 24,
     right: 0,
     bottom: 0,
@@ -17,9 +17,9 @@ export default styles = StyleSheet.create({
     marginBottom: 12.5,
   },
   radioButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 10,
     borderRadius: 5,
     marginTop: 10,
@@ -35,7 +35,7 @@ export default styles = StyleSheet.create({
   radioButtonLabel: {
     fontSize: FONTSIZE.xSmall,
     color: COLORS.light_black,
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: FONT_WEIGHT.medium,
   },
   radioButtonLabelSelected: {
@@ -62,7 +62,7 @@ export default styles = StyleSheet.create({
     flex: 1,
   },
   elementPallet: {
-    marginHorizontal: SIZES.small
+    marginHorizontal: SIZES.small,
   },
   element: {
     flexDirection: "row",
@@ -70,7 +70,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.white,
     marginLeft: 5,
-    marginBottom: SIZES.xSmall
+    marginBottom: SIZES.xSmall,
   },
   infoArea: {
     flex: 3,
@@ -83,7 +83,7 @@ export default styles = StyleSheet.create({
   infoSub: {
     marginTop: SIZES.xSmall,
     fontSize: FONTSIZE.xSmall,
-    color: COLORS.light_black
+    color: COLORS.light_black,
   },
   inforMoreContainer: {
     flex: 1,
@@ -115,16 +115,16 @@ export default styles = StyleSheet.create({
     borderRadius: 40,
   },
   rightAction: {
-    backgroundColor: '#dd2c00', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    width: 100, 
-    height: '90%',
+    backgroundColor: "#dd2c00",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
+    height: "90%",
   },
   actionText: {
     color: COLORS.white,
     padding: 10,
     fontSize: FONTSIZE.xSmall,
-    fontWeight: FONT_WEIGHT.medium
+    fontWeight: FONT_WEIGHT.medium,
   },
 });
